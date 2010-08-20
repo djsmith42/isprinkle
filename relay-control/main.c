@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <ftdi.h>
-#include <unistd.h>
 
 #define ALL_OFF_MAGIC_NUMBER 42
 
@@ -82,9 +81,11 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
-    unsigned char relay_control_bitmask = 1 << zone_number;
-    if(zone_number == ALL_OFF_MAGIC_NUMBER)
+    unsigned char relay_control_bitmask = (1 << zone_number);
+    if(ALL_OFF_MAGIC_NUMBER == zone_number)
+    {
         relay_control_bitmask = 0;
+    }
 
     ret = ftdi_write_data_async(&ftdic, &relay_control_bitmask, 1);
     if(ret != 1)
