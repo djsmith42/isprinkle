@@ -17,6 +17,10 @@ all: ${EXE}
 clean:
 	rm -v ${EXE}
 
+distclean: clean
+	rm -rf ${LIBUSB_DIRNAME}
+	rm -rf ${LIBFTDI_DIRNAME}
+
 libusb:  ${LIBUSB_DIRNAME}/.built
 libftdi: ${LIBFTDI_DIRNAME}/.built
 
