@@ -17,7 +17,7 @@ int usage(char **argv)
 
 int main(int argc, char **argv)
 {
-    int do_query = 1;
+    int do_query = 0;
     int zone_number = -1;
     int turn_all_relays_off = 0;
     int ret;
@@ -63,6 +63,11 @@ int main(int argc, char **argv)
             fprintf(stderr, "\n");
             return usage(argv);
         }
+    }
+
+    if(zone_number == -1 && !do_query)
+    {
+        return usage(argv);
     }
 
     if (ftdi_init(&ftdic) < 0)
