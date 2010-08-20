@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <ftdi.h>
+#define EXIT_SUCCESS 0
+#define EXIT_FAILURE 1
 
 #define ALL_OFF_MAGIC_NUMBER 42
 
