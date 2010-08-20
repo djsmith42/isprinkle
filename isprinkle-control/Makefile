@@ -1,7 +1,12 @@
-all: isprinkle-control
+EXE=isprinkle-control
 
-isprinkle-control: main.c
-	gcc main.c -o isprinkle-control -lftdi
+all: ${EXE}
 
-install: isprinkle-control
-	sudo install -m 755 isprinkle-control /usr/bin
+clean:
+	rm -v ${EXE}
+
+${EXE}: main.c
+	gcc main.c -o ${EXE} -lftdi
+
+install: ${EXE}
+	sudo install -m 755 ${EXE} /usr/bin
