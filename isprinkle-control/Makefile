@@ -35,5 +35,4 @@ distclean: clean
 	rm -rf ${LIBFTDI_DIRNAME}
 
 install: ${EXE}
-	sudo install -m 755 ${EXE} /usr/bin
-	sudo chmod u+s /usr/bin/${EXE}
+	sudo install -m 4755 ${EXE} /usr/bin
