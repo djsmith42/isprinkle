@@ -26,12 +26,12 @@
   table tr td.state-off {
     font-weight: bold;
     color: #610;
-    text-align: left;
+    text-align: center;
   }
   table tr td.state-on {
     font-weight: bold;
     color: #061;
-    text-align: left;
+    text-align: center;
   }
   table tr td.button {
     text-align: right;
@@ -40,7 +40,7 @@
   input {
     font-weight: bold;
     font-size: 0.7em;
-    min-width: 5em;
+    min-width: 7em;
   }
 
   input.run {
