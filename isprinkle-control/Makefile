@@ -12,7 +12,20 @@ LIBS=-lftdi -lusb
 
 GCC_ARGS=${INCLUDES} ${LIB_DIRS} ${LIBS}
 
-all: ${EXE}
+${EXE}: src/main.c .libusb.built .libftdi.built
+	gcc src/main.c -o ${EXE} ${GCC_ARGS}
+
+.libusb.built: ${LIBUSB_TARBALL}
+	rm -rf ${LIBUSB_DIRNAME}
+	tar -xvzf ${LIBUSB_TARBALL}
+	(cd ${LIBUSB_DIRNAME} && ./configure --enable-shared=no && make)
+	touch .libusb.built
+
+.libftdi.built: ${LIBFTDI_TARBALL} .libusb.built
+	rm -rf ${LIBFTDI_DIRNAME}
+	tar -xvzf ${LIBFTDI_TARBALL}
+	(cd ${LIBFTDI_DIRNAME} && PATH=${PWD}/${LIBUSB_DIRNAME}:${PATH} LDFLAGS=-L${PWD}/${LIBUSB_DIRNAME}/.libs CPPFLAGS=-I${PWD}/${LIBUSB_DIRNAME} ./configure --enable-shared=no --with-async-mode && make)
+	touch .libftdi.built
 
 clean:
 	rm -v ${EXE}
@@ -21,24 +34,6 @@ distclean: clean
 	rm -rf ${LIBUSB_DIRNAME}
 	rm -rf ${LIBFTDI_DIRNAME}
 
-libusb:  ${LIBUSB_DIRNAME}/.built
-libftdi: ${LIBFTDI_DIRNAME}/.built
-
-${LIBUSB_DIRNAME}/.built: ${LIBUSB_TARBALL}
-	rm -rf ${LIBUSB_DIRNAME}
-	tar -xvzf ${LIBUSB_TARBALL}
-	(cd ${LIBUSB_DIRNAME} && ./configure --enable-shared=no && make)
-	touch ${LIBUSB_DIRNAME}/.built
-
-${LIBFTDI_DIRNAME}/.built: ${LIBFTDI_TARBALL} ${LIBUSB_DIRNAME}/.built
-	rm -rf ${LIBFTDI_DIRNAME}
-	tar -xvzf ${LIBFTDI_TARBALL}
-	(cd ${LIBFTDI_DIRNAME} && PATH=${PWD}/${LIBUSB_DIRNAME}:${PATH} LDFLAGS=-L${PWD}/${LIBUSB_DIRNAME}/.libs CPPFLAGS=-I${PWD}/${LIBUSB_DIRNAME} ./configure --enable-shared=no --with-async-mode && make)
-	touch ${LIBFTDI_DIRNAME}/.built
-
 install: ${EXE}
 	sudo install -m 755 ${EXE} /usr/bin
-
-${EXE}: src/main.c libusb libftdi
-	gcc src/main.c -o ${EXE} ${GCC_ARGS}
-
+	sudo chmod u+s /usr/bin/${EXE}

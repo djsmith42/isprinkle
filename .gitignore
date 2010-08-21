@@ -1,4 +1,5 @@
 isprinkle-control/isprinkle-control
 isprinkle-control/libftdi-0.18
 isprinkle-control/libusb-0.1.8
+isprinkle-control/.*.built
 *~
