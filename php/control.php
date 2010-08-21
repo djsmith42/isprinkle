@@ -1,5 +1,6 @@
 <html>
 <head>
+<title>iSprinkle - You've got rain</head>
 <style>
   body {
     margin: 0;
