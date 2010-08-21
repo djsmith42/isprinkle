@@ -10,26 +10,34 @@
   table {
     border-collapse: collapse;
     font-size: 2em;
+    width: 100%;
+  }
+  table tr.state-on {
+    background: #cfc;
   }
   table tr td {
-    padding: 0.2em;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
     border-bottom: 1px solid #ccc;
   }
   table tr td.zone {
     font-weight: bold;
+    text-align: left;
+    padding-left: 0.4em;
   }
   table tr td.state-off {
     font-weight: bold;
     color: #610;
+    text-align: center;
   }
-
   table tr td.state-on {
     font-weight: bold;
     color: #061;
+    text-align: center;
   }
-
+  table tr td.button {
+    text-align: right;
+    min-width: 100px;
+    padding: 0.1em;
+  }
   input {
     font-weight: bold;
     font-size: 0.7em;
@@ -48,7 +56,7 @@
     padding-top: 0.05em;
     padding-bottom: 0.05em;
     margin: 0;
-    font-size: 2.5em;
+    font-size: 2.0em;
     background: #89f;
   }
 
@@ -90,11 +98,14 @@ default:
     foreach(get_zone_status() as $zone => $state)
     {
         $is_on = (strtolower($state) == 'on');
-        echo "<tr>\n";
+	if($is_on)
+	  echo "<tr class=\"state-on\">\n";
+	else
+	  echo "<tr>\n";
         echo "  <td class=\"zone\">Zone $zone</td>\n";
         echo "  <td class=\"" . ($is_on ? 'state-on' : 'state-off') . "\">$state</td>\n";
         echo "  <form action=\"$self\" method=\"post\">\n";
-        echo "  <td>\n";
+        echo "  <td class=\"button\">\n";
 
         if(preg_match('/on/i', $state))
         {
