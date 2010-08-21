@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>iSprinkle - You've got rain</head>
+<title>iSprinkle - You've got rain</title>
 <style>
   body {
     margin: 0;
@@ -26,21 +26,21 @@
   table tr td.state-off {
     font-weight: bold;
     color: #610;
-    text-align: center;
+    text-align: left;
   }
   table tr td.state-on {
     font-weight: bold;
     color: #061;
-    text-align: center;
+    text-align: left;
   }
   table tr td.button {
     text-align: right;
-    min-width: 100px;
     padding: 0.1em;
   }
   input {
     font-weight: bold;
     font-size: 0.7em;
+    min-width: 5em;
   }
 
   input.run {
@@ -49,6 +49,10 @@
 
   input.stop {
     color: red;
+  }
+
+  input:disabled {
+    color: gray;
   }
 
   h2 {
@@ -66,8 +70,15 @@
     font-size: 0.9em;
     background: #89f;
   }
-
 </style>
+<script type="text/javascript">
+function submitForm(form)
+{
+    form.button.disabled = true;
+    form.button.value = 'Working';
+    return true;
+}
+</script>
 </head>
 
 <body>
@@ -85,6 +96,14 @@ switch($action)
 {
 case 'run':
     $zone = isset($_POST['zone']) ? $_POST['zone'] : null;
+    $any_zone_running = `isprinkle-control --query | grep -i 'on$'`;
+
+    // Give the running zone a moment to turn off:
+    if($any_zone_running)
+    {
+        `isprinkle-control --all-off`;
+        sleep(3);
+    }
     `isprinkle-control --run-zone $zone`;
     header("location: $self");
     break;
@@ -104,20 +123,20 @@ default:
 	  echo "<tr>\n";
         echo "  <td class=\"zone\">Zone $zone</td>\n";
         echo "  <td class=\"" . ($is_on ? 'state-on' : 'state-off') . "\">$state</td>\n";
-        echo "  <form action=\"$self\" method=\"post\">\n";
+        echo "  <form name=\"form\" action=\"$self\" method=\"post\" onSubmit=\"return submitForm(this)\">\n";
         echo "  <td class=\"button\">\n";
 
         if(preg_match('/on/i', $state))
         {
             $some_zone_running=true;
             echo "    <input type=\"hidden\" name=\"action\" value=\"stop\"/>\n";
-            echo "    <input type=\"submit\" value=\"Turn off\" class=\"stop\"/>\n";
+            echo "    <input type=\"submit\" name=\"button\" value=\"Turn off\" class=\"stop\"/>\n";
         }
         else
         {
             echo "    <input type=\"hidden\" name=\"action\" value=\"run\"/>\n";
             echo "    <input type=\"hidden\" name=\"zone\" value=\"$zone\"/>\n";
-            echo "    <input type=\"submit\" value=\"Turn on\" class=\"run\" />\n";
+            echo "    <input type=\"submit\" name=\"button\" value=\"Turn on\" class=\"run\"/>\n";
         }
 
         echo "  </td>\n";
