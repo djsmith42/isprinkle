@@ -30,9 +30,11 @@ ${EXE}: src/main.c .libusb.built .libftdi.built
 clean:
 	rm -v ${EXE}
 
-distclean: clean
+libclean:
 	rm -rf ${LIBUSB_DIRNAME}
 	rm -rf ${LIBFTDI_DIRNAME}
+
+cleanall: clean libclean
 
 install: ${EXE}
 	sudo install -m 4755 ${EXE} /usr/bin
