@@ -13,7 +13,7 @@ LIBS=-lftdi -lusb
 GCC_ARGS=${INCLUDES} ${LIB_DIRS} ${LIBS}
 
 ${EXE}: src/main.c .libusb.built .libftdi.built
-	gcc src/main.c -o ${EXE} ${GCC_ARGS}
+	gcc -Wall -Werror src/main.c -o ${EXE} ${GCC_ARGS}
 
 .libusb.built: ${LIBUSB_TARBALL}
 	rm -rf ${LIBUSB_DIRNAME}
