@@ -35,8 +35,13 @@ static int initialize(struct ftdi_context *ftdic)
         return 0;
     }
 
+
     // FIXME: Use ftdi_usb_find_all() and ftdi_usb_open_dev() to
     //        fint and open all FTDI devices.
+    //
+    //   struct ftdi_device_list *devlist;
+    //   ftdi_usb_find_all(ftdic, &devlist, 0x0403, 0x6001);
+
     if ((ret = ftdi_usb_open(ftdic, 0x0403, 0x6001)) < 0)
     {
         fprintf(stderr, "Unable to open FTDI device: %d (%s)\n", ret, ftdi_get_error_string(ftdic));
