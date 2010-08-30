@@ -84,6 +84,7 @@ static int do_all_off(struct ftdi_context *ftdic)
     }
     else
     {
+        printf("Turned all zones off\n");
         return EXIT_SUCCESS;
     }
 }
@@ -99,6 +100,7 @@ static int do_run_zone(struct ftdi_context *ftdic, int zone_number)
     }
     else
     {
+        printf("Turned on zone %d\n", zone_number);
         return EXIT_SUCCESS;
     }
 }
