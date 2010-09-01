@@ -5,13 +5,27 @@
 #define EXIT_SUCCESS 0
 #define EXIT_FAILURE 1
 
-#define ALL_OFF_MAGIC_NUMBER 42
+#define MAX_SERIAL_LEN 255
+#define ZONES_PER_BOARD 8
 
 struct cmd_line_args
 {
     enum { query, run_zone, all_off } action;
     int zone_number; /* applies to the 'run_zone' action */
     int error;       /* 1: error, 0: all ok              */
+};
+
+struct isprinkle_device
+{
+    char serial[MAX_SERIAL_LEN];
+    struct usb_device *device;
+};
+
+struct isprinkle_context
+{
+    struct ftdi_context ftdic;
+    struct isprinkle_device devices[16];
+    int    num_devices;
 };
 
 static int usage(char **argv)
@@ -25,46 +39,23 @@ static int usage(char **argv)
     return EXIT_FAILURE;
 }
 
-static int initialize(struct ftdi_context *ftdic)
+static int open_device(struct isprinkle_context *context, int device_number)
 {
     int ret;
 
-    if (ftdi_init(ftdic) < 0)
+    if ((ret = ftdi_usb_open_dev(&context->ftdic, context->devices[device_number].device)) < 0)
     {
-        fprintf(stderr, "FTDI initialization failed\n");
+        fprintf(stderr, "Unable to open FTDI device: %d (%s)\n", ret, ftdi_get_error_string(&context->ftdic));
         return 0;
     }
 
-
-    // FIXME: Use ftdi_usb_find_all() and ftdi_usb_open_dev() to
-    //        fint and open all FTDI devices.
-    //
-    //   struct ftdi_device_list *devlist;
-    //   ftdi_usb_find_all(ftdic, &devlist, 0x0403, 0x6001);
-
-    if ((ret = ftdi_usb_open(ftdic, 0x0403, 0x6001)) < 0)
-    {
-        fprintf(stderr, "Unable to open FTDI device: %d (%s)\n", ret, ftdi_get_error_string(ftdic));
-        return 0;
-    }
-
-    unsigned int chipid;
-    if(ftdi_read_chipid(ftdic, &chipid) == 0)
-    {
-        printf("Chipd ID: %X\n", chipid);
-    }
-    else
-    {
-        fprintf(stderr, "Could not read chipd ID.\n");
-    }
-
-    if ((ret = ftdi_set_baudrate(ftdic, 9600)) != 0)
+    if ((ret = ftdi_set_baudrate(&context->ftdic, 9600)) != 0)
     {
         fprintf(stderr, "Could not set baud rate, error: %d\n", ret);
         return 0;
     }
 
-    if ((ret = ftdi_set_bitmode(ftdic, 0xff, BITMODE_BITBANG)) != 0)
+    if ((ret = ftdi_set_bitmode(&context->ftdic, 0xff, BITMODE_BITBANG)) != 0)
     {
         fprintf(stderr, "Could not enable bitbang mode, error: %d\n", ret);
         return 0;
@@ -73,58 +64,156 @@ static int initialize(struct ftdi_context *ftdic)
     return 1;
 }
 
-static int do_all_off(struct ftdi_context *ftdic)
+static int initialize(struct isprinkle_context *context)
+{
+    int ret;
+
+    if (ftdi_init(&context->ftdic) < 0)
+    {
+        fprintf(stderr, "FTDI initialization failed\n");
+        return 0;
+    }
+
+    struct ftdi_device_list *device_list;
+    ret = ftdi_usb_find_all(&context->ftdic, &device_list, 0x0403, 0x6001);
+    if(ret > 0)
+    {
+        context->num_devices = ret;
+        int device_count = 0;
+        for(; device_list; device_list = device_list->next)
+        {
+            context->devices[device_count].device = device_list->dev;
+            if((ret = ftdi_usb_get_strings(&context->ftdic,
+                            context->devices[device_count].device,
+                            NULL, 0, NULL, 0,
+                            context->devices[device_count].serial, MAX_SERIAL_LEN)) != 0)
+            {
+                fprintf(stderr, "Unable to read FTDI device strings: %d (%s)\n", ret, ftdi_get_error_string(&context->ftdic));
+                return 0;
+            }
+        }
+    }
+
+    // TODO Sort boards by serial number so they are always in the
+    // same order, regardless of how libftdi reports them:
+
+    return 1;
+}
+
+static void shutdown(struct isprinkle_context *context)
+{
+    // Close any open device
+    int ret;
+    if ((ret = ftdi_usb_close(&context->ftdic)) < 0)
+    {
+        fprintf(stderr, "Unable to close ftdi device: %d (%s)\n", ret, ftdi_get_error_string(&context->ftdic));
+    }
+
+    ftdi_deinit(&context->ftdic);
+}
+
+static int do_all_off(struct isprinkle_context *context)
 {
     unsigned char relay_control_bitmask = 0;
-    int ret = ftdi_write_data_async(ftdic, &relay_control_bitmask, 1);
-    if(ret != 1)
+    int i;
+    for(i = 0; i<context->num_devices; i++)
     {
-        fprintf(stderr, "Could not send data to the relay board: 0x%02x\n", relay_control_bitmask);
-        return EXIT_FAILURE;
-    }
-    else
-    {
-        printf("Turned all zones off\n");
-        return EXIT_SUCCESS;
-    }
-}
-
-static int do_run_zone(struct ftdi_context *ftdic, int zone_number)
-{
-    unsigned char relay_control_bitmask = (1 << (zone_number-1));
-    int ret = ftdi_write_data_async(ftdic, &relay_control_bitmask, 1);
-    if(ret != 1)
-    {
-        fprintf(stderr, "Could not send data to the relay board: 0x%02x\n", relay_control_bitmask);
-        return EXIT_FAILURE;
-    }
-    else
-    {
-        printf("Turned on zone %d\n", zone_number);
-        return EXIT_SUCCESS;
-    }
-}
-
-static int do_query(struct ftdi_context *ftdic)
-{
-    unsigned char buf;
-    int ret;
-    if ((ret = ftdi_read_data(ftdic, &buf, 1)) == 1)
-    {
-        int i;
-        for(i=0; i<8; i++)
+        if(open_device(context, i))
         {
-            int on = (buf & (1 << i));
-            printf("Zone %d: %s\n", i+1, on ? "On" : "Off");
+            int ret = ftdi_write_data_async(&context->ftdic, &relay_control_bitmask, 1);
+            if(ret != 1)
+            {
+                fprintf(stderr, "Could not send data to the relay board: 0x%02x\n", relay_control_bitmask);
+                return 0;
+            }
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    printf("Turned all zones off\n");
+    return 1;
+}
+
+static int do_run_zone(struct isprinkle_context *context, int zone_number)
+{
+    int i;
+    for(i = 0; i<context->num_devices; i++)
+    {
+        if(open_device(context, i))
+        {
+            int start_zone = i * ZONES_PER_BOARD + 1;
+            int end_zone   = start_zone + ZONES_PER_BOARD;
+
+            unsigned char relay_control_bitmask;
+            if(start_zone <= zone_number && zone_number <= end_zone)
+            {
+                relay_control_bitmask = (1 << (zone_number - start_zone));
+            }
+            else
+            {
+                relay_control_bitmask = 0;
+            }
+
+            int ret = ftdi_write_data_async(&context->ftdic, &relay_control_bitmask, 1);
+            if(ret != 1)
+            {
+                fprintf(stderr, "Could not send data to the relay board: 0x%02x\n", relay_control_bitmask);
+                return 0;
+            }
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    printf("Turned on zone %d\n", zone_number);
+    return 1;
+}
+
+static int do_query(struct isprinkle_context *context)
+{
+    int zone_offset = 0;
+    int i;
+
+    for(i=0; i<context->num_devices; i++)
+    {
+        printf("Board %d Serial: %s\n", (i+1), context->devices[i].serial);
+    }
+
+    for(i=0; i<context->num_devices; i++)
+    {
+        if(open_device(context, i))
+        {
+            int ret;
+            unsigned char buf;
+            if ((ret = ftdi_read_data(&context->ftdic, &buf, 1)) == 1)
+            {
+                int i;
+                for(i=0; i<ZONES_PER_BOARD; i++)
+                {
+                    int on = (buf & (1 << i));
+                    printf("Zone %d: %s\n", zone_offset+i+1, on ? "On" : "Off");
+                }
+            }
+            else
+            {
+                fprintf(stderr, "Could not read status from relay board: %d\n", ret);
+                return 0;
+            }
+        }
+        else
+        {
+            return 0;
         }
 
-        return EXIT_SUCCESS;
+        zone_offset += ZONES_PER_BOARD;
     }
-    else
-    {
-        fprintf(stderr, "Could not read status from relay board: %d\n", ret);
-        return EXIT_FAILURE;
-    }
+
+    return 1;
 }
 
 static struct cmd_line_args parse_cmd_line_args(int argc, char **argv)
@@ -181,8 +270,8 @@ done:
 
 int main(int argc, char **argv)
 {
-    int ret;
-    struct ftdi_context ftdic;
+    int success;
+    struct isprinkle_context context;
 
     struct cmd_line_args args = parse_cmd_line_args(argc, argv);
 
@@ -191,29 +280,23 @@ int main(int argc, char **argv)
         return usage(argv);
     }
 
-    if(initialize(&ftdic))
+    if(initialize(&context))
     {
         switch(args.action)
         {
             case run_zone:
-                ret = do_run_zone(&ftdic, args.zone_number);
+                success = do_run_zone(&context, args.zone_number);
                 break;
             case all_off:
-                ret = do_all_off(&ftdic);
+                success = do_all_off(&context);
                 break;
             case query:
-                ret = do_query(&ftdic);
+                success = do_query(&context);
                 break;
-        }
-
-        if ((ret = ftdi_usb_close(&ftdic)) < 0)
-        {
-            fprintf(stderr, "Unable to close ftdi device: %d (%s)\n", ret, ftdi_get_error_string(&ftdic));
-            ret = EXIT_FAILURE;
         }
     }
 
-    ftdi_deinit(&ftdic);
+    shutdown(&context);
 
-    return ret;
+    return (success ? 0 : 1);
 }
