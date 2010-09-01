@@ -23,6 +23,7 @@ struct isprinkle_context
     struct ftdi_context ftdic;
     struct isprinkle_device devices[16];
     int    num_devices;
+    int    is_device_open;
 };
 
 static int usage(char **argv)
@@ -30,7 +31,7 @@ static int usage(char **argv)
     printf("Usage: %s <options>\n", argv[0]);
     printf("\n");
     printf("  options:\n");
-    printf("    --run-zone <number> Run a single zone (<number> can be 1 through 8).\n");
+    printf("    --run-zone <number> Run a single zone (<number> starts with 1).\n");
     printf("    --all-off           Turns off all zones.\n");
     printf("    --query             Prints current status to the console.\n");
     return 1;
@@ -68,6 +69,8 @@ static int use_device(struct isprinkle_context *context, int device_number)
         return 0;
     }
 
+    context->is_device_open = 1;
+
     return 1;
 }
 
@@ -100,6 +103,8 @@ static void sort_devices_by_serial(struct isprinkle_context *context)
 static int initialize(struct isprinkle_context *context)
 {
     int ret;
+
+    context->is_device_open = 0;
 
     if (ftdi_init(&context->ftdic) < 0)
     {
@@ -134,11 +139,13 @@ static int initialize(struct isprinkle_context *context)
 
 static void shutdown(struct isprinkle_context *context)
 {
-    // Close any open device
-    int ret;
-    if ((ret = ftdi_usb_close(&context->ftdic)) < 0)
+    if(context->is_device_open)
     {
-        fprintf(stderr, "Unable to close ftdi device: %d (%s)\n", ret, ftdi_get_error_string(&context->ftdic));
+        int ret;
+        if ((ret = ftdi_usb_close(&context->ftdic)) < 0)
+        {
+            fprintf(stderr, "Unable to close ftdi device: %d (%s)\n", ret, ftdi_get_error_string(&context->ftdic));
+        }
     }
 
     ftdi_deinit(&context->ftdic);
@@ -180,6 +187,15 @@ static int do_all_off(struct isprinkle_context *context)
 static int do_run_zone(struct isprinkle_context *context, int zone_number)
 {
     int i;
+
+    int max_zone = context->num_devices * ZONES_PER_BOARD;
+
+    if(zone_number > max_zone)
+    {
+        fprintf(stderr, "Bad zone number: %d. It should be %d or less because you only have %d board%s.\n", zone_number, max_zone, context->num_devices, context->num_devices == 1 ? "" : "s");
+        return 0;
+    }
+
     for(i = 0; i<context->num_devices; i++)
     {
         if(use_device(context, i))
@@ -284,9 +300,9 @@ static struct cmd_line_args parse_cmd_line_args(int argc, char **argv)
             }
 
             args.zone_number = atoi(argv[i]);
-            if(args.zone_number < 1 || args.zone_number > 8)
+            if(args.zone_number < 1)
             {
-                fprintf(stderr, "Bad zone number. It should between 1 and 8\n");
+                fprintf(stderr, "Bad zone number. It should be 1 or higher\n");
                 args.error = 1;
                 goto done;
             }
