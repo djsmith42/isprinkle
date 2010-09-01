@@ -36,7 +36,17 @@ static int usage(char **argv)
     return 1;
 }
 
-static int open_device(struct isprinkle_context *context, int device_number)
+/**
+ * Activates device 'device_number' such that all subsequent calls
+ * to FTDI functions (like ftdi_write_data_async()) will be performed
+ * on that device.
+ *
+ * 'device_number' must be between 0 and context->num_devices-1.
+ *
+ * Returns 1 on success, 0 on failure.
+ * Prints to stderr on failure.
+ */
+static int use_device(struct isprinkle_context *context, int device_number)
 {
     int ret;
 
@@ -134,13 +144,16 @@ static void shutdown(struct isprinkle_context *context)
     ftdi_deinit(&context->ftdic);
 }
 
+/**
+ * Turns off all zones of all connected devices.
+ */
 static int do_all_off(struct isprinkle_context *context)
 {
     unsigned char relay_control_bitmask = 0;
     int i;
     for(i = 0; i<context->num_devices; i++)
     {
-        if(open_device(context, i))
+        if(use_device(context, i))
         {
             int ret = ftdi_write_data_async(&context->ftdic, &relay_control_bitmask, 1);
             if(ret != 1)
@@ -159,12 +172,17 @@ static int do_all_off(struct isprinkle_context *context)
     return 1;
 }
 
+/**
+ * Turns on zone 'zone_number' by turning off all other zones and
+ * locating the correct board for the specific zone and turning
+ * on the relay that corresponds to 'zone_number'.
+ */
 static int do_run_zone(struct isprinkle_context *context, int zone_number)
 {
     int i;
     for(i = 0; i<context->num_devices; i++)
     {
-        if(open_device(context, i))
+        if(use_device(context, i))
         {
             int start_zone = i * ZONES_PER_BOARD + 1;
             int end_zone   = start_zone + ZONES_PER_BOARD;
@@ -196,6 +214,11 @@ static int do_run_zone(struct isprinkle_context *context, int zone_number)
     return 1;
 }
 
+/**
+ * Prints the following to stdout:
+ *  - List of boards and their serial numbers
+ *  - All zones and whether they are on or off
+ */
 static int do_query(struct isprinkle_context *context)
 {
     int zone_offset = 0;
@@ -208,7 +231,7 @@ static int do_query(struct isprinkle_context *context)
 
     for(i=0; i<context->num_devices; i++)
     {
-        if(open_device(context, i))
+        if(use_device(context, i))
         {
             int ret;
             unsigned char buf;
