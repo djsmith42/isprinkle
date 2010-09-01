@@ -2,9 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define EXIT_SUCCESS 0
-#define EXIT_FAILURE 1
-
 #define MAX_SERIAL_LEN 255
 #define ZONES_PER_BOARD 8
 
@@ -36,7 +33,7 @@ static int usage(char **argv)
     printf("    --run-zone <number> Run a single zone (<number> can be 1 through 8).\n");
     printf("    --all-off           Turns off all zones.\n");
     printf("    --query             Prints current status to the console.\n");
-    return EXIT_FAILURE;
+    return 1;
 }
 
 static int open_device(struct isprinkle_context *context, int device_number)
@@ -62,6 +59,32 @@ static int open_device(struct isprinkle_context *context, int device_number)
     }
 
     return 1;
+}
+
+static void sort_devices_by_serial(struct isprinkle_context *context)
+{
+    // Sort boards by serial number so they are always in the
+    // same order, regardless of how libftdi reports them:
+    if(context->num_devices > 1)
+    {
+        int i, j;
+
+        // Drop-dead stupid O(n^2) sort:
+        for(i=0; i<context->num_devices; i++)
+        {
+            for(j=i+1; j<context->num_devices; j++)
+            {
+                if(strcmp(context->devices[j].serial, context->devices[i].serial) < 0)
+                {
+                    printf("swapping %d with %d (%s vs. %s)\n", i, j, context->devices[i].serial, context->devices[j].serial);
+                    // Swap:
+                    struct isprinkle_device tmp = context->devices[i];
+                    context->devices[i] = context->devices[j];
+                    context->devices[j] = tmp;
+                }
+            }
+        }
+    }
 }
 
 static int initialize(struct isprinkle_context *context)
@@ -94,8 +117,7 @@ static int initialize(struct isprinkle_context *context)
         }
     }
 
-    // TODO Sort boards by serial number so they are always in the
-    // same order, regardless of how libftdi reports them:
+    sort_devices_by_serial(context);
 
     return 1;
 }
