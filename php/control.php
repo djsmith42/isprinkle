@@ -96,14 +96,6 @@ switch($action)
 {
 case 'run':
     $zone = isset($_POST['zone']) ? $_POST['zone'] : null;
-    $any_zone_running = `isprinkle-control --query | grep -i 'on$'`;
-
-    // Give the running zone a moment to turn off:
-    if($any_zone_running)
-    {
-        `isprinkle-control --all-off`;
-        sleep(3);
-    }
     `isprinkle-control --run-zone $zone`;
     header("location: $self");
     break;
