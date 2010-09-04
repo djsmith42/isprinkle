@@ -5,12 +5,12 @@ import os, sys, time, signal
 from webservice      import iSprinkleWebService
 from wateringservice import iSprinkleWateringService
 
-stop_requested = 0
+shutdown_requested = 0
 
 def handle_sigterm(signal, func=None):
     print 'Received SIGTERM'
-    global stop_requested
-    stop_requested = 1
+    global shutdown_requested
+    shutdown_requested = 1
 
 if __name__ == '__main__':
 
@@ -22,7 +22,7 @@ if __name__ == '__main__':
     wateringservice.start()
 
     try:
-        while stop_requested == 0:
+        while shutdown_requested == 0:
             time.sleep(1.0)
     except KeyboardInterrupt:
         pass
