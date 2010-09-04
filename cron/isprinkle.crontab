@@ -1,4 +1,4 @@
-# *  *  *  *  *  command to be executed
+# *  *  *  *  *  command
 # |  |  |  |  |
 # |  |  |  |  +----- day of week (0 - 6) (Sunday=0)
 # |  |  |  +------- month (1 - 12)
@@ -6,7 +6,9 @@
 # |  +----------- hour (0 - 23)
 # +------------- min (0 - 59)
 
-# Garden zone:
-00 8  *  *  *  (date; /usr/sbin/isprinkle-control --run-zone 1) >> /tmp/isprinkle.log
-10 8  *  *  *  (date; /usr/sbin/isprinkle-control --run-zone 2) >> /tmp/isprinkle.log
-20 8  *  *  *  (date; /usr/sbin/isprinkle-control --all-off   ) >> /tmp/isprinkle.log
+# Vegetable garden:
+00 8  *  *  *  (echo; date; /usr/sbin/isprinkle-control --run-zone 1) >> /tmp/isprinkle.log
+# East and west beds:
+10 8  *  *  *  (echo; date; /usr/sbin/isprinkle-control --run-zone 2) >> /tmp/isprinkle.log
+# All done:
+20 8  *  *  *  (echo; date; /usr/sbin/isprinkle-control --all-off   ) >> /tmp/isprinkle.log
