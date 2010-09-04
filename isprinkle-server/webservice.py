@@ -52,7 +52,6 @@ class iSprinkleWebService(Thread):
             self.server.serve_forever()
         except:
             print 'Web service stopped'
-            pass
 
     def stop(self):
         print 'Stopping web service'

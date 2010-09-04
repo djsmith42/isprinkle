@@ -1,14 +1,22 @@
 #!/usr/bin/python
 
-from webservice import iSprinkleWebService
+from webservice      import iSprinkleWebService
+from wateringservice import iSprinkleWateringService
 import time
 
 if __name__ == '__main__':
+
+    webservice = iSprinkleWebService()
+    webservice.start()
+    wateringservice = iSprinkleWateringService()
+    wateringservice.start()
+
     try:
-        server = iSprinkleWebService();
-        server.start()
         while 1:
-            time.sleep(4)
+            time.sleep(5.0)
+    # TODO Come up with a way to be stopped in daemon mode (running in background)
     except KeyboardInterrupt:
-        server.stop()
-        server.join()
+        webservice.stop()
+        wateringservice.stop()
+        webservice.join()
+        wateringservice.join()
