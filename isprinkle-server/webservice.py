@@ -1,4 +1,5 @@
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+from model          import iSprinkleWatering,  iSprinkleModel
 from threading      import Thread
 
 WEB_SERVICE_PORT = 8080
@@ -45,6 +46,7 @@ class iSprinkleHttpServer(HTTPServer):
 
     def __init__(self, model):
         HTTPServer.__init__(self, ('', WEB_SERVICE_PORT), iSprinkleHandler)
+        self.model = model
 
 class iSprinkleWebService(Thread):
 

@@ -1,5 +1,6 @@
 import time
 from threading import Thread
+from model import iSprinkleModel, iSprinkleWatering
 
 class iSprinkleWateringService(Thread):
     def __init__(self, model):
@@ -16,6 +17,10 @@ class iSprinkleWateringService(Thread):
             #       time.sleep())
             time.sleep(1.0)
 
+            print 'Watering Service: There are', len(self.model.get_waterings()), 'watering schedules'
+            for watering in self.model.get_waterings():
+                print '   ', watering
+                pass
             # TODO Read watering schedules
             # TODO Based on the schedules, start/stop the right zones
 

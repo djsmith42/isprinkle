@@ -1,14 +1,36 @@
 #!/usr/bin/python
 
-import os, sys, time, signal
+import os, sys, time, signal, datetime
 
 from webservice      import iSprinkleWebService
 from wateringservice import iSprinkleWateringService
-from model           import iSprinkleModel
+from model           import iSprinkleModel, iSprinkleWatering
 
 shutdown_requested = 0
 
 THREAD_TIMEOUT_SECONDS = 5.0
+
+def create_fake_waterings(model):
+    watering = iSprinkleWatering(model)
+    watering.add_zone(1, 11)
+    watering.add_zone(2, 12)
+    watering.add_zone(3, 13)
+    watering.add_zone(4, 14)
+    watering.add_zone(7, 17)
+    watering.set_schedule_type(iSprinkleWatering.SINGLE_SHOT)
+    watering.set_start_time_of_day(datetime.time(20, 30))
+    watering.set_start_date(datetime.date(2010, 9, 18))
+    watering.set_enabled(True)
+    model.add_watering(watering)
+
+    watering = iSprinkleWatering(model)
+    watering.add_zone(2, 22)
+    watering.add_zone(4, 44)
+    watering.add_zone(6, 66)
+    watering.set_schedule_type(iSprinkleWatering.EVERY_N_DAYS)
+    watering.set_period_days(3) # every 3 days
+    watering.set_enabled(True)
+    model.add_watering(watering)
 
 def handle_sigterm(signal, func=None):
     print 'Received SIGTERM'
@@ -21,20 +43,22 @@ if __name__ == '__main__':
 
     model = iSprinkleModel()
 
-    try:
+    create_fake_waterings(model)
 
-        webservice = iSprinkleWebService(model)
-        webservice.start()
+    try:
 
         wateringservice = iSprinkleWateringService(model)
         wateringservice.start()
+
+        webservice = iSprinkleWebService(model)
+        webservice.start()
 
     except IOError as (errno, strerror):
         print 'Could not startup: %s, code %d.' % (strerror, errno)
         sys.exit()
     except:
         print 'Could not startup: unknown error'
-        sys.exit()
+        raise
 
     try:
         while shutdown_requested == 0:
