@@ -18,6 +18,7 @@ if __name__ == '__main__':
 
     webservice = iSprinkleWebService()
     webservice.start()
+
     wateringservice = iSprinkleWateringService()
     wateringservice.start()
 
@@ -29,5 +30,6 @@ if __name__ == '__main__':
 
     webservice.stop()
     wateringservice.stop()
+
     webservice.join()
     wateringservice.join()
