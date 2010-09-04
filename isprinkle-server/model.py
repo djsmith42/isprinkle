@@ -1,5 +1,6 @@
 import datetime
 
+# TODO Add persistence so we can create/update/delete everything here
 
 class iSprinkleWatering:
 
@@ -9,13 +10,14 @@ class iSprinkleWatering:
     SINGLE_SHOT        = 2
 
     def __init__(self, model):
-        self.model          = model
-        self.enabled        = True
-        self.zone_durations = [] # no zones by default
-        self.schedule_type  = self.EVERY_N_DAYS
-        self.start_time     = datetime.time(8, 0) # 8:00 AM
-        self.start_date     = None # only applies to SINGLE_SHOT schedule types
-        self.period_days    = 2    # only applies to EVERY_N_DAYS
+        self.model             = model
+        self.enabled           = True
+        self.zone_durations    = [] # list of tuples: (zone_number, minutes)
+        self.schedule_type     = self.EVERY_N_DAYS
+        self.start_time        = datetime.time(8, 0) # 8:00 AM
+        self.start_date        = None # only applies to SINGLE_SHOT schedule types
+        self.period_days       = 2    # only applies to EVERY_N_DAYS
+        self.last_start_time   = None # only applies to EVERY_N_DAYS
         self.days_of_week_mask = None # only applies to FIXED_DAYS_OF_WEEK
 
     # Setters:
@@ -28,7 +30,6 @@ class iSprinkleWatering:
     def set_start_time_of_day(self, time_of_day):
         self.start_time = time_of_day
 
-    # Only applies to SINGLE_SHOT
     def set_start_date(self, start_date):
         self.start_date = start_date
 
@@ -37,6 +38,9 @@ class iSprinkleWatering:
 
     def set_period_days(self, days):
         self.period_days = days
+
+    def set_last_start_time(self, last_start_time):
+        self.last_start_time = last_start_time
 
     # Getters:
     def get_zone_durations(self):
@@ -50,6 +54,9 @@ class iSprinkleWatering:
 
     def get_period_days(self):
         return self.period_days
+
+    def get_last_start_time(self):
+        return self.last_start_time
 
     def is_enabled(self):
         return self.enabled
@@ -66,11 +73,16 @@ class iSprinkleModel:
     def __init__(self):
         self._testName = ''
         self.waterings = []
+        self.deferral_datetime = None
 
     def add_watering(self, watering):
-        # TODO persist the watering and give it a new id_number based on
-        #      what ID persistence assigns to it
         self.waterings.append(watering)
 
     def get_waterings(self):
         return self.waterings
+
+    def get_deferral_datetime(self):
+        return self.deferral_datetime
+
+    def set_deferral_datetime(self, deferral_datetime):
+        self.deferral_datetime = deferral_datetime
