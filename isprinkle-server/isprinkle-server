@@ -1,0 +1,14 @@
+#!/usr/bin/python
+
+from webservice import iSprinkleWebService
+import time
+
+if __name__ == '__main__':
+    try:
+        server = iSprinkleWebService();
+        server.start()
+        while 1:
+            time.sleep(4)
+    except KeyboardInterrupt:
+        server.stop()
+        server.join()
