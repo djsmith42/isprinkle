@@ -4,8 +4,11 @@ import os, sys, time, signal
 
 from webservice      import iSprinkleWebService
 from wateringservice import iSprinkleWateringService
+from model           import iSprinkleModel
 
 shutdown_requested = 0
+
+THREAD_TIMEOUT_SECONDS = 5.0
 
 def handle_sigterm(signal, func=None):
     print 'Received SIGTERM'
@@ -16,11 +19,22 @@ if __name__ == '__main__':
 
     signal.signal(signal.SIGTERM, handle_sigterm)
 
-    webservice = iSprinkleWebService()
-    webservice.start()
+    model = iSprinkleModel()
 
-    wateringservice = iSprinkleWateringService()
-    wateringservice.start()
+    try:
+
+        webservice = iSprinkleWebService(model)
+        webservice.start()
+
+        wateringservice = iSprinkleWateringService(model)
+        wateringservice.start()
+
+    except IOError as (errno, strerror):
+        print 'Could not startup: %s, code %d.' % (strerror, errno)
+        sys.exit()
+    except:
+        print 'Could not startup: unknown error'
+        sys.exit()
 
     try:
         while shutdown_requested == 0:
@@ -31,5 +45,5 @@ if __name__ == '__main__':
     webservice.stop()
     wateringservice.stop()
 
-    webservice.join()
-    wateringservice.join()
+    webservice.join(THREAD_TIMEOUT_SECONDS)
+    wateringservice.join(THREAD_TIMEOUT_SECONDS)

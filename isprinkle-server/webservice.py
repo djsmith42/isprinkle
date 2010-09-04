@@ -1,6 +1,8 @@
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from threading      import Thread
 
+WEB_SERVICE_PORT = 8080
+
 class iSprinkleHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
@@ -39,15 +41,19 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write('This doesn\'t work yet!');
 
+class iSprinkleHttpServer(HTTPServer):
+
+    def __init__(self, model):
+        HTTPServer.__init__(self, ('', WEB_SERVICE_PORT), iSprinkleHandler)
+
 class iSprinkleWebService(Thread):
 
-    def run(self):
-        try:
-            print 'Starting web service'
-            self.server = HTTPServer(('', 8080), iSprinkleHandler)
-        except:
-            print 'Could not start web service'
+    def __init__(self, model):
+        Thread.__init__(self)
+        print 'Starting web service'
+        self.server = iSprinkleHttpServer(model)
 
+    def run(self):
         try:
             self.server.serve_forever()
         except:
