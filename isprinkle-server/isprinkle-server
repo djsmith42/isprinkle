@@ -1,10 +1,20 @@
 #!/usr/bin/python
 
+import os, sys, time, signal
+
 from webservice      import iSprinkleWebService
 from wateringservice import iSprinkleWateringService
-import time
+
+stop_requested = 0
+
+def handle_sigterm(signal, func=None):
+    print 'Received SIGTERM'
+    global stop_requested
+    stop_requested = 1
 
 if __name__ == '__main__':
+
+    signal.signal(signal.SIGTERM, handle_sigterm)
 
     webservice = iSprinkleWebService()
     webservice.start()
@@ -12,11 +22,12 @@ if __name__ == '__main__':
     wateringservice.start()
 
     try:
-        while 1:
-            time.sleep(5.0)
-    # TODO Come up with a way to be stopped in daemon mode (running in background)
+        while stop_requested == 0:
+            time.sleep(1.0)
     except KeyboardInterrupt:
-        webservice.stop()
-        wateringservice.stop()
-        webservice.join()
-        wateringservice.join()
+        pass
+
+    webservice.stop()
+    wateringservice.stop()
+    webservice.join()
+    wateringservice.join()
