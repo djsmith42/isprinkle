@@ -2,23 +2,46 @@ from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from model          import iSprinkleWatering,  iSprinkleModel
 from threading      import Thread
 
+import datetime
+import yaml
+
 WEB_SERVICE_PORT = 8080
 
 class iSprinkleHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
 
-        if self.path == '/zone-info':
-            print 'Request for zone info'
-        elif self.path == '/watering-status':
-            print 'Request for watering status'
-        elif self.path == '/watering-records':
-            print 'Request for watering records'
+        if self.path == '/status':
+            self.send_response(200)
+            self.send_header('Content-type', 'text/plain')
+            self.end_headers()
 
-        self.send_response(200)
-        self.send_header('Content-type', 'text/plain')
-        self.end_headers()
-        self.wfile.write('This doesn\'t work yet!');
+            self.wfile.write(yaml.dump({
+                'current time' : str(datetime.datetime.now()),
+                'active zone'  : self.server.model.status.active_zone_number,
+                'start time'   : str(self.server.model.status.zone_start_time)
+                }))
+
+        elif self.path == '/waterings':
+            self.send_response(200)
+            self.send_header('Content-type', 'text/plain')
+            self.end_headers()
+
+            yaml_waterings = []
+            for watering in self.server.model.get_waterings():
+                yaml_waterings.append({
+                    'schedule type'  : watering.get_schedule_type(),
+                    'period days'    : watering.get_period_days(),
+                    'enabled'        : watering.is_enabled(),
+                    'start time'     : str(watering.get_start_time()),
+                    'zone durations' : watering.get_zone_durations()})
+            self.wfile.write(yaml.dump(yaml_waterings))
+
+        else:
+            self.send_response(404)
+            self.send_header('Content-type', 'text/plain')
+            self.end_headers()
+            self.wfile.write('Oops')
 
     def do_POST(self):
 

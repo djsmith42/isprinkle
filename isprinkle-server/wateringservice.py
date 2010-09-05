@@ -1,30 +1,39 @@
-import time
-import datetime
+import time, datetime, subprocess
 
 from threading import Thread
-from model import iSprinkleModel, iSprinkleWatering
+from model     import iSprinkleModel, iSprinkleWatering
+
+def turn_on_zone(zone_number):
+    print 'Watering Service: Watering zone', zone_number
+    process = subprocess.Popen(['isprinkle-control', '--run-zone', str(zone_number)], stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+    output = process.communicate()
+    if process.returncode is not 0:
+        print 'Watering Service: Failed to start zone', zone_number, 'due to error:', output[1]
+
+def turn_off_all_zones():
+    print 'Watering Service: Not watering'
+    process = subprocess.Popen(['isprinkle-control', '--all-off'], stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+    output = process.communicate()
+    if process.returncode is not 0:
+        print 'Watering Service: Failed to turn off all zones (they might already be off anyway) due to error:', output[1]
 
 def get_active_zone(watering, now):
 
-    print 'Checking watering', watering, 'against time', now
-
     start_time = watering.get_start_time()
-    start_time = datetime.datetime(now.year, now.month, now.day, start_time.hour, start_time.minute, start_time.second)
 
+    start_time = datetime.datetime(now.year, now.month, now.day, start_time.hour, start_time.minute, start_time.second)
     if watering.schedule_type == iSprinkleWatering.EVERY_N_DAYS:
 
+        # Hack to use datetime objects so we can use timedeltas:
         last_start = watering.get_last_start_time()
         if last_start is None or (now - last_start).days >= watering.get_period_days():
             for (zone_number, minutes) in watering.get_zone_durations():
                 if (now - start_time).seconds/60 < minutes:
-                    print '  Zone', zone_number, 'should be active'
                     return zone_number
                 else:
                     start_time += datetime.timedelta(minutes=minutes)
-            print '  None of the zones are within the watering window'
             return None
         else:
-            print '  Not enough days have elapsed for this watering'
             return None
 
     elif watering.schedule_type == iSprinkleWatering.FIXED_DAYS_OF_WEEK:
@@ -32,10 +41,22 @@ def get_active_zone(watering, now):
         return None
 
     elif watering.schedule_type == iSprinkleWatering.SINGLE_SHOT:
-        print '  Single shot waterings are not yet supported'
-        pass
 
-    return None
+        start_time = datetime.datetime(
+                watering.get_start_date().year,
+                watering.get_start_date().month,
+                watering.get_start_date().day,
+                watering.get_start_time().hour,
+                watering.get_start_time().minute,
+                watering.get_start_time().second)
+
+        if now >= start_time:
+            for (zone_number, minutes) in watering.get_zone_durations():
+                tmp = (now - start_time).seconds/60
+                if tmp < minutes:
+                    return zone_number
+                start_time += datetime.timedelta(minutes=minutes)
+        return None
 
 class iSprinkleWateringService(Thread):
     def __init__(self, model):
@@ -49,20 +70,35 @@ class iSprinkleWateringService(Thread):
 
             time.sleep(1.0)
 
-            print ''
-            print 'Checking...'
-            print ''
             now = datetime.datetime.now()
-            for watering in self.model.get_waterings():
-                active_zone_number = get_active_zone(watering, now)
-                if active_zone_number is not None:
-                    # TODO Activate zone active_zone_number
-                    break
-            else:
-                print 'No active watering at the moment'
-                # TODO Turn off all zones
+            print 'Watering Service: Current Time', now
+            active_zone_number = None
+            active_watering    = None
 
-        print 'Watering service stoppedSingle shot waterings are not yet supported'
+            if self.model.get_deferral_datetime() is not None and now < self.model.get_deferral_datetime():
+                print 'Watering Service: In deferral time. Not watering.'
+                active_zone_number = None
+            else:
+                for watering in self.model.get_waterings():
+                    active_zone_number = get_active_zone(watering, now)
+                    if active_zone_number is not None:
+                        active_watering = watering
+                        break
+
+            if active_zone_number is not None:
+                print 'Watering Service: Active watering:', active_watering
+                turn_on_zone(active_zone_number)
+            else:
+                turn_off_all_zones()
+
+            # TODO Figure out a way to set_last_start_time() on the
+            #      watering without causing it to stop watering right
+            #      away.
+
+            self.model.status.active_watering = active_watering
+            if self.model.status.active_zone_number != active_zone_number:
+                self.model.status.active_zone_number = active_zone_number
+                self.model.status.zone_start_time    = datetime.datetime.now()
 
     def stop(self):
         print 'Stopping watering service'

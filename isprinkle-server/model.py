@@ -2,6 +2,13 @@ import datetime
 
 # TODO Add persistence so we can create/update/delete everything here
 
+class iSprinkleStatus:
+
+    def __init__(self):
+        self.active_watering    = None
+        self.active_zone_number = None
+        self.zone_start_time    = None
+
 class iSprinkleWatering:
 
     # schedule types:
@@ -58,20 +65,34 @@ class iSprinkleWatering:
     def get_last_start_time(self):
         return self.last_start_time
 
+    def get_start_date(self):
+        return self.start_date
+
     def is_enabled(self):
         return self.enabled
 
     def __str__(self):
-        return 'Watering: %s' % \
-             (self.schedule_type == self.EVERY_N_DAYS       and ('Every %d days' % (self.period_days)) or
-             (self.schedule_type == self.SINGLE_SHOT        and ('Single shot on %s at %s' % (self.start_date, self.start_time)) or
-             (self.schedule_type == self.FIXED_DAYS_OF_WEEK and ('Every week on %s' % (dow_mask_to_string(self.days_of_week_mask))) or
-              'ERROR')))
+        str = ''
+
+        if self.schedule_type == self.EVERY_N_DAYS:
+            str += 'Every %d days, starting at %s' % (self.period_days, self.start_time)
+            str += '\n  Last run: %s' % (self.last_start_time is None and '(never run)' or self.last_start_time)
+        elif self.schedule_type == self.SINGLE_SHOT:
+            str += 'Single shot on %s at %s' % (self.start_date, self.start_time)
+        elif self.schedule_type == self.FIXED_DAYS_OF_WEEK:
+            str += 'Every week on %s' % (dow_mask_to_string(self.days_of_week_mask))
+        else:
+            str += 'ERROR'
+
+        for (zone_number, minutes) in self.zone_durations:
+            str += '\n  Zone %d: %d minutes' % (zone_number, minutes)
+
+        return str
 
 class iSprinkleModel:
 
     def __init__(self):
-        self._testName = ''
+        self.status = iSprinkleStatus()
         self.waterings = []
         self.deferral_datetime = None
 
