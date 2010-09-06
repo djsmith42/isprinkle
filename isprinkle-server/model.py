@@ -24,7 +24,6 @@ class iSprinkleWatering:
         self.start_time        = datetime.time(8, 0) # 8:00 AM
         self.start_date        = None # only applies to SINGLE_SHOT schedule types
         self.period_days       = 2    # only applies to EVERY_N_DAYS
-        self.last_start_time   = None # only applies to EVERY_N_DAYS
         self.days_of_week_mask = None # only applies to FIXED_DAYS_OF_WEEK
 
     # Setters:
@@ -46,9 +45,6 @@ class iSprinkleWatering:
     def set_period_days(self, days):
         self.period_days = days
 
-    def set_last_start_time(self, last_start_time):
-        self.last_start_time = last_start_time
-
     # Getters:
     def get_zone_durations(self):
         return self.zone_durations
@@ -62,9 +58,6 @@ class iSprinkleWatering:
     def get_period_days(self):
         return self.period_days
 
-    def get_last_start_time(self):
-        return self.last_start_time
-
     def get_start_date(self):
         return self.start_date
 
@@ -76,7 +69,6 @@ class iSprinkleWatering:
 
         if self.schedule_type == self.EVERY_N_DAYS:
             str += 'Every %d days, starting at %s' % (self.period_days, self.start_time)
-            str += '\n  Last run: %s' % (self.last_start_time is None and '(never run)' or self.last_start_time)
         elif self.schedule_type == self.SINGLE_SHOT:
             str += 'Single shot on %s at %s' % (self.start_date, self.start_time)
         elif self.schedule_type == self.FIXED_DAYS_OF_WEEK:

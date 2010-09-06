@@ -24,9 +24,7 @@ def get_active_zone(watering, now):
     start_time = datetime.datetime(now.year, now.month, now.day, start_time.hour, start_time.minute, start_time.second)
     if watering.schedule_type == iSprinkleWatering.EVERY_N_DAYS:
 
-        # Hack to use datetime objects so we can use timedeltas:
-        last_start = watering.get_last_start_time()
-        if last_start is None or (now - last_start).days >= watering.get_period_days():
+        if (now - datetime.datetime(1970,1,1)).days % watering.get_period_days() == 0:
             for (zone_number, minutes) in watering.get_zone_durations():
                 if (now - start_time).seconds/60 < minutes:
                     return zone_number
@@ -90,10 +88,6 @@ class iSprinkleWateringService(Thread):
                 turn_on_zone(active_zone_number)
             else:
                 turn_off_all_zones()
-
-            # TODO Figure out a way to set_last_start_time() on the
-            #      watering without causing it to stop watering right
-            #      away.
 
             self.model.status.active_watering = active_watering
             if self.model.status.active_zone_number != active_zone_number:
