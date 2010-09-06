@@ -31,7 +31,7 @@ def create_fake_waterings(model):
     watering.add_zone(1, 10)
     watering.add_zone(2, 10)
     watering.set_schedule_type(iSprinkleWatering.EVERY_N_DAYS)
-    watering.set_period_days(1) # every 3 days
+    watering.set_period_days(1) # every day
     watering.set_enabled(True)
     watering.set_start_time_of_day(datetime.time(7, 30))
     model.add_watering(watering)
