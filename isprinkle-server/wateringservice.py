@@ -86,13 +86,17 @@ class iSprinkleWateringService(Thread):
             if active_zone_number is not None:
                 print 'Watering Service: Active watering:', active_watering
                 turn_on_zone(active_zone_number)
+
+                self.model.status.active_watering = active_watering
+                if self.model.status.active_zone_number != active_zone_number:
+                    self.model.status.active_zone_number = active_zone_number
+                    self.model.status.zone_start_time    = datetime.datetime.now()
             else:
                 turn_off_all_zones()
 
-            self.model.status.active_watering = active_watering
-            if self.model.status.active_zone_number != active_zone_number:
-                self.model.status.active_zone_number = active_zone_number
-                self.model.status.zone_start_time    = datetime.datetime.now()
+                self.model.status.active_watering    = None
+                self.model.status.active_zone_number = None
+                self.model.status.zone_start_time    = None
 
     def stop(self):
         print 'Stopping watering service'
