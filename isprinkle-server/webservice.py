@@ -16,11 +16,16 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
             self.send_header('Content-type', 'text/plain')
             self.end_headers()
 
-            self.wfile.write(yaml.dump({
-                'current time' : str(datetime.datetime.now()),
-                'active zone'  : self.server.model.status.active_zone_number,
-                'start time'   : str(self.server.model.status.zone_start_time)
-                }))
+            active_zone = self.server.model.status.active_zone_number
+
+            yaml_status = { 'current time' : str(datetime.datetime.now()),
+                            'active zone'  : active_zone }
+
+            if active_zone is not None:
+                zone_start_time  = self.server.model.status.zone_start_time
+                yaml_status['start time'] = str(zone_start_time)
+
+            self.wfile.write(yaml.dump(yaml_status))
 
         elif self.path == '/waterings':
             self.send_response(200)
