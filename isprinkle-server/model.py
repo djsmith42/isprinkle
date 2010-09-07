@@ -27,6 +27,7 @@ class iSprinkleWatering:
 
     def __init__(self, model):
         self.model             = model
+        self.uuid              = uuid.uuid1()
         self.enabled           = True
         self.zone_durations    = [] # list of tuples: (zone_number, minutes)
         self.schedule_type     = self.EVERY_N_DAYS
@@ -55,6 +56,9 @@ class iSprinkleWatering:
         self.period_days = days
 
     # Getters:
+    def get_uuid(self):
+        return self.uuid
+
     def get_zone_durations(self):
         return self.zone_durations
 
@@ -74,7 +78,7 @@ class iSprinkleWatering:
         return self.enabled
 
     def __str__(self):
-        s = ''
+        s = 'Watering ID %s\n' % self.uuid
 
         if self.schedule_type == self.EVERY_N_DAYS:
             s += 'Every %d days, starting at %s' % (self.period_days, self.start_time)

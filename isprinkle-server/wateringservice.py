@@ -98,6 +98,8 @@ class iSprinkleWateringService(Thread):
                 self.model.status.active_zone_number = None
                 self.model.status.zone_start_time    = None
 
+        print 'Watering service stopped'
+
     def stop(self):
         print 'Stopping watering service'
         self.stopped = 1

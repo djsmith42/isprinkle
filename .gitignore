@@ -6,3 +6,5 @@ isprinkle-control/.*.built
 .*.sw*
 *.pyc
 *.pyo
+
+isprinkle-server/test/output.txt
