@@ -9,6 +9,15 @@ class iSprinkleStatus:
         self.active_zone_number = None
         self.zone_start_time    = None
 
+    def __str__(self):
+        s = 'iSprinkle Status:\n'
+        if self.active_zone_number is not None:
+            s += '  Active Zone: %d\n' % (self.active_zone_number)
+            s += '  Start Time:  %s\n' % (str(self.zone_start_time))
+        else:
+            s += '  No active zone\n'
+        return s
+
 class iSprinkleWatering:
 
     # schedule types:
@@ -65,21 +74,21 @@ class iSprinkleWatering:
         return self.enabled
 
     def __str__(self):
-        str = ''
+        s = ''
 
         if self.schedule_type == self.EVERY_N_DAYS:
-            str += 'Every %d days, starting at %s' % (self.period_days, self.start_time)
+            s += 'Every %d days, starting at %s' % (self.period_days, self.start_time)
         elif self.schedule_type == self.SINGLE_SHOT:
-            str += 'Single shot on %s at %s' % (self.start_date, self.start_time)
+            s += 'Single shot on %s at %s' % (self.start_date, self.start_time)
         elif self.schedule_type == self.FIXED_DAYS_OF_WEEK:
-            str += 'Every week on %s' % (dow_mask_to_string(self.days_of_week_mask))
+            s += 'Every week on %s' % (dow_mask_to_string(self.days_of_week_mask))
         else:
-            str += 'ERROR'
+            s += 'ERROR'
 
         for (zone_number, minutes) in self.zone_durations:
-            str += '\n  Zone %d: %d minutes' % (zone_number, minutes)
+            s += '\n  Zone %d: %d minutes' % (zone_number, minutes)
 
-        return str
+        return s
 
 class iSprinkleModel:
 
@@ -87,6 +96,14 @@ class iSprinkleModel:
         self.status = iSprinkleStatus()
         self.waterings = []
         self.deferral_datetime = None
+
+    def __str__(self):
+        s = 'iSprinkle Model:\n'
+        s += str(self.status)
+        s += 'Waterings (%d):\n' % (len(self.waterings))
+        for watering in self.waterings:
+            s += str(watering)
+        return s
 
     def add_watering(self, watering):
         self.waterings.append(watering)

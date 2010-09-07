@@ -4,37 +4,11 @@ import os, sys, time, signal, datetime
 
 from webservice      import iSprinkleWebService
 from wateringservice import iSprinkleWateringService
-from model           import iSprinkleModel, iSprinkleWatering
+from persister       import iSprinklePersister
 
 shutdown_requested = 0
 
 THREAD_TIMEOUT_SECONDS = 5.0
-
-def create_fake_waterings(model):
-    #watering = iSprinkleWatering(model)
-    #watering.add_zone(1, 10)
-    #watering.add_zone(2, 10)
-    #watering.add_zone(3, 10)
-    #watering.add_zone(4, 10)
-    #watering.add_zone(5, 10)
-    #watering.add_zone(6, 10)
-    #watering.add_zone(7, 10)
-    #watering.add_zone(8, 10)
-    #watering.set_schedule_type(iSprinkleWatering.SINGLE_SHOT)
-    #watering.set_start_date(datetime.date(2010, 9, 4))
-    #watering.set_start_time_of_day(datetime.time(20, 46))
-    #watering.set_enabled(True)
-    #model.add_watering(watering)
-
-    # Veggie garden and north/south beds:
-    watering = iSprinkleWatering(model)
-    watering.add_zone(1, 10)
-    watering.add_zone(2, 10)
-    watering.set_schedule_type(iSprinkleWatering.EVERY_N_DAYS)
-    watering.set_period_days(1) # every day
-    watering.set_enabled(True)
-    watering.set_start_time_of_day(datetime.time(7, 30))
-    model.add_watering(watering)
 
 def handle_sigterm(signal, func=None):
     print 'Received SIGTERM'
@@ -45,9 +19,11 @@ if __name__ == '__main__':
 
     signal.signal(signal.SIGTERM, handle_sigterm)
 
-    model = iSprinkleModel()
+    model = iSprinklePersister().load()
 
-    create_fake_waterings(model)
+    print 'Loaded %d saved watering%s' % (
+            len(model.get_waterings()),
+            '' if len(model.get_waterings()) == 1 else 's')
 
     try:
 
