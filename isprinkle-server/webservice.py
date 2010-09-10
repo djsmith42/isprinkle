@@ -4,9 +4,47 @@ from persister      import iSprinklePersister
 from threading      import Thread
 
 import datetime
+import time
 import yaml
 
 WEB_SERVICE_PORT = 8080
+
+def handle_update_watering(model, post_data):
+    try:
+        yaml_watering = yaml.load(post_data)
+    except:
+        return (500, 'Malformed YAML')
+
+    try:
+        watering = iSprinkleWatering(yaml_watering['uuid'])
+        watering.set_schedule_type(yaml_watering['schedule type'])
+        watering.set_enabled(yaml_watering['enabled'])
+        watering.set_start_date(time.strptime(yaml_watering['start time'], '%H:%M:%S'))
+        for zone_duration in yaml_watering['zone durations']:
+            watering.add_zone(zone_duration[0], zone_duration[1])
+        if yaml_watering['schedule type'] == iSprinkleWatering.EVERY_N_DAYS:
+            watering.set_period_days(yaml_watering['period days'])
+        elif yaml_watering['schedule type'] == iSprinkleWatering.SINGLE_SHOT:
+            # TODO Test this
+            watering.set_start_date(datetime.strptime(yaml_watering['start date'], '%Y-%m-%d'))
+        elif yaml_watering['schedule type'] == iSprinkleWatering.FIXED_DAYS_OF_WEEK:
+            watering.set_days_of_week_mask(yaml_watering['days of week'])
+
+        try:
+            model.update_watering(watering)
+        except:
+            return (500, 'No watering with that UUID')
+        
+        iSprinklePersister().save(model)
+
+    except ValueError as error:
+        return (500, 'Bad time format. Should be 17:45:00')
+    except KeyError as error:
+        return (500, 'Missing field "%s" in YAML stream' % (str(error)))
+
+    return (200, 'watering updated')
+
+
 
 class iSprinkleHandler(BaseHTTPRequestHandler):
 
@@ -88,7 +126,8 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
             post_data = self.rfile.read(post_data_length)
 
             if self.path == '/update-watering':
-                response_code, response_content = handle_update_watering(post_data)
+                print 'Request to update a watering'
+                response_code, response_content = handle_update_watering(self.server.model, post_data)
             elif self.path == '/add-watering':
                 print 'Request to add a watering'
             elif self.path == '/delete-watering':
@@ -99,52 +138,12 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
             response_code = 500
             response_content = 'Your request is missing the content-length header'
 
+        print '   Response:', response_code, response_content
         self.send_response(response_code)
         self.send_header('Content-type', content_type)
         self.send_header('Content-length', len(response_content))
         self.end_headers()
         self.wfile.write(response_content)
-
-    def handle_update_watering(post_data):
-        print 'Request to update a watering:'
-        try:
-            yaml_watering = yaml.load(post_data)
-        except:
-            return (500, 'Malformed YAML')
-
-        try:
-            watering = iSprinkleWatering()
-            watering.set_uuid(yaml_watering['uuid'])
-            watering.set_schedule_type(yaml_watering['schedule type'])
-            watering.set_enabled(yaml_watering['enabled'])
-            watering.set_start_date(time.strptime(yaml_watering['start time'], '%H:%M:%S'))
-            for zone_duration in yaml_watering['zone durations']:
-                watering.aadd_zone(zone_duration[0], zone_duration[1])
-            if schedule_type == iSprinkleWatering.EVERY_N_DAYS:
-                watering.set_period_days(yaml_watering['period days'])
-            elif schedule_type == iSprinkleWatering.SINGLE_SHOT:
-                # TODO Test this
-                watering.set_start_date(datetime.strptime(yaml_watering['start date'], '%Y-%m-%d'))
-            elif schedule_type == iSprinkleWatering.FIXED_DAYS_OF_WEEK:
-                watering.set_days_of_week_mask(yaml_watering['days of week'])
-
-            for watering in self.server.model.get_waterings():
-                if watering.get_uuid() == watering_uuid:
-                    # TODO Replace the watering
-                    iSprinklePersister().save(model)
-                    break
-            else:
-                return (500, 'No watering with that UUID')
-        except ValueError as error:
-            return (500, 'Bad time format. Should be 17:45:00')
-        except KeyError as error:
-            return (500, 'Missing field "%s" in YAML stream' % (str(error)))
-
-        # TODO Grab the rest of the watering fields from yaml_watering
-        # TODO Validate the watering data
-
-
-        return (200, 'watering updated')
 
 class iSprinkleHttpServer(HTTPServer):
 

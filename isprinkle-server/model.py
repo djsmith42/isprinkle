@@ -25,9 +25,8 @@ class iSprinkleWatering:
     FIXED_DAYS_OF_WEEK = 1
     SINGLE_SHOT        = 2
 
-    def __init__(self, model):
-        self.model             = model
-        self.uuid              = uuid.uuid1()
+    def __init__(self, uuid):
+        self.uuid              = uuid
         self.enabled           = True
         self.zone_durations    = [] # list of tuples: (zone_number, minutes)
         self.schedule_type     = self.EVERY_N_DAYS
@@ -39,9 +38,6 @@ class iSprinkleWatering:
     # Setters:
     def add_zone(self, zone_number, minutes):
         self.zone_durations.append((zone_number, minutes))
-
-    def set_uuid(self, uuid_str):
-        self.uuid = uuid_str
 
     def set_schedule_type(self, schedule_type):
         self.schedule_type = schedule_type
@@ -117,6 +113,14 @@ class iSprinkleModel:
 
     def add_watering(self, watering):
         self.waterings.append(watering)
+
+    def update_watering(self, watering):
+        for i in range(len(self.waterings)):
+            if str(self.waterings[i].get_uuid()) == str(watering.get_uuid()):
+                self.waterings[i] = watering
+                break
+        else:
+            raise ValueError(uuid) 
 
     def get_waterings(self):
         return self.waterings
