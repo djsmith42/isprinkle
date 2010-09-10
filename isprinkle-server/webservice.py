@@ -112,21 +112,37 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
         except:
             return (500, 'Malformed YAML')
 
-        if not yaml_watering.has_key('uuid'):
-            return (500, 'Missing "uuid" field in YAML stream')
-        watering_uuid = yaml_watering['uuid']
-        print '  UUID:', watering_uuid
+        try:
+            watering = iSprinkleWatering()
+            watering.set_uuid(yaml_watering['uuid'])
+            watering.set_schedule_type(yaml_watering['schedule type'])
+            watering.set_enabled(yaml_watering['enabled'])
+            watering.set_start_date(time.strptime(yaml_watering['start time'], '%H:%M:%S'))
+            for zone_duration in yaml_watering['zone durations']:
+                watering.aadd_zone(zone_duration[0], zone_duration[1])
+            if schedule_type == iSprinkleWatering.EVERY_N_DAYS:
+                watering.set_period_days(yaml_watering['period days'])
+            elif schedule_type == iSprinkleWatering.SINGLE_SHOT:
+                # TODO Test this
+                watering.set_start_date(datetime.strptime(yaml_watering['start date'], '%Y-%m-%d'))
+            elif schedule_type == iSprinkleWatering.FIXED_DAYS_OF_WEEK:
+                watering.set_days_of_week_mask(yaml_watering['days of week'])
+
+            for watering in self.server.model.get_waterings():
+                if watering.get_uuid() == watering_uuid:
+                    # TODO Replace the watering
+                    iSprinklePersister().save(model)
+                    break
+            else:
+                return (500, 'No watering with that UUID')
+        except ValueError as error:
+            return (500, 'Bad time format. Should be 17:45:00')
+        except KeyError as error:
+            return (500, 'Missing field "%s" in YAML stream' % (str(error)))
 
         # TODO Grab the rest of the watering fields from yaml_watering
         # TODO Validate the watering data
 
-        for watering in self.server.model.get_waterings():
-            if watering.get_uuid() == watering_uuid:
-                # TODO Update the watering
-                iSprinklePersister().save(model)
-                break
-        else:
-            return (500, 'No watering with that UUID')
 
         return (200, 'watering updated')
 
