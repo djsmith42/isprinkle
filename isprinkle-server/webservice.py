@@ -1,5 +1,6 @@
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from model          import iSprinkleWatering,  iSprinkleModel
+from persister      import iSprinklePersister
 from threading      import Thread
 
 import datetime
@@ -12,12 +13,12 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
     # Version 1.1's persistent connections cause our thread to not shut down cleanly:
     protocol_version = 'HTTP/1.0'
 
-    # To remove the 'Server:' header:
+    # This removes the 'Server:' header:
     server_version   = ''
     sys_version      = ''
 
     def date_time_string(timestamp=None):
-        # To remove the 'Date:' header
+        # This removes the 'Date:' header
         return ''
 
     def do_GET(self):
@@ -87,18 +88,7 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
             post_data = self.rfile.read(post_data_length)
 
             if self.path == '/update-watering':
-                print 'Request to update a watering:'
-                try:
-                    yaml_watering = yaml.load(post_data)
-                    watering_uuid = yaml_watering['uuid']
-                    print 'Request to update watering with UUID', watering_uuid
-                    # TODO Validate the watering data
-                    # TODO Find the watering in the model and update it
-                    # TODO Persist the model
-                    response_content = 'ok'
-                except:
-                    response_code = 500
-                    response_content = 'Malformed YAML'
+                response_code, response_content = handle_update_watering(post_data)
             elif self.path == '/add-watering':
                 print 'Request to add a watering'
             elif self.path == '/delete-watering':
@@ -114,6 +104,31 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
         self.send_header('Content-length', len(response_content))
         self.end_headers()
         self.wfile.write(response_content)
+
+    def handle_update_watering(post_data):
+        print 'Request to update a watering:'
+        try:
+            yaml_watering = yaml.load(post_data)
+        except:
+            return (500, 'Malformed YAML')
+
+        if not yaml_watering.has_key('uuid'):
+            return (500, 'Missing "uuid" field in YAML stream')
+        watering_uuid = yaml_watering['uuid']
+        print '  UUID:', watering_uuid
+
+        # TODO Grab the rest of the watering fields from yaml_watering
+        # TODO Validate the watering data
+
+        for watering in self.server.model.get_waterings():
+            if watering.get_uuid() == watering_uuid:
+                # TODO Update the watering
+                iSprinklePersister().save(model)
+                break
+        else:
+            return (500, 'No watering with that UUID')
+
+        return (200, 'watering updated')
 
 class iSprinkleHttpServer(HTTPServer):
 
