@@ -6,45 +6,63 @@ from threading      import Thread
 import datetime
 import time
 import yaml
+import uuid
 
 WEB_SERVICE_PORT = 8080
 
-def handle_update_watering(model, post_data):
+def string_to_time(time_string):
+    st_time = time.strptime(time_string, '%H:%M:%S') # this is an instance of time.struct_time
+    return datetime.time(st_time.tm_hour, st_time.tm_min, st_time.tm_sec)
+
+def string_to_date(date_string):
+    st_time = time.strptime(date_string, '%Y-%m-%d') # this is an instance of time.struct_time
+    watering.set_start_date(datetime.date(st_time.tm_year, st_time.tm_month, st_time.tm_mday))
+
+def yaml_to_watering(yaml_string):
+    yaml_watering = None
     try:
-        yaml_watering = yaml.load(post_data)
+        yaml_watering = yaml.load(yaml_string)
     except:
-        return (500, 'Malformed YAML')
+        raise Exception('Malformed YAML')
 
     try:
-        watering = iSprinkleWatering(yaml_watering['uuid'])
+        watering_uuid = ''
+        if yaml_watering.has_key('uuid'):
+            watering_uuid = yaml_watering['uuid']
+        watering = iSprinkleWatering(watering_uuid)
         watering.set_schedule_type(yaml_watering['schedule type'])
         watering.set_enabled(yaml_watering['enabled'])
-        watering.set_start_date(time.strptime(yaml_watering['start time'], '%H:%M:%S'))
+        watering.set_start_time_of_day(string_to_time(yaml_watering['start time']))
         for zone_duration in yaml_watering['zone durations']:
             watering.add_zone(zone_duration[0], zone_duration[1])
         if yaml_watering['schedule type'] == iSprinkleWatering.EVERY_N_DAYS:
             watering.set_period_days(yaml_watering['period days'])
         elif yaml_watering['schedule type'] == iSprinkleWatering.SINGLE_SHOT:
             # TODO Test this
-            watering.set_start_date(datetime.strptime(yaml_watering['start date'], '%Y-%m-%d'))
+            watering.set_start_date(string_to_date(yaml_watering['start date']))
         elif yaml_watering['schedule type'] == iSprinkleWatering.FIXED_DAYS_OF_WEEK:
             watering.set_days_of_week_mask(yaml_watering['days of week'])
-
-        try:
-            model.update_watering(watering)
-        except:
-            return (500, 'No watering with that UUID')
-        
-        iSprinklePersister().save(model)
-
+        return watering
     except ValueError as error:
-        return (500, 'Bad time format. Should be 17:45:00')
+        raise Exception('Bad time format. Should be 17:45:00')
     except KeyError as error:
-        return (500, 'Missing field "%s" in YAML stream' % (str(error)))
+        raise Exception('Missing field "%s" in YAML stream' % (str(error)))
 
-    return (200, 'watering updated')
+def handle_add_watering(model, post_data):
+    watering = yaml_to_watering(post_data)
+    watering.set_uuid(str(uuid.uuid4()))
+    model.add_watering(watering)
+    iSprinklePersister().save(model)
 
+def handle_update_watering(model, post_data):
+    watering = yaml_to_watering(post_data)
+    model.update_watering(watering)
+    iSprinklePersister().save(model)
 
+def handle_delete_watering(model, post_data):
+    uuid_str = post_data.strip()
+    model.delete_watering(uuid_str)
+    iSprinklePersister().save(model)
 
 class iSprinkleHandler(BaseHTTPRequestHandler):
 
@@ -117,7 +135,7 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
 
         response_code    = 200
         content_type     = 'text/plain'
-        response_content = ''
+        response_content = 'ok'
 
         post_data_length = self.headers.getheader('content-length')
         post_data = None
@@ -125,20 +143,26 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
             post_data_length = int(post_data_length)
             post_data = self.rfile.read(post_data_length)
 
-            if self.path == '/update-watering':
-                print 'Request to update a watering'
-                response_code, response_content = handle_update_watering(self.server.model, post_data)
-            elif self.path == '/add-watering':
-                print 'Request to add a watering'
-            elif self.path == '/delete-watering':
-                print 'Request to delete a watering'
-            elif self.path == '/set-deferral-time':
-                print 'Request to set the deferral time'
+            try:
+                if self.path == '/update-watering':
+                    print 'Request to update a watering'
+                    handle_update_watering(self.server.model, post_data)
+                elif self.path == '/add-watering':
+                    print 'Request to add a watering'
+                    handle_add_watering(self.server.model, post_data)
+                elif self.path == '/delete-watering':
+                    print 'Request to delete a watering'
+                    handle_delete_watering(self.server.model, post_data)
+                elif self.path == '/set-deferral-time':
+                    print 'Request to set the deferral time'
+            except Exception as e:
+                response_code    = 400
+                response_content = str(e)
         else:
-            response_code = 500
+            response_code    = 411
             response_content = 'Your request is missing the content-length header'
 
-        print '   Response:', response_code, response_content
+        print '   Response: %d: %s' % (response_code, response_content)
         self.send_response(response_code)
         self.send_header('Content-type', content_type)
         self.send_header('Content-length', len(response_content))

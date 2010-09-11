@@ -27,15 +27,18 @@ class iSprinkleWatering:
 
     def __init__(self, uuid):
         self.uuid              = uuid
-        self.enabled           = True
+        self.enabled           = None # True
         self.zone_durations    = [] # list of tuples: (zone_number, minutes)
-        self.schedule_type     = self.EVERY_N_DAYS
-        self.start_time        = datetime.time(8, 0) # 8:00 AM
+        self.schedule_type     = None # self.EVERY_N_DAYS
+        self.start_time        = None # datetime.time(8, 0) # 8:00 AM
         self.start_date        = None # only applies to SINGLE_SHOT schedule types
-        self.period_days       = 2    # only applies to EVERY_N_DAYS
+        self.period_days       = None # only applies to EVERY_N_DAYS
         self.days_of_week_mask = None # only applies to FIXED_DAYS_OF_WEEK
 
     # Setters:
+    def set_uuid(self, uuid_str):
+        self.uuid = uuid_str
+
     def add_zone(self, zone_number, minutes):
         self.zone_durations.append((zone_number, minutes))
 
@@ -83,16 +86,16 @@ class iSprinkleWatering:
         s = 'Watering ID %s\n' % self.uuid
 
         if self.schedule_type == self.EVERY_N_DAYS:
-            s += 'Every %d days, starting at %s' % (self.period_days, self.start_time)
+            s += '  Every %d days, starting at %s' % (self.period_days, self.start_time)
         elif self.schedule_type == self.SINGLE_SHOT:
-            s += 'Single shot on %s at %s' % (self.start_date, self.start_time)
+            s += '  Single shot on %s at %s' % (self.start_date, self.start_time)
         elif self.schedule_type == self.FIXED_DAYS_OF_WEEK:
-            s += 'Every week on %s' % (dow_mask_to_string(self.days_of_week_mask))
+            s += '  Every week on %s' % (dow_mask_to_string(self.days_of_week_mask))
         else:
-            s += 'ERROR'
+            s += '  ERROR'
 
         for (zone_number, minutes) in self.zone_durations:
-            s += '\n  Zone %d: %d minutes' % (zone_number, minutes)
+            s += '\n    Zone %d: %d minutes' % (zone_number, minutes)
 
         return s
 
@@ -120,7 +123,15 @@ class iSprinkleModel:
                 self.waterings[i] = watering
                 break
         else:
-            raise ValueError(uuid) 
+            raise ValueError('No watering with UUID "%s"' % (watering.get_uuid())) 
+
+    def delete_watering(self, uuid_str):
+        for i in range(len(self.waterings)):
+            if str(self.waterings[i].get_uuid()) == str(uuid_str):
+                del self.waterings[i]
+                break
+        else:
+            raise ValueError('No watering with UUID "%s"' % (uuid_str))
 
     def get_waterings(self):
         return self.waterings
