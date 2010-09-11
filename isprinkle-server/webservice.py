@@ -155,6 +155,10 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
                     handle_delete_watering(self.server.model, post_data)
                 elif self.path == '/set-deferral-time':
                     print 'Request to set the deferral time'
+                    # TODO Implement this (should be easy)
+                else:
+                    response_code    = 404
+                    response_content = 'No such path'
             except Exception as e:
                 response_code    = 400
                 response_content = str(e)
