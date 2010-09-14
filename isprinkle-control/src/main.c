@@ -89,7 +89,6 @@ static void sort_devices_by_serial(struct isprinkle_context *context)
             {
                 if(strcmp(context->devices[j].serial, context->devices[i].serial) < 0)
                 {
-                    printf("swapping %d with %d (%s vs. %s)\n", i, j, context->devices[i].serial, context->devices[j].serial);
                     // Swap:
                     struct isprinkle_device tmp = context->devices[i];
                     context->devices[i] = context->devices[j];
@@ -129,6 +128,8 @@ static int initialize(struct isprinkle_context *context)
                 fprintf(stderr, "Unable to read FTDI device strings: %d (%s)\n", ret, ftdi_get_error_string(&context->ftdic));
                 return 0;
             }
+
+            device_count++;
         }
     }
 
@@ -141,11 +142,13 @@ static void shutdown(struct isprinkle_context *context)
 {
     if(context->is_device_open)
     {
+        #if 0 // for some reason, the call to ftdi_usb_close() hangs with multiple boards, so leave it out for now
         int ret;
         if ((ret = ftdi_usb_close(&context->ftdic)) < 0)
         {
             fprintf(stderr, "Unable to close ftdi device: %d (%s)\n", ret, ftdi_get_error_string(&context->ftdic));
         }
+        #endif
     }
 
     ftdi_deinit(&context->ftdic);
