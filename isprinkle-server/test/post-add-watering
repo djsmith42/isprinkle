@@ -3,5 +3,5 @@ start time: 07:30:00
 period days: 1
 enabled: true
 zone durations: !!pairs
-- {1: 10}
 - {2: 10}
+- {9: 10}
