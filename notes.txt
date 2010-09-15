@@ -1,0 +1,12 @@
+Zone Names:
+
+1. Back grass 1
+2. Back drip and vegetable garden
+3. Front drip
+4. Back grass 2
+5. Back grass 3
+6. Back grass 4
+7. Park strip
+8. Front grass
+9. Side beds (both sides)
+10. South grass (along driveway)
