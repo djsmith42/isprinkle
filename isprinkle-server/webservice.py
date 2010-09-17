@@ -94,7 +94,6 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
                 yaml_status['current action' ] = 'watering'
                 yaml_status['active zone'    ] = active_zone
                 yaml_status['active watering'] = str(active_watering.get_uuid())
-                yaml_status['start time']      = str(active_watering.get_start_time())
             else:
                 yaml_status['current action' ] = 'idle'
 
