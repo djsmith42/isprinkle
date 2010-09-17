@@ -1,0 +1,17 @@
+#!/bin/bash
+
+EMAIL="dave@thesmithfam.org"
+SUBJECT="isprinkle-watchdog notification"
+MESSAGE="The isprinkle-server is not running. Shutting down any valves."
+
+while true; do
+
+    if ! ps -eaf | grep isprinkle-server | grep -v grep >/dev/null 2>&1; then
+        isprinkle-control --all-off
+        RET=$?
+        echo -e "$MESSAGE\n\nreturn code: $RET" | mail -s "$SUBJECT" "$EMAIL"
+    fi
+
+    sleep 60
+
+done
