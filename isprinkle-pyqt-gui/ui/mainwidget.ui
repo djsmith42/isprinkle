@@ -18,62 +18,94 @@
     <normaloff>:/waterdrop.png</normaloff>:/waterdrop.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">#MainWidget {
+   <string notr="true">#mainFrame {
 background: url(:/waterdrop.png);
 background-position: top left;
-margin-top: -200px;
-padding-top: 200px;
+background-repeat: none;
+margin-top: -180px;
+padding-top: 180px;
+margin-left: -80px;
+padding-left: 80px;
+border: none;
+background-color: white;
 }
 
 #textEdit {
-background: rgba(255,255,255,192);
+background: rgba(255,255,255,220);
+}
+
+#titleLabel {
+font-size: 20px;
+font-weight: bold;
+}
+
+#textEdit {
+border: 1px solid rgba(0,0,0,32);
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="margin">
+    <number>0</number>
+   </property>
    <item>
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Howdy There!</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QTextEdit" name="textEdit"/>
-   </item>
-   <item>
-    <widget class="QFrame" name="frame">
+    <widget class="QFrame" name="mainFrame">
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QPushButton" name="testButton">
+       <widget class="QLabel" name="titleLabel">
         <property name="text">
-         <string>Test</string>
+         <string>iSprinkle</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>187</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
+       <widget class="QTextEdit" name="textEdit"/>
       </item>
       <item>
-       <widget class="QPushButton" name="closeButton">
-        <property name="text">
-         <string>Close</string>
-        </property>
+       <widget class="QFrame" name="buttonFrame">
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="margin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="testButton">
+           <property name="text">
+            <string>Test</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>187</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="closeButton">
+           <property name="text">
+            <string>Close</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>
