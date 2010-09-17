@@ -8,3 +8,5 @@ isprinkle-control/.*.built
 *.pyo
 
 isprinkle-server/test/output.txt
+isprinkle-pyqt-gui/images/images_rc.py
+isprinkle-pyqt-gui/ui/generated
