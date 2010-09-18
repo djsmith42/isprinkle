@@ -16,7 +16,11 @@ def string_to_time(time_string):
 
 def string_to_date(date_string):
     st_time = time.strptime(date_string, '%Y-%m-%d') # this is an instance of time.struct_time
-    watering.set_start_date(datetime.date(st_time.tm_year, st_time.tm_month, st_time.tm_mday))
+    return datetime.date(st_time.tm_year, st_time.tm_mon, st_time.tm_mday)
+
+def string_to_datetime(datetime_string):
+    st_time = time.strptime(datetime_string, '%Y-%m-%d %H:%M:%S') # this is an instance of time.struct_time
+    return datetime.datetime(st_time.tm_year, st_time.tm_mon, st_time.tm_mday, st_time.tm_hour, st_time.tm_min, st_time.tm_sec)
 
 def yaml_to_watering(yaml_string):
     yaml_watering = None
@@ -63,6 +67,29 @@ def handle_delete_watering(model, post_data):
     uuid_str = post_data.strip()
     model.delete_watering(uuid_str)
     iSprinklePersister().save(model)
+
+def handle_set_deferral_datetime(model, post_data):
+    dt = string_to_datetime(post_data.strip())
+    model.set_deferral_datetime(dt)
+    iSprinklePersister().save(model)
+
+def handle_run_watering_now(model, post_data):
+    uuid_str = post_data.strip()
+    watering = model.find_watering(uuid_str)
+
+    new_watering = iSprinkleWatering(str(uuid.uuid4()))
+    new_watering.set_schedule_type(iSprinkleWatering.SINGLE_SHOT)
+    new_watering.set_enabled(True)
+    new_watering.set_start_date(datetime.datetime.now().date())
+    new_watering.set_start_time_of_day(datetime.datetime.now().time())
+    for zone_duration in watering.get_zone_durations():
+        new_watering.add_zone(zone_duration[0], zone_duration[1])
+
+    print 'Adding new single shot watering:', new_watering
+
+    model.add_watering(new_watering)
+    iSprinklePersister().save(model)
+
 
 class iSprinkleHandler(BaseHTTPRequestHandler):
 
@@ -154,7 +181,10 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
                     handle_delete_watering(self.server.model, post_data)
                 elif self.path == '/set-deferral-time':
                     print 'Request to set the deferral time'
-                    # TODO Implement this (should be easy)
+                    handle_set_deferral_datetime(self.server.model, post_data);
+                elif self.path == '/run-watering-now':
+                    print 'Request to run watering now'
+                    handle_run_watering_now(self.server.model, post_data);
                 else:
                     response_code    = 404
                     response_content = 'No such path'

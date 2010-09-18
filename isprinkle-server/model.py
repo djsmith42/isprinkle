@@ -125,6 +125,13 @@ class iSprinkleModel:
         else:
             raise ValueError('No watering with UUID "%s"' % (watering.get_uuid())) 
 
+    def find_watering(self, uuid_str):
+        for watering in self.waterings:
+            if str(watering.get_uuid()) == str(uuid_str):
+                return watering
+        else:
+            raise ValueError('Not watering with UID "%s"' % (uuid_str))
+
     def delete_watering(self, uuid_str):
         for i in range(len(self.waterings)):
             if str(self.waterings[i].get_uuid()) == str(uuid_str):
