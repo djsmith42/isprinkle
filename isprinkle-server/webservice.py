@@ -22,13 +22,7 @@ def string_to_datetime(datetime_string):
     st_time = time.strptime(datetime_string, '%Y-%m-%d %H:%M:%S') # this is an instance of time.struct_time
     return datetime.datetime(st_time.tm_year, st_time.tm_mon, st_time.tm_mday, st_time.tm_hour, st_time.tm_min, st_time.tm_sec)
 
-def yaml_to_watering(yaml_string):
-    yaml_watering = None
-    try:
-        yaml_watering = yaml.load(yaml_string)
-    except:
-        raise Exception('Malformed YAML')
-
+def yaml_watering_to_watering(yaml_watering):
     try:
         watering_uuid = ''
         if yaml_watering.has_key('uuid'):
@@ -51,6 +45,12 @@ def yaml_to_watering(yaml_string):
         raise Exception('Bad time format. Should be 17:45:00')
     except KeyError as error:
         raise Exception('Missing field "%s" in YAML stream' % (str(error)))
+
+def yaml_to_watering(yaml_string):
+    try:
+        return yaml_watering_to_watering(yaml.load(yaml_string))
+    except:
+        raise Exception('Malformed YAML')
 
 def handle_add_watering(model, post_data):
     watering = yaml_to_watering(post_data)

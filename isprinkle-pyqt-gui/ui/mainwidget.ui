@@ -70,7 +70,31 @@ border: 1px solid rgba(0,0,0,32);
        </widget>
       </item>
       <item>
-       <widget class="QTextEdit" name="textEdit"/>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <widget class="QWidget" name="statusTab">
+         <attribute name="title">
+          <string>Status</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QTextEdit" name="statusTextEdit"/>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="wateringTab">
+         <attribute name="title">
+          <string>Watering Schedule</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QTextEdit" name="wateringTextEdit"/>
+          </item>
+         </layout>
+        </widget>
+       </widget>
       </item>
       <item>
        <widget class="QFrame" name="buttonFrame">
@@ -79,9 +103,9 @@ border: 1px solid rgba(0,0,0,32);
           <number>0</number>
          </property>
          <item>
-          <widget class="QPushButton" name="testButton">
+          <widget class="QPushButton" name="refreshButton">
            <property name="text">
-            <string>Test</string>
+            <string>Refresh</string>
            </property>
           </widget>
          </item>

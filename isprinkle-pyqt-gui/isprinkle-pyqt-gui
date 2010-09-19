@@ -2,6 +2,6 @@
 
 DIR="$(dirname "$0")"
 cd "$DIR"
-export PYTHONPATH="./ui/generated:./images"
+export PYTHONPATH="./ui/generated:./images:../isprinkle-server"
 
 python main.py
