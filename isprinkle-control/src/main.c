@@ -346,17 +346,25 @@ int main(int argc, char **argv)
 
     if(initialize(&context))
     {
-        switch(args.action)
+        if(context.num_devices > 0)
         {
-            case run_zone:
-                success = do_run_zone(&context, args.zone_number);
-                break;
-            case all_off:
-                success = do_all_off(&context);
-                break;
-            case query:
-                success = do_query(&context);
-                break;
+            switch(args.action)
+            {
+                case run_zone:
+                    success = do_run_zone(&context, args.zone_number);
+                    break;
+                case all_off:
+                    success = do_all_off(&context);
+                    break;
+                case query:
+                    success = do_query(&context);
+                    break;
+            }
+        }
+        else
+        {
+            fprintf(stderr, "No USB relay boards found connected to this computer\n");
+            success = 0;
         }
     }
 
