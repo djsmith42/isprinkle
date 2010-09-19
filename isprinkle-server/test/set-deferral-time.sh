@@ -9,4 +9,4 @@ if [ -z "$datetime" ]; then
 fi
 
 echo "$datetime" > "$tmpfile"
-wget http://localhost:8080/set-deferral-time "--post-file=$tmpfile"
+wget http://localhost:8080/set-deferral-time --quiet -O - "--post-file=$tmpfile"

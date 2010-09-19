@@ -9,4 +9,4 @@ if [ -z "$uuid" ]; then
 fi
 
 echo "$uuid" > "$tmpfile"
-wget http://localhost:8080/run-watering-now "--post-file=$tmpfile"
+wget http://localhost:8080/run-watering-now --quiet -O - "--post-file=$tmpfile"

@@ -84,6 +84,10 @@ class iSprinkleWatering:
 
     def __str__(self):
         s = 'Watering ID %s\n' % self.uuid
+        if self.enabled:
+            s += '  Enabled\n'
+        else:
+            s += '  Disabled\n'
 
         if self.schedule_type == self.EVERY_N_DAYS:
             s += '  Every %d days, starting at %s' % (self.period_days, self.start_time)

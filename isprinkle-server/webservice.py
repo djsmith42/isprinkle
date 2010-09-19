@@ -73,23 +73,43 @@ def handle_set_deferral_datetime(model, post_data):
     model.set_deferral_datetime(dt)
     iSprinklePersister().save(model)
 
-def handle_run_watering_now(model, post_data):
-    uuid_str = post_data.strip()
-    watering = model.find_watering(uuid_str)
-
-    new_watering = iSprinkleWatering(str(uuid.uuid4()))
-    new_watering.set_schedule_type(iSprinkleWatering.SINGLE_SHOT)
-    new_watering.set_enabled(True)
-    new_watering.set_start_date(datetime.datetime.now().date())
-    new_watering.set_start_time_of_day(datetime.datetime.now().time())
-    for zone_duration in watering.get_zone_durations():
-        new_watering.add_zone(zone_duration[0], zone_duration[1])
-
-    print 'Adding new single shot watering:', new_watering
-
+def handle_run_zone_now(model, post_data):
+    new_watering = create_single_shot_watering(datetime.datetime.now())
+    post_data = post_data.strip()
+    elements = post_data.split(' ')
+    zone    = int(elements[0])
+    minutes = int(elements[1])
+    new_watering.add_zone(zone, minutes)
     model.add_watering(new_watering)
     iSprinklePersister().save(model)
 
+def handle_disable_watering(model, post_data):
+    uuid_str = post_data.strip()
+    model.find_watering(uuid_str).set_enabled(False)
+    iSprinklePersister().save(model)
+
+def handle_enable_watering(model, post_data):
+    uuid_str = post_data.strip()
+    model.find_watering(uuid_str).set_enabled(True)
+    iSprinklePersister().save(model)
+
+def handle_run_watering_now(model, post_data):
+    new_watering = create_single_shot_watering(datetime.datetime.now())
+    uuid_str = post_data.strip()
+    for zone_duration in model.find_watering(uuid_str).get_zone_durations():
+        new_watering.add_zone(zone_duration[0], zone_duration[1])
+
+    print 'Adding new single shot watering:', new_watering
+    model.add_watering(new_watering)
+    iSprinklePersister().save(model)
+
+def create_single_shot_watering(dt): # dt is a datetie.datetime instnace
+    new_watering = iSprinkleWatering(str(uuid.uuid4()))
+    new_watering.set_schedule_type(iSprinkleWatering.SINGLE_SHOT)
+    new_watering.set_enabled(True)
+    new_watering.set_start_date(dt.date())
+    new_watering.set_start_time_of_day(dt.time())
+    return new_watering
 
 class iSprinkleHandler(BaseHTTPRequestHandler):
 
@@ -181,10 +201,19 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
                     handle_delete_watering(self.server.model, post_data)
                 elif self.path == '/set-deferral-time':
                     print 'Request to set the deferral time'
-                    handle_set_deferral_datetime(self.server.model, post_data);
+                    handle_set_deferral_datetime(self.server.model, post_data)
                 elif self.path == '/run-watering-now':
                     print 'Request to run watering now'
-                    handle_run_watering_now(self.server.model, post_data);
+                    handle_run_watering_now(self.server.model, post_data)
+                elif self.path == '/run-zone-now':
+                    print 'Request to run single zone now'
+                    handle_run_zone_now(self.server.model, post_data)
+                elif self.path == '/disable-watering':
+                    print 'Request to disable a watering'
+                    handle_disable_watering(self.server.model, post_data)
+                elif self.path == '/enable-watering':
+                    print 'Request to enable a watering'
+                    handle_enable_watering(self.server.model, post_data)
                 else:
                     response_code    = 404
                     response_content = 'No such path'
