@@ -11,3 +11,4 @@ fi
 
 echo "$zone $minutes" > "$tmpfile"
 wget http://localhost:8080/run-zone-now --quiet -O - "--post-file=$tmpfile"
+echo

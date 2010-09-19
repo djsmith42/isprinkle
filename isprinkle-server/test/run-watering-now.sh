@@ -10,3 +10,4 @@ fi
 
 echo "$uuid" > "$tmpfile"
 wget http://localhost:8080/run-watering-now --quiet -O - "--post-file=$tmpfile"
+echo
