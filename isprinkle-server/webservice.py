@@ -57,6 +57,7 @@ def handle_add_watering(model, post_data):
     watering.set_uuid(str(uuid.uuid4()))
     model.add_watering(watering)
     iSprinklePersister().save(model)
+    return str(watering.get_uuid())
 
 def handle_update_watering(model, post_data):
     watering = yaml_to_watering(post_data)
@@ -82,6 +83,7 @@ def handle_run_zone_now(model, post_data):
     new_watering.add_zone(zone, minutes)
     model.add_watering(new_watering)
     iSprinklePersister().save(model)
+    return str(new_watering.get_uuid())
 
 def handle_disable_watering(model, post_data):
     uuid_str = post_data.strip()
@@ -102,6 +104,7 @@ def handle_run_watering_now(model, post_data):
     print 'Adding new single shot watering:', new_watering
     model.add_watering(new_watering)
     iSprinklePersister().save(model)
+    return str(new_watering.get_uuid())
 
 def create_single_shot_watering(dt): # dt is a datetie.datetime instnace
     new_watering = iSprinkleWatering(str(uuid.uuid4()))
@@ -195,7 +198,7 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
                     handle_update_watering(self.server.model, post_data)
                 elif self.path == '/add-watering':
                     print 'Request to add a watering'
-                    handle_add_watering(self.server.model, post_data)
+                    response_content = handle_add_watering(self.server.model, post_data)
                 elif self.path == '/delete-watering':
                     print 'Request to delete a watering'
                     handle_delete_watering(self.server.model, post_data)
@@ -204,10 +207,10 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
                     handle_set_deferral_datetime(self.server.model, post_data)
                 elif self.path == '/run-watering-now':
                     print 'Request to run watering now'
-                    handle_run_watering_now(self.server.model, post_data)
+                    response_content = handle_run_watering_now(self.server.model, post_data)
                 elif self.path == '/run-zone-now':
                     print 'Request to run single zone now'
-                    handle_run_zone_now(self.server.model, post_data)
+                    response_content = handle_run_zone_now(self.server.model, post_data)
                 elif self.path == '/disable-watering':
                     print 'Request to disable a watering'
                     handle_disable_watering(self.server.model, post_data)
