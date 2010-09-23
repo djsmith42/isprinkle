@@ -74,6 +74,10 @@ def handle_set_deferral_datetime(model, post_data):
     model.set_deferral_datetime(dt)
     iSprinklePersister().save(model)
 
+def handle_clear_deferral_datetime(model):
+    model.set_deferral_datetime(None)
+    iSprinklePersister().save(model)
+
 def handle_run_zone_now(model, post_data):
     new_watering = create_single_shot_watering(datetime.datetime.now())
     post_data = post_data.strip()
@@ -205,6 +209,9 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
                 elif self.path == '/set-deferral-time':
                     print 'Request to set the deferral time'
                     handle_set_deferral_datetime(self.server.model, post_data)
+                elif self.path == '/clear-deferral-time':
+                    print 'Request to clear the deferral time'
+                    handle_clear_deferral_datetime(self.server.model)
                 elif self.path == '/run-watering-now':
                     print 'Request to run watering now'
                     response_content = handle_run_watering_now(self.server.model, post_data)
