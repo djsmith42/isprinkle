@@ -10,7 +10,6 @@ while true; do
         isprinkle-control --all-off
         RET=$?
         echo -e "$MESSAGE\n\nisprinkle-control exit status: $RET" | mail -s "$SUBJECT" "$EMAIL"
-        echo busted
     fi
 
     sleep 60
