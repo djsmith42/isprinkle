@@ -3,6 +3,9 @@ import time, datetime, subprocess
 from threading import Thread
 from model     import iSprinkleModel, iSprinkleWatering
 
+def delta_to_total_minutes(delta):
+    return (delta.seconds / 60) + (delta.days * 24 * 60)
+
 def turn_on_zone(zone_number):
     print 'Watering Service: Watering zone', zone_number
     process = subprocess.Popen(['isprinkle-control', '--run-zone', str(zone_number)], stderr=subprocess.PIPE, stdout=subprocess.PIPE)
@@ -29,7 +32,7 @@ def get_active_zone(watering, now):
 
         if (now - datetime.datetime(1970,1,1)).days % watering.get_period_days() == 0:
             for (zone_number, minutes) in watering.get_zone_durations():
-                if (now - start_time).seconds/60 < minutes:
+                if delta_to_total_minutes(now - start_time) < minutes:
                     return zone_number
                 else:
                     start_time += datetime.timedelta(minutes=minutes)
@@ -53,8 +56,7 @@ def get_active_zone(watering, now):
 
         if now >= start_time:
             for (zone_number, minutes) in watering.get_zone_durations():
-                tmp = (now - start_time).seconds/60
-                if tmp < minutes:
+                if delta_to_total_minutes(now - start_time) < minutes:
                     return zone_number
                 start_time += datetime.timedelta(minutes=minutes)
         return None
