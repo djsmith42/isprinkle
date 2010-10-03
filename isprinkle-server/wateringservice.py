@@ -7,6 +7,7 @@ def delta_to_total_minutes(delta):
     return (delta.seconds / 60) + (delta.days * 24 * 60)
 
 def turn_on_zone(zone_number):
+    # TODO Read the current relay state and decide if we're actually chaning something. If so, run scripst from a directory (for email notification and such)
     print 'Watering Service: Watering zone', zone_number
     process = subprocess.Popen(['isprinkle-control', '--run-zone', str(zone_number)], stderr=subprocess.PIPE, stdout=subprocess.PIPE)
     output = process.communicate()
@@ -14,6 +15,7 @@ def turn_on_zone(zone_number):
         print 'Watering Service: Failed to start zone', zone_number, 'due to error:', output[1]
 
 def turn_off_all_zones():
+    # TODO Read the current relay state and decide if we're actually chaning something. If so, run scripst from a directory (for email notification and such)
     print 'Watering Service: Not watering'
     process = subprocess.Popen(['isprinkle-control', '--all-off'], stderr=subprocess.PIPE, stdout=subprocess.PIPE)
     output = process.communicate()
