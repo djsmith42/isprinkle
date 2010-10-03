@@ -6,7 +6,7 @@ from model      import iSprinkleWatering
 from webservice import yaml_watering_to_watering, string_to_time, string_to_date
 
 from PyQt4.QtCore    import QUrl, QDateTime, QString, QRegExp
-from PyQt4.QtGui     import QApplication, QWidget, QTextEdit
+from PyQt4.QtGui     import QApplication, QWidget, QTextEdit, QListWidgetItem
 from PyQt4.QtNetwork import QNetworkRequest, QNetworkReply, QNetworkAccessManager
 
 HOST = '192.168.1.3'
@@ -63,7 +63,18 @@ class MainWidget(QWidget):
         yaml_waterings = yaml.load(yaml_string)
         for yaml_watering in yaml_waterings:
             watering = yaml_watering_to_watering(yaml_watering)
-            print watering
+            text = ''
+            if watering.get_schedule_type() == iSprinkleWatering.EVERY_N_DAYS:
+                if watering.get_period_days() == 1:
+                    text = 'Every day'
+                else:
+                    text = 'Every %d days' % (watering.get_period_days())
+                text += ' at %s' % (watering.get_start_time())
+
+            elif watering.get_schedule_type() == iSprinkleWatering.SINGLE_SHOT:
+                text = 'Single shot on %s at %s' % (watering.get_start_date(), watering.get_start_time())
+
+            item = QListWidgetItem(text, self.ui.wateringListWidget)
 
     def handleError(self, errorString):
         self.ui.errorLabel.setVisible(errorString != '')
