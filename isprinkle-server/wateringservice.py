@@ -27,6 +27,7 @@ def get_active_zone(watering, now):
     if watering.is_enabled() == False:
         return None
 
+    # Hack the start_time to look like today:
     start_time = datetime.datetime(now.year, now.month, now.day, start_time.hour, start_time.minute, start_time.second)
     if watering.schedule_type == iSprinkleWatering.EVERY_N_DAYS:
 
