@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/">
     <file>waterdrop.png</file>
+    <file>info.png</file>
   </qresource>
 </RCC>
