@@ -8,6 +8,7 @@ class iSprinkleStatus:
         self.active_watering    = None
         self.active_zone_number = None
         self.zone_start_time    = None
+        self.in_deferral_period = False
 
     def __str__(self):
         s = 'iSprinkle Status:\n'

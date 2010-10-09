@@ -138,11 +138,14 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
         response_content = ''
 
         if self.path == '/status':
-            active_zone     = self.server.model.status.active_zone_number
-            active_watering = self.server.model.status.active_watering
+            active_zone        = self.server.model.status.active_zone_number
+            active_watering    = self.server.model.status.active_watering
+            in_deferral_period = self.server.model.status.in_deferral_period
 
             yaml_status = {}
-            yaml_status['current time'] = str(datetime.datetime.now())
+            yaml_status['current time'      ] = str(datetime.datetime.now())
+            yaml_status['in deferral period'] = in_deferral_period
+            yaml_status['deferral datetime' ] = str(self.server.model.get_deferral_datetime())
 
             if active_watering:
                 yaml_status['current action' ] = 'watering'

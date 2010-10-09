@@ -78,16 +78,20 @@ class iSprinkleWateringService(Thread):
             print 'Watering Service: Current Time', now
             active_zone_number = None
             active_watering    = None
+            in_deferral_period = False
 
             if self.model.get_deferral_datetime() is not None and now < self.model.get_deferral_datetime():
                 print 'Watering Service: In deferral time. Not watering.'
                 active_zone_number = None
+                in_deferral_period = True
             else:
                 for watering in self.model.get_waterings():
                     active_zone_number = get_active_zone(watering, now)
                     if active_zone_number is not None:
                         active_watering = watering
                         break
+
+            self.model.status.in_deferral_period = in_deferral_period
 
             if active_zone_number is not None:
                 print 'Watering Service: Active watering:', active_watering
