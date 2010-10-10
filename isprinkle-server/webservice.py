@@ -47,10 +47,7 @@ def yaml_watering_to_watering(yaml_watering):
         raise Exception('Missing field "%s" in YAML stream' % (str(error)))
 
 def yaml_to_watering(yaml_string):
-    try:
-        return yaml_watering_to_watering(yaml.load(yaml_string))
-    except:
-        raise Exception('Malformed YAML')
+    return yaml_watering_to_watering(yaml.load(yaml_string))
 
 def handle_add_watering(model, post_data):
     watering = yaml_to_watering(post_data)
