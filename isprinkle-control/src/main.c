@@ -175,6 +175,8 @@ static int do_all_off(struct isprinkle_context *context)
                 fprintf(stderr, "Could not send data to the relay board: 0x%02x\n", relay_control_bitmask);
                 return 0;
             }
+
+            ftdi_async_complete(&context->ftdic, 0);
         }
         else
         {
@@ -226,6 +228,8 @@ static int do_run_zone(struct isprinkle_context *context, int zone_number)
                 fprintf(stderr, "Could not send data to the relay board: 0x%02x\n", relay_control_bitmask);
                 return 0;
             }
+
+            ftdi_async_complete(&context->ftdic, 0);
         }
         else
         {
