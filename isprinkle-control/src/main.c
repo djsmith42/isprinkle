@@ -131,11 +131,15 @@ static int initialize(struct isprinkle_context *context)
 
             device_count++;
         }
+
+        sort_devices_by_serial(context);
+        return 1;
     }
-
-    sort_devices_by_serial(context);
-
-    return 1;
+    else
+    {
+        fprintf(stderr, "Could not find any sprinkler boards connected via USB\n");
+        return 0;
+    }
 }
 
 static void shutdown(struct isprinkle_context *context)
