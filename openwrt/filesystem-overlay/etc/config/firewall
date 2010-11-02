@@ -42,3 +42,21 @@ config 'forwarding'
 	option 'src' 'wan'
 	option 'dest' 'lan'
 
+config 'rule' 'SSH'
+	option 'proto' 'tcp'
+	option 'src' 'wan'
+	option 'dest_port' '22'
+	option 'target' 'ACCEPT'
+
+config 'rule' 'Admin'
+	option 'proto' 'tcp'
+	option 'src' 'wan'
+	option 'dest_port' '80'
+	option 'target' 'ACCEPT'
+
+config 'rule' 'iSprinkle'
+	option 'proto' 'tcp'
+	option 'src' 'wan'
+	option 'dest_port' '8080'
+	option 'target' 'ACCEPT'
+
