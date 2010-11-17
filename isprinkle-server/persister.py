@@ -3,7 +3,7 @@ from model import iSprinkleModel
 
 PICKLE_PROTOCOL_VERSION = 0
 
-FILE_PATH = '/var/lib/isprinkle/model.pickle'
+FILE_PATH = '/opt/isprinkle-server/model.pickle'
 
 class iSprinklePersister:
 
