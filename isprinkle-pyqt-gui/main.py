@@ -1,15 +1,25 @@
 import sys
-import yaml
 import time
 import datetime
+
+try:
+    from PyQt4.QtCore    import QUrl, QDateTime, QString, QRegExp, QTimer
+    from PyQt4.QtGui     import QApplication, QWidget, QTextEdit, QListWidgetItem
+    from PyQt4.QtNetwork import QNetworkRequest, QNetworkReply, QNetworkAccessManager
+except:
+    print "This application requires PyQt4. Please install it."
+    sys.exit(1)
+
+try:
+    import yaml
+except:
+    print "This application requires the python yaml module. Please install it."
+    sys.exit(1)
+
 import mainwidget
 
 from model      import iSprinkleWatering
 from webservice import yaml_watering_to_watering, string_to_time, string_to_date
-
-from PyQt4.QtCore    import QUrl, QDateTime, QString, QRegExp, QTimer
-from PyQt4.QtGui     import QApplication, QWidget, QTextEdit, QListWidgetItem
-from PyQt4.QtNetwork import QNetworkRequest, QNetworkReply, QNetworkAccessManager
 
 HOST = '192.168.1.3'
 PORT = 8080
