@@ -137,7 +137,7 @@ static int initialize(struct isprinkle_context *context)
     }
     else
     {
-        fprintf(stderr, "Could not find any sprinkler boards connected via USB\n");
+        fprintf(stderr, "Could not find any sprinkler boards connected via USB (code %d)\n", ret);
         return 0;
     }
 }
