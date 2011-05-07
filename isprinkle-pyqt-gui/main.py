@@ -21,7 +21,7 @@ import mainwidget
 from model      import iSprinkleWatering
 from webservice import yaml_watering_to_watering, string_to_time, string_to_date
 
-HOST = '192.168.1.3'
+HOST = '10.42.42.15'
 PORT = 8080
 STATUS_URL    = 'http://%s:%d/status'    % (HOST, PORT)
 WATERINGS_URL = 'http://%s:%d/waterings' % (HOST, PORT)
