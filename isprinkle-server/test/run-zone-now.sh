@@ -1,5 +1,7 @@
 #!/bin/bash
 
+: ${host:=$host}
+
 zone="$1"
 minutes="$2"
 tmpfile=/tmp/isprinkle-temp-file
@@ -10,5 +12,5 @@ if [ -z "$zone" -o -z "$minutes" ]; then
 fi
 
 echo "$zone $minutes" > "$tmpfile"
-wget http://localhost:8080/run-zone-now --quiet -O - "--post-file=$tmpfile"
+wget http://$host:8080/run-zone-now --quiet -O - "--post-file=$tmpfile"
 echo

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+: ${host:=$host}
+
 uuid="$1"
 tmpfile=/tmp/isprinkle-temp-file
 
@@ -9,5 +11,5 @@ if [ -z "$uuid" ]; then
 fi
 
 echo "$uuid" > "$tmpfile"
-wget http://localhost:8080/enable-watering --quiet -O - "--post-file=$tmpfile"
+wget http://$host:8080/enable-watering --quiet -O - "--post-file=$tmpfile"
 echo

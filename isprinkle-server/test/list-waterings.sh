@@ -1,3 +1,5 @@
 #!/bin/bash
 
-wget --quiet --output-document=- http://localhost:8080/waterings
+: ${host:=$host}
+
+wget --quiet --output-document=- http://$host:8080/waterings

@@ -1,3 +1,5 @@
 #!/bin/bash
 
-wget --quiet -O - http://localhost:8080/status
+: ${host:=$host}
+
+wget --quiet -O - http://$host:8080/status
