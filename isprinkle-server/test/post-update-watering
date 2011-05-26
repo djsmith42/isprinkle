@@ -1,8 +1,7 @@
 period days: 1
 enabled: true
-start time: 07:30:00
-uuid: 94936f43-1d35-4153-a4c6-9723045db858
+start time: 06:00:00
+uuid: b31ce52c-8662-4977-a010-32bc00baf786
 schedule type: 0
 zone durations: !!pairs
-- {1: 10}
 - {2: 10}
