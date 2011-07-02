@@ -1,8 +1,0 @@
-schedule type: 0
-uuid: b31ce52c-8662-4977-a010-32bc00baf786
-period days: 1
-zone durations: !!pairs
-- {2: 10}
-- {9: 10}
-enabled: true
-start time: 06:00:00
