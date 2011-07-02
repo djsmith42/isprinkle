@@ -1,0 +1,6 @@
+enabled: true
+period days: 2
+schedule type: 0
+start time: '16:30:00'
+zone durations:
+- [2, 15]
