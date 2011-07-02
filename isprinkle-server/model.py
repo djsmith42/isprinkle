@@ -41,7 +41,7 @@ class iSprinkleWatering:
         self.uuid = uuid_str
 
     def add_zone(self, zone_number, minutes):
-        self.zone_durations.append((zone_number, minutes))
+        self.zone_durations.append([zone_number, minutes])
 
     def set_schedule_type(self, schedule_type):
         self.schedule_type = schedule_type
