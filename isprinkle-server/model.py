@@ -1,7 +1,5 @@
 import datetime
 
-# TODO Add persistence so we can create/update/delete everything here
-
 class iSprinkleStatus:
 
     def __init__(self):

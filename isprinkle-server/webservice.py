@@ -66,6 +66,21 @@ def handle_delete_watering(model, post_data):
     model.delete_watering(uuid_str)
     iSprinklePersister().save(model)
 
+def handle_delete_all_single_shot_waterings(model, post_data):
+    uuids_to_delete = []
+    for watering in model.get_waterings():
+        if watering.schedule_type == iSprinkleWatering.SINGLE_SHOT:
+            uuids_to_delete.append(watering.get_uuid())
+
+    for uuid in uuids_to_delete:
+        print "Deleting watering", watering.get_uuid();
+        model.delete_watering(uuid)
+        print "Waterings left:", str(len(model.get_waterings()))
+
+    iSprinklePersister().save(model)
+
+    return "Deleted " + len(uuids_to_delete) + " waterings"
+
 def handle_set_deferral_datetime(model, post_data):
     dt = string_to_datetime(post_data.strip())
     model.set_deferral_datetime(dt)
@@ -206,6 +221,9 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
                 elif self.path == '/delete-watering':
                     print 'Request to delete a watering'
                     handle_delete_watering(self.server.model, post_data)
+                elif self.path == '/delete-all-single-shot-waterings':
+                    print 'Request to delete all single shot waterings'
+                    response_content = handle_delete_all_single_shot_waterings(self.server.model, post_data)
                 elif self.path == '/set-deferral-time':
                     print 'Request to set the deferral time'
                     handle_set_deferral_datetime(self.server.model, post_data)
