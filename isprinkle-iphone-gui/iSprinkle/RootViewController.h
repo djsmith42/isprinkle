@@ -10,6 +10,7 @@
 
 @interface RootViewController : UITableViewController {
     NSMutableArray *_waterings;
+    NSMutableData *receivedData;
 }
 
 @property (retain) NSMutableArray *waterings;

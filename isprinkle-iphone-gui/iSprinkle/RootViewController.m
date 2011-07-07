@@ -23,6 +23,22 @@ static const NSInteger SetupZoneNamesRow = 1;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    NSLog(@"Downloading crap");
+    
+    // Create the request.
+    NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://10.42.42.11:8080/status"]
+                                              cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                          timeoutInterval:60.0];
+
+    NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
+    if (theConnection) {
+        receivedData = [[NSMutableData data] retain];
+    } else {
+        // Inform the user that the connection failed.
+        NSLog(@"Fail!");
+    }
+    
     self.title = @"iSprinkle";
 }
 
@@ -102,7 +118,7 @@ static const NSInteger SetupZoneNamesRow = 1;
             }
 
             cell.textLabel.text = @"iSprinkle status";
-            cell.detailTextLabel.text = @"Idle";
+            cell.detailTextLabel.text = @"Loading...";
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
         else if (indexPath.row == 1)
@@ -237,6 +253,34 @@ static const NSInteger SetupZoneNamesRow = 1;
     [super dealloc];
     [_waterings release];
     _waterings = nil;
+}
+
+
+// TESTING
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    NSLog(@"didReceiveResponse");
+    [receivedData setLength:0];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+    NSLog(@"didReceiveData");
+    [receivedData appendData:data];
+    NSString *s = [[NSString alloc] initWithData:receivedData encoding:NSASCIIStringEncoding];
+    NSLog(@"Got data from web server: %@", s);
+    // TODO Somehow update the view
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    NSLog(@"didFailWithError");
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    // Once this method is invoked, "responseData" contains the complete result
 }
 
 @end
