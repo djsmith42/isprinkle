@@ -6,13 +6,20 @@
 
 @synthesize waterings = _waterings;
 
-static const NSInteger SectionCount    = 2;
+static const NSInteger SectionCount    = 3;
 static const NSInteger HeaderSection   = 0;
 static const NSInteger WateringSection = 1;
+static const NSInteger SetupSection    = 2;
 
 // In the header section:
+static const NSInteger HeaderSectionRows = 2;
 static const NSInteger StatusRow = 0;
 static const NSInteger TimeRow   = 1;
+
+// In the setup section:
+static const NSInteger SetupSectionRows  = 2;
+static const NSInteger SetupDeferralRow  = 0;
+static const NSInteger SetupZoneNamesRow = 1;
 
 - (void)viewDidLoad
 {
@@ -55,9 +62,11 @@ static const NSInteger TimeRow   = 1;
 {
     NSLog(@"numberOfRowsInSection(%d)", section);
     if (section == HeaderSection)
-        return 2;
+        return HeaderSectionRows;
     else if (section == WateringSection)
         return _waterings.count;
+    else if (section == SetupSection)
+        return SetupSectionRows;
     else
         return 0;
 }
@@ -109,9 +118,48 @@ static const NSInteger TimeRow   = 1;
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
     }
+    else if (indexPath.section == SetupSection)
+    {
+        if (indexPath.row == SetupDeferralRow)
+        {
+            static NSString *SetupCellIdentifier = @"SetupCell";
+            cell = [tableView dequeueReusableCellWithIdentifier:SetupCellIdentifier];
+            if (cell == nil)
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:SetupCellIdentifier] autorelease];
+            cell.textLabel.text = @"Deferral time";
+            cell.detailTextLabel.text = @"None";
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
+        else if (indexPath.row == SetupZoneNamesRow)
+        {
+            static NSString *ZoneNamesCellIdentifier = @"SetupZoneNamesCell";
+            cell = [tableView dequeueReusableCellWithIdentifier:ZoneNamesCellIdentifier];
+            if (cell == nil)
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ZoneNamesCellIdentifier] autorelease];
+            cell.textLabel.text = @"Zone names";
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
+    }
     
     return cell;
 }
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if (section == WateringSection)
+    {
+        return @"Waterings";
+    }
+    else if (section == SetupSection)
+    {
+        return @"Setup";
+    }
+    else
+    {
+        return nil;
+    }
+}
+
 
 /*
 // Override to support conditional editing of the table view.
