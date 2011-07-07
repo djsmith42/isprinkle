@@ -6,8 +6,11 @@
 
 @synthesize waterings = _waterings;
 
-static const NSInteger HeaderSection    = 0;
+static const NSInteger SectionCount    = 2;
+static const NSInteger HeaderSection   = 0;
 static const NSInteger WateringSection = 1;
+
+// In the header section:
 static const NSInteger StatusRow = 0;
 static const NSInteger TimeRow   = 1;
 
@@ -38,17 +41,14 @@ static const NSInteger TimeRow   = 1;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    if (interfaceOrientation == UIInterfaceOrientationPortrait)
-        return YES;
-    else
-        return NO;
+    NSLog(@"shouldAutorotateToInterfaceOrientation(%d)", interfaceOrientation);
+    return YES;
 }
-
 
 // Customize the number of sections in the table view.
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return SectionCount;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -56,8 +56,10 @@ static const NSInteger TimeRow   = 1;
     NSLog(@"numberOfRowsInSection(%d)", section);
     if (section == HeaderSection)
         return 2;
-    if (section == WateringSection)
+    else if (section == WateringSection)
         return _waterings.count;
+    else
+        return 0;
 }
 
 // Customize the appearance of table view cells.
