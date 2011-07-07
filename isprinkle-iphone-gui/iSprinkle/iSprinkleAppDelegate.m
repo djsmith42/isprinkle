@@ -1,5 +1,4 @@
-#import "iSprinkleDoc.h"
-#import "iSprinkleData.h"
+#import "Watering.h"
 #import "iSprinkleAppDelegate.h"
 #import "RootViewController.h"
 
@@ -11,10 +10,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    iSprinkleDoc *watering1 = [[[iSprinkleDoc alloc] initWithTitle:@"Watering 1" rating:4  thumbImage:[UIImage imageNamed:@"waterdrop.png"] fullImage:[UIImage imageNamed:@"waterdrop.png"]] autorelease];
-    iSprinkleDoc *watering2 = [[[iSprinkleDoc alloc] initWithTitle:@"Watering 2" rating:4  thumbImage:[UIImage imageNamed:@"waterdrop.png"] fullImage:[UIImage imageNamed:@"waterdrop.png"]] autorelease];
+    Watering *watering1 = [[Watering alloc] initWithName:@"Watering 1"];
+    Watering *watering2 = [[Watering alloc] initWithName:@"Watering 2"];
+    Watering *watering3 = [[Watering alloc] initWithName:@"Watering 3"];
     
-    NSMutableArray *waterings = [NSMutableArray arrayWithObjects:watering1, watering2, nil];
+    NSMutableArray *waterings = [NSMutableArray arrayWithObjects:watering1, watering2, watering3, nil];
     RootViewController *rootController = (RootViewController *) [self.navigationController.viewControllers objectAtIndex:0];
     rootController.waterings = waterings;
     

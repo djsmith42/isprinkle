@@ -1,6 +1,5 @@
 #import "RootViewController.h"
-#import "iSprinkleDoc.h"
-#import "iSprinkleData.h"
+#import "Watering.h"
 
 @implementation RootViewController
 
@@ -87,10 +86,10 @@ static const NSInteger SetupZoneNamesRow = 1;
             cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:WateringCellIdentifier] autorelease];
         }
         // Configure the cell.
-        iSprinkleDoc *doc = [_waterings objectAtIndex:indexPath.row];
-        cell.textLabel.text = doc.data.title;
+        Watering *doc = [_waterings objectAtIndex:indexPath.row];
+        cell.textLabel.text = doc.wateringName;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.imageView.image = doc.thumbImage;
+        cell.imageView.image = [UIImage imageNamed:@"waterdrop.png"];
     }
     else if (indexPath.section == HeaderSection)
     {
@@ -117,6 +116,10 @@ static const NSInteger SetupZoneNamesRow = 1;
             cell.detailTextLabel.text = @"July 6, 10:22 PM";
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
+            
+        // Don't the user tap rows in the header section -- they are display only        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
     }
     else if (indexPath.section == SetupSection)
     {
