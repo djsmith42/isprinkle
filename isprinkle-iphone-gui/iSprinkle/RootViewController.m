@@ -1,4 +1,5 @@
 #import "RootViewController.h"
+#import "YAMLSerialization.h"
 #import "Watering.h"
 
 @implementation RootViewController
@@ -268,9 +269,32 @@ static const NSInteger SetupZoneNamesRow = 1;
 {
     NSLog(@"didReceiveData");
     [receivedData appendData:data];
-    NSString *s = [[NSString alloc] initWithData:receivedData encoding:NSASCIIStringEncoding];
-    NSLog(@"Got data from web server: %@", s);
+    //NSString *s = [[NSString alloc] initWithData:receivedData encoding:NSASCIIStringEncoding];
+    //NSLog(@"Got data from web server: %@", s);
+
     // TODO Somehow update the view
+    NSInputStream *stream = [[NSInputStream alloc] initWithData:data];
+    
+    @try
+    {
+        NSLog(@"Parsing YAML from server");
+        NSMutableArray *array = [YAMLSerialization YAMLWithStream:stream options:kYAMLReadOptionStringScalars error:nil];
+
+        NSEnumerator * enumerator = [array objectEnumerator];
+        id element;
+        while((element = [enumerator nextObject]) != nil)
+        {
+            NSLog(@"Got an element");
+        }
+    }
+    @catch (NSException *exception)
+    {
+        NSLog(@"Could not read YAML from server: %@", [exception reason]);
+    }
+    @finally
+    {
+        NSLog(@"finally");
+    }
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
