@@ -1,11 +1,13 @@
 #import "RootViewController.h"
+#import "EditDeferralTimeController.h"
 #import "Watering.h"
 
 @implementation RootViewController
 
-@synthesize waterings   = _waterings;
-@synthesize status      = _status;
-@synthesize dataFetcher = _dataFetcher;
+@synthesize waterings                  = _waterings;
+@synthesize status                     = _status;
+@synthesize dataFetcher                = _dataFetcher;
+@synthesize editDeferralTimeController = _editDeferralTimeController;
 
 static const NSInteger SectionCount    = 3;
 static const NSInteger HeaderSection   = 0;
@@ -116,7 +118,7 @@ static const NSInteger SetupZoneNamesRow = 1;
             
             cell.accessoryType = UITableViewCellAccessoryNone;           
             cell.detailTextLabel.text = [self.status statusSummary];
-            cell.textLabel.text = @"iSprinkle status";
+            cell.textLabel.text = @"Current action";
         }
         else if (indexPath.row == TimeRow)
         {
@@ -162,7 +164,11 @@ static const NSInteger SetupZoneNamesRow = 1;
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section == WateringSection)
+    if (section == HeaderSection)
+    {
+        return @"Status";
+    }
+    else if (section == WateringSection)
     {
         return @"Waterings";
     }
@@ -176,9 +182,23 @@ static const NSInteger SetupZoneNamesRow = 1;
     }
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == SetupSection && indexPath.row == SetupDeferralRow)
+    {
+        if (_editDeferralTimeController == nil)
+        {
+            _editDeferralTimeController = [[[EditDeferralTimeController alloc] initWithNibName:@"EditDeferralTimeController" bundle:[NSBundle mainBundle]] autorelease];
+        }
+        
+        [self.navigationController pushViewController:_editDeferralTimeController animated:YES];
+    }
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+    self.editDeferralTimeController = nil;
 }
 
 - (void)viewDidUnload
@@ -191,6 +211,8 @@ static const NSInteger SetupZoneNamesRow = 1;
     [super dealloc];
     [_waterings release];
     _waterings = nil;
+    [_editDeferralTimeController release];
+    _editDeferralTimeController = nil;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
