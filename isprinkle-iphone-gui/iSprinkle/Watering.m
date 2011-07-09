@@ -14,9 +14,7 @@
 
 - (void)dealloc
 {
-    [_wateringName release];
-    _wateringName = nil;   
-
+    self.wateringName = nil;   
     [super dealloc];
 }
 

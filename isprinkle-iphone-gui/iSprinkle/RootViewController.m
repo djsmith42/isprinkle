@@ -1,10 +1,11 @@
 #import "RootViewController.h"
-#import "YAMLSerialization.h"
 #import "Watering.h"
 
 @implementation RootViewController
 
-@synthesize waterings = _waterings;
+@synthesize waterings   = _waterings;
+@synthesize status      = _status;
+@synthesize dataFetcher = _dataFetcher;
 
 static const NSInteger SectionCount    = 3;
 static const NSInteger HeaderSection   = 0;
@@ -25,22 +26,19 @@ static const NSInteger SetupZoneNamesRow = 1;
 {
     [super viewDidLoad];
     
-    _action = @"Loading";
-    
-    NSLog(@"Downloading crap");
-    
-    // Create the request.
-    NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://10.42.42.11:8080/status"]
-                                              cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                          timeoutInterval:60.0];
+    // Setup fake waterings (FIXME: We'll need to download these from the server)
+    Watering *watering1 = [[Watering alloc] initWithName:@"Watering 1"];
+    Watering *watering2 = [[Watering alloc] initWithName:@"Watering 2"];
+    Watering *watering3 = [[Watering alloc] initWithName:@"Watering 3"];
 
-    NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
-    if (!theConnection) {
-        // Inform the user that the connection failed.
-        NSLog(@"Fail!");
-    }
-    
-    self.title = @"iSprinkle";
+    self.title       = @"iSprinkle";
+    self.waterings   = [NSMutableArray arrayWithObjects:watering1, watering2, watering3, nil];
+    self.status      = [[Status alloc] init];
+    self.dataFetcher = [[DataFetcher alloc] initWithModels:self.status];
+
+    [self.status addObserver:self forKeyPath:@"currentAction"    options:0 context:nil];
+    [self.status addObserver:self forKeyPath:@"inDeferralPeriod" options:0 context:nil];
+    [self.dataFetcher startFetching];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -63,12 +61,11 @@ static const NSInteger SetupZoneNamesRow = 1;
 	[super viewDidDisappear:animated];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    NSLog(@"shouldAutorotateToInterfaceOrientation(%d)", interfaceOrientation);
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
     return YES;
 }
 
-// Customize the number of sections in the table view.
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return SectionCount;
@@ -76,7 +73,6 @@ static const NSInteger SetupZoneNamesRow = 1;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"numberOfRowsInSection(%d)", section);
     if (section == HeaderSection)
         return HeaderSectionRows;
     else if (section == WateringSection)
@@ -91,8 +87,6 @@ static const NSInteger SetupZoneNamesRow = 1;
 - (UITableViewCell *)tableView:(UITableView *)tableView
   cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"cellForRowAtIndexPath: row: %d, section: %d", indexPath.row, indexPath.section);
-    
     UITableViewCell *cell = nil;
     
     if (indexPath.section == WateringSection)
@@ -119,7 +113,7 @@ static const NSInteger SetupZoneNamesRow = 1;
             }
 
             cell.textLabel.text = @"iSprinkle status";
-            cell.detailTextLabel.text = _action;
+            cell.detailTextLabel.text = [self.status statusSummary];
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
         else if (indexPath.row == 1)
@@ -180,73 +174,14 @@ static const NSInteger SetupZoneNamesRow = 1;
     }
 }
 
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete)
-    {
-        // Delete the row from the data source.
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }
-    else if (editingStyle == UITableViewCellEditingStyleInsert)
-    {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    /*
-    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-    // ...
-    // Pass the selected object to the new view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
-    [detailViewController release];
-	*/
-}
-
 - (void)didReceiveMemoryWarning
 {
-    // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
-    // Relinquish ownership any cached data, images, etc that aren't in use.
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-
-    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
-    // For example: self.myOutlet = nil;
 }
 
 - (void)dealloc
@@ -256,62 +191,14 @@ static const NSInteger SetupZoneNamesRow = 1;
     _waterings = nil;
 }
 
-
-// TESTING
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    NSLog(@"didReceiveResponse");
-}
+    // This means that our data model has changed somehow
+    // (the keyPath and object parameters tell us what changed, if we care)
+    //NSLog(@"Model value changed for key '%@'", keyPath);
 
-static const NSString *CurrentActionString = @"curret action";
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-{
-    NSLog(@"didReceiveData");
-    NSInputStream *stream = [[NSInputStream alloc] initWithData:data];
-    
-    @try
-    {
-        NSLog(@"Parsing YAML from server");
-        NSMutableArray *array = [YAMLSerialization YAMLWithStream:stream options:kYAMLReadOptionStringScalars error:nil];
-        if ([array count] > 0)
-        {
-            NSDictionary *dictionary = (NSDictionary*)[array objectAtIndex:0];
-            NSArray * keys = [dictionary allKeys];
-            for (NSString *key in keys)
-            {
-                NSString *value = [dictionary objectForKey:key];
-                NSLog(@" '%@' -> '%@'", key, value);
-                if ([key isEqualToString:CurrentActionString])
-                {
-                    _action = value;
-                }
-            }
-        }
-        else
-        {
-            NSLog(@"Got an empty status array from the server.");
-        }
-    }
-    @catch (NSException *exception)
-    {
-        NSLog(@"Could not read YAML from server: %@", [exception reason]);
-    }
-    @finally
-    {
-        NSLog(@"finally");
-    }
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
-    NSLog(@"didFailWithError");
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-    // Once this method is invoked, "responseData" contains the complete result
+    // Refresh the entire table view:
+    [self.tableView reloadData];
 }
 
 @end
