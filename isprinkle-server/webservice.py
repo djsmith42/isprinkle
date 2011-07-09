@@ -7,6 +7,7 @@ import datetime
 import time
 import yaml
 import uuid
+import re
 
 WEB_SERVICE_PORT = 8080
 
@@ -155,7 +156,7 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
             in_deferral_period = self.server.model.status.in_deferral_period
 
             yaml_status = {}
-            yaml_status['current time'      ] = str(datetime.datetime.now())
+            yaml_status['current time'      ] = re.sub("\.\d+$", "", str(datetime.datetime.now()))
             yaml_status['in deferral period'] = in_deferral_period
             yaml_status['deferral datetime' ] = str(self.server.model.get_deferral_datetime())
 
