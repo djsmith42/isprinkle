@@ -14,8 +14,8 @@ static const NSInteger SetupSection    = 2;
 
 // In the header section:
 static const NSInteger HeaderSectionRows = 2;
-static const NSInteger StatusRow = 0;
-static const NSInteger TimeRow   = 1;
+static const NSInteger StatusRow         = 0;
+static const NSInteger TimeRow           = 1;
 
 // In the setup section:
 static const NSInteger SetupSectionRows  = 2;
@@ -74,7 +74,9 @@ static const NSInteger SetupZoneNamesRow = 1;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == HeaderSection)
+    {
         return HeaderSectionRows;
+    }
     else if (section == WateringSection)
         return _waterings.count;
     else if (section == SetupSection)
@@ -104,19 +106,19 @@ static const NSInteger SetupZoneNamesRow = 1;
     }
     else if (indexPath.section == HeaderSection)
     {
-        if (indexPath.row == 0)
+        if (indexPath.row == StatusRow)
         {
             static NSString *StatusCellIdentifier = @"StatusCell";
             cell = [tableView dequeueReusableCellWithIdentifier:StatusCellIdentifier];
             if (cell == nil) {
                 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:StatusCellIdentifier] autorelease];
             }
-
-            cell.textLabel.text = @"iSprinkle status";
+            
+            cell.accessoryType = UITableViewCellAccessoryNone;           
             cell.detailTextLabel.text = [self.status statusSummary];
-            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.textLabel.text = @"iSprinkle status";
         }
-        else if (indexPath.row == 1)
+        else if (indexPath.row == TimeRow)
         {
             static NSString *TimeCellIdentifier = @"TimeCell";
             cell = [tableView dequeueReusableCellWithIdentifier:TimeCellIdentifier];
@@ -124,10 +126,10 @@ static const NSInteger SetupZoneNamesRow = 1;
                 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:TimeCellIdentifier] autorelease];
             }
             cell.textLabel.text = @"Current time";
-            cell.detailTextLabel.text = @"July 6, 10:22 PM";
+            cell.detailTextLabel.text = [self.status prettyDateString];
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
-            
+             
         // Don't the user tap rows in the header section -- they are display only        
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
@@ -141,8 +143,8 @@ static const NSInteger SetupZoneNamesRow = 1;
             if (cell == nil)
                 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:SetupCellIdentifier] autorelease];
             cell.textLabel.text = @"Deferral time";
-            cell.detailTextLabel.text = @"None";
-            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.detailTextLabel.text = [_status prettyDeferralDateString];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
         else if (indexPath.row == SetupZoneNamesRow)
         {

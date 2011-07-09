@@ -37,8 +37,11 @@
     // Don't care
 }
 
-static NSString *CurrentActionString = @"current action";
+static NSString *CurrentActionString    = @"current action";
 static NSString *InDeferralPeriodString = @"in deferral period";
+static NSString *ActiveZoneString       = @"active zone";
+static NSString *CurrentDateTimeString  = @"current time";
+static NSString *DeferralDateTimeString = @"deferral datetime";
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
@@ -50,6 +53,14 @@ static NSString *InDeferralPeriodString = @"in deferral period";
 {
     // FIXME Inform the user about the breakage
     NSLog(@"Error fetching data: %@", [error localizedDescription]);
+}
+
+-(NSDate*) stringToDate:(NSString*)string
+{
+    NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+    return [formatter dateFromString:string];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -75,6 +86,19 @@ static NSString *InDeferralPeriodString = @"in deferral period";
                 else if ([key isEqualToString:InDeferralPeriodString])
                 {
                     [_status setInDeferralPeriod:([value isEqualToString:@"true"]) ? YES : NO];
+                }
+                else if ([key isEqualToString:ActiveZoneString])
+                {
+                    [_status setActiveZone:([value intValue])];
+                    NSLog(@"Active zone: %d", _status.activeZone);
+                }
+                else if ([key isEqualToString:CurrentDateTimeString])
+                {
+                    _status.currentDate = [self stringToDate:value];
+                }
+                else if ([key isEqualToString:DeferralDateTimeString])
+                {
+                    _status.deferralDate = [self stringToDate:value];
                 }
                 else
                 {
