@@ -10,7 +10,9 @@
 
 @interface RootViewController : UITableViewController {
     NSMutableArray *_waterings;
-    NSMutableData *receivedData;
+    NSString       *_action;
+    NSInteger       _activeZone;
+    BOOL            _isInDeferralPeriod; 
 }
 
 @property (retain) NSMutableArray *waterings;

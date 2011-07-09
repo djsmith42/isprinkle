@@ -25,6 +25,8 @@ static const NSInteger SetupZoneNamesRow = 1;
 {
     [super viewDidLoad];
     
+    _action = @"Loading";
+    
     NSLog(@"Downloading crap");
     
     // Create the request.
@@ -33,9 +35,7 @@ static const NSInteger SetupZoneNamesRow = 1;
                                           timeoutInterval:60.0];
 
     NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
-    if (theConnection) {
-        receivedData = [[NSMutableData data] retain];
-    } else {
+    if (!theConnection) {
         // Inform the user that the connection failed.
         NSLog(@"Fail!");
     }
@@ -119,7 +119,7 @@ static const NSInteger SetupZoneNamesRow = 1;
             }
 
             cell.textLabel.text = @"iSprinkle status";
-            cell.detailTextLabel.text = @"Loading...";
+            cell.detailTextLabel.text = _action;
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
         else if (indexPath.row == 1)
@@ -262,29 +262,36 @@ static const NSInteger SetupZoneNamesRow = 1;
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
     NSLog(@"didReceiveResponse");
-    [receivedData setLength:0];
 }
+
+static const NSString *CurrentActionString = @"curret action";
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
     NSLog(@"didReceiveData");
-    [receivedData appendData:data];
-    //NSString *s = [[NSString alloc] initWithData:receivedData encoding:NSASCIIStringEncoding];
-    //NSLog(@"Got data from web server: %@", s);
-
-    // TODO Somehow update the view
     NSInputStream *stream = [[NSInputStream alloc] initWithData:data];
     
     @try
     {
         NSLog(@"Parsing YAML from server");
         NSMutableArray *array = [YAMLSerialization YAMLWithStream:stream options:kYAMLReadOptionStringScalars error:nil];
-
-        NSEnumerator * enumerator = [array objectEnumerator];
-        id element;
-        while((element = [enumerator nextObject]) != nil)
+        if ([array count] > 0)
         {
-            NSLog(@"Got an element");
+            NSDictionary *dictionary = (NSDictionary*)[array objectAtIndex:0];
+            NSArray * keys = [dictionary allKeys];
+            for (NSString *key in keys)
+            {
+                NSString *value = [dictionary objectForKey:key];
+                NSLog(@" '%@' -> '%@'", key, value);
+                if ([key isEqualToString:CurrentActionString])
+                {
+                    _action = value;
+                }
+            }
+        }
+        else
+        {
+            NSLog(@"Got an empty status array from the server.");
         }
     }
     @catch (NSException *exception)
