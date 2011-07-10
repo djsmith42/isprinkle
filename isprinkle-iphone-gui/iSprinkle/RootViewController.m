@@ -7,6 +7,7 @@
 @synthesize waterings                  = _waterings;
 @synthesize status                     = _status;
 @synthesize dataFetcher                = _dataFetcher;
+@synthesize dataSender                 = _dataSender;
 @synthesize editDeferralTimeController = _editDeferralTimeController;
 
 // Sections in the root table view:
@@ -38,6 +39,7 @@ static const NSInteger SetupZoneNamesRow = 1;
     self.waterings   = [NSMutableArray arrayWithObjects:watering1, watering2, watering3, nil];
     self.status      = [[Status alloc] init];
     self.dataFetcher = [[DataFetcher alloc] initWithModels:self.status];
+    self.dataSender  = [[DataSender  alloc] init];
 
     [self.status addObserver:self forKeyPath:@"currentAction"    options:0 context:nil];
     [self.status addObserver:self forKeyPath:@"inDeferralPeriod" options:0 context:nil];
@@ -178,7 +180,8 @@ static const NSInteger SetupZoneNamesRow = 1;
             [[EditDeferralTimeController alloc] initWithNibName:@"EditDeferralTimeController" bundle:[NSBundle mainBundle]];
         }
 
-        self.editDeferralTimeController.status = _status;
+        self.editDeferralTimeController.dataSender = _dataSender;
+        self.editDeferralTimeController.status     = _status;
         [self.navigationController pushViewController:self.editDeferralTimeController animated:YES];
     }
 }

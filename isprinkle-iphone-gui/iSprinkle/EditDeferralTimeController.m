@@ -4,6 +4,7 @@
 
 @synthesize status     = _status;
 @synthesize datePicker = _datePicker;
+@synthesize dataSender = _dataSender;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -42,14 +43,17 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    NSDate *date = self.status.deferralDate != nil ? self.status.deferralDate : [NSDate date];
-    NSLog(@"Setting datePicker date to %@", date);
+    NSDate *date = self.status.deferralDate != nil ?
+        self.status.deferralDate :
+        self.status.currentDate;
+    
     [self.datePicker setDate:date];
 }
 
 - (void)dateEntered:(id)sender
 {
     NSLog(@"%s date: %@", __FUNCTION__, [self.datePicker date]);
+    [self.dataSender sendDeferralDate:[self.datePicker date]];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
