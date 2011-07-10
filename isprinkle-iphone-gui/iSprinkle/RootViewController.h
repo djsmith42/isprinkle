@@ -1,10 +1,12 @@
 #import <UIKit/UIKit.h>
 #import "DataFetcher.h"
 #import "Status.h"
+#import "EditDeferralTimeController.h"
 
 @class EditDeferralTimeController;
 
-@interface RootViewController : UITableViewController {
+@interface RootViewController : UITableViewController
+{
     NSMutableArray *_waterings;
     Status         *_status;
     DataFetcher    *_dataFetcher;

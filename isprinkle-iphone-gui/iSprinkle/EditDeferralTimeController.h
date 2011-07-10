@@ -4,14 +4,12 @@
 
 @interface EditDeferralTimeController : UIViewController {
     Status *_status;
-    BOOL    _deferralEnabled;
-    NSDate* _deferralDate;
+    UIDatePicker *_datePicker;
 }
 
-@property (retain) NSDate *deferralDate;
-@property          BOOL    deferralEnabled;
+@property (retain) Status *status;
+@property (retain) IBOutlet UIDatePicker *datePicker;
 
-- (IBAction) toggleOnForEnabledSwitch:(id)sender;
-- (IBAction) dateChosen:(id)sender;
+- (IBAction) dateEntered:(id)sender;
 
 @end

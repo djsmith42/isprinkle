@@ -9,17 +9,18 @@
 @synthesize dataFetcher                = _dataFetcher;
 @synthesize editDeferralTimeController = _editDeferralTimeController;
 
+// Sections in the root table view:
 static const NSInteger SectionCount    = 3;
 static const NSInteger HeaderSection   = 0;
 static const NSInteger WateringSection = 1;
 static const NSInteger SetupSection    = 2;
 
-// In the header section:
+// Rows in the header section:
 static const NSInteger HeaderSectionRows = 2;
 static const NSInteger StatusRow         = 0;
 static const NSInteger TimeRow           = 1;
 
-// In the setup section:
+// Rows in the setup section:
 static const NSInteger SetupSectionRows  = 2;
 static const NSInteger SetupDeferralRow  = 0;
 static const NSInteger SetupZoneNamesRow = 1;
@@ -43,28 +44,19 @@ static const NSInteger SetupZoneNamesRow = 1;
     [self.dataFetcher startFetching];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 }
-
-- (void)viewDidAppear:(BOOL)animated
-{
+- (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 }
-
-- (void)viewWillDisappear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 }
-
-- (void)viewDidDisappear:(BOOL)animated
-{
+- (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 }
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{
     return YES;
 }
 
@@ -75,16 +67,10 @@ static const NSInteger SetupZoneNamesRow = 1;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == HeaderSection)
-    {
-        return HeaderSectionRows;
-    }
-    else if (section == WateringSection)
-        return _waterings.count;
-    else if (section == SetupSection)
-        return SetupSectionRows;
-    else
-        return 0;
+    if      (section == HeaderSection)   return HeaderSectionRows;
+    else if (section == WateringSection) return _waterings.count;
+    else if (section == SetupSection)    return SetupSectionRows;
+    else                                 return 0;
 }
 
 // Customize the appearance of table view cells.
@@ -158,7 +144,7 @@ static const NSInteger SetupZoneNamesRow = 1;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
-    
+
     return cell;
 }
 
@@ -186,23 +172,26 @@ static const NSInteger SetupZoneNamesRow = 1;
 {
     if (indexPath.section == SetupSection && indexPath.row == SetupDeferralRow)
     {
-        if (_editDeferralTimeController == nil)
+        if(self.editDeferralTimeController == nil)
         {
-            _editDeferralTimeController = [[[EditDeferralTimeController alloc] initWithNibName:@"EditDeferralTimeController" bundle:[NSBundle mainBundle]] autorelease];
+            self.editDeferralTimeController =
+            [[EditDeferralTimeController alloc] initWithNibName:@"EditDeferralTimeController" bundle:[NSBundle mainBundle]];
         }
-        
-        [self.navigationController pushViewController:_editDeferralTimeController animated:YES];
+
+        self.editDeferralTimeController.status = _status;
+        [self.navigationController pushViewController:self.editDeferralTimeController animated:YES];
     }
 }
 
 - (void)didReceiveMemoryWarning
 {
+    NSLog(@"Memory Warning");
     [super didReceiveMemoryWarning];
-    self.editDeferralTimeController = nil;
 }
 
 - (void)viewDidUnload
 {
+    NSLog(@"RootViewController viewDidUnload");
     [super viewDidUnload];
 }
 
@@ -211,8 +200,6 @@ static const NSInteger SetupZoneNamesRow = 1;
     [super dealloc];
     [_waterings release];
     _waterings = nil;
-    [_editDeferralTimeController release];
-    _editDeferralTimeController = nil;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
