@@ -2,29 +2,13 @@
 
 @implementation DataSender
 
+// FIXME The host and port need to come from user input, not hard-coded:
 static const NSString *HostName = @"10.42.42.11";
 static const NSInteger Port     = 8080;
 
-- (void) sendDeferralDate:(NSDate *)date
+- (void) doHttpPost:(NSString*)postPath withData:(NSString*)withData
 {
-    // TODO Send it
-    
-    NSString *dateString = @"";
-    NSString *postPath = @"clear-deferral-time";
-    
-    if (date != nil)
-    {
-        NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
-        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-        [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
-        dateString = [formatter stringFromDate:date];
-        postPath   = @"set-deferral-time";
-    }
-    
-    NSLog(@"Posting date string: '%@'", dateString);
-
-    NSData *postData = [dateString dataUsingEncoding:NSUTF8StringEncoding];
-
+    NSData *postData = [withData dataUsingEncoding:NSUTF8StringEncoding];
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
     
     NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
@@ -44,6 +28,24 @@ static const NSInteger Port     = 8080;
         NSLog(@"Fail to POST");
         // inform the user that the download could not be made
     }
+}
+
+- (void) sendDeferralDate:(NSDate *)date
+{
+    NSString *dateString = @"";
+    NSString *postPath = @"clear-deferral-time";
+    
+    if (date != nil)
+    {
+        NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
+        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+        dateString = [formatter stringFromDate:date];
+        postPath   = @"set-deferral-time";
+    }
+
+    NSLog(@"Posting date string: '%@' to path '%@'", dateString, postPath);
+    [self doHttpPost:postPath withData:dateString];
 }
 
 @end

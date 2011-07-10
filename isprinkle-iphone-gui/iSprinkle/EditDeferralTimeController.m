@@ -3,8 +3,11 @@
 @implementation EditDeferralTimeController
 
 @synthesize status     = _status;
-@synthesize datePicker = _datePicker;
 @synthesize dataSender = _dataSender;
+
+// Widgets:
+@synthesize datePicker   = _datePicker;
+@synthesize enableSwitch = _enableSwitch;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -50,10 +53,29 @@
     [self.datePicker setDate:date];
 }
 
+- (void)sendDeferralDate
+{
+    NSDate *dateToSend = nil;
+    if ([self.enableSwitch isOn])
+    {
+        dateToSend = [self.datePicker date];
+    }
+    
+    NSLog(@"Sending deferral date: %@", dateToSend);
+    [self.dataSender sendDeferralDate:dateToSend];
+}
+
 - (void)dateEntered:(id)sender
 {
-    NSLog(@"%s date: %@", __FUNCTION__, [self.datePicker date]);
-    [self.dataSender sendDeferralDate:[self.datePicker date]];
+    NSLog(@"%s", __FUNCTION__);
+    [self sendDeferralDate];
+}
+
+- (void)enableSwitchToggled:(id)sender
+{
+    NSLog(@"%s switch state: %@", __FUNCTION__, [self.enableSwitch isOn] ? @"On" : @"Off");
+    [self.datePicker setEnabled:[self.enableSwitch isOn]];
+    [self sendDeferralDate];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
