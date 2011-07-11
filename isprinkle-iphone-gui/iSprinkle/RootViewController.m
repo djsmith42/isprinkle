@@ -1,5 +1,4 @@
 #import "RootViewController.h"
-#import "EditDeferralTimeController.h"
 #import "Watering.h"
 
 @implementation RootViewController
@@ -8,7 +7,7 @@
 @synthesize status                     = _status;
 @synthesize dataFetcher                = _dataFetcher;
 @synthesize dataSender                 = _dataSender;
-@synthesize editDeferralTimeController = _editDeferralTimeController;
+@synthesize deferralDatePicker         = _deferralDatePicker;
 
 // Sections in the root table view:
 static const NSInteger SectionCount    = 3;
@@ -132,9 +131,10 @@ static const NSInteger SetupZoneNamesRow = 1;
             cell = [tableView dequeueReusableCellWithIdentifier:SetupCellIdentifier];
             if (cell == nil)
                 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:SetupCellIdentifier] autorelease];
-            cell.textLabel.text = @"Deferral time";
+            cell.textLabel.text = @"Defer until:";
             cell.detailTextLabel.text = [_status prettyDeferralDateString];
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.detailTextLabel.textColor = self.status.inDeferralPeriod ? [UIColor redColor] : [UIColor blackColor];
         }
         else if (indexPath.row == SetupZoneNamesRow)
         {
@@ -170,19 +170,60 @@ static const NSInteger SetupZoneNamesRow = 1;
     }
 }
 
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    static const NSInteger ClearButtonIndex = 0;
+    static const NSInteger DoneButtonIndex  = 1;
+
+    if (buttonIndex == DoneButtonIndex)
+    {
+        [self.dataSender sendDeferralDate:self.deferralDatePicker.date];
+    }
+    else if (buttonIndex == ClearButtonIndex)
+    {
+        [self.dataSender clearDeferralDate];
+    }
+    else
+    {
+        NSAssert(false, @"Bogus button index in didDismissWithButtonIndex");
+    }
+}
+
+- (void)showDeferralDatePicker
+{
+    if (self.deferralDatePicker == nil)
+    {
+        self.deferralDatePicker = [[UIDatePicker alloc] init];
+        self.deferralDatePicker.datePickerMode = UIDatePickerModeDateAndTime;
+        self.deferralDatePicker.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+    }
+    
+    self.deferralDatePicker.date = self.status.deferralDate != nil ?
+        self.status.deferralDate :
+        self.status.currentDate;
+
+    UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                                              initWithTitle:@"Choose a deferral date"
+                                                   delegate:self
+                                          cancelButtonTitle:nil 
+                                     destructiveButtonTitle:@"Clear Deferral Date"
+                                          otherButtonTitles:@"Done", nil];
+    
+    [actionSheet showInView:self.tableView];
+    [actionSheet addSubview:self.deferralDatePicker];
+    [actionSheet sendSubviewToBack:self.deferralDatePicker];
+    [actionSheet setBounds:CGRectMake(0,0,320, 590)];
+    
+    CGRect pickerRect = [self.deferralDatePicker bounds];
+    pickerRect.origin.y = -160;
+    [self.deferralDatePicker setBounds:pickerRect];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == SetupSection && indexPath.row == SetupDeferralRow)
     {
-        if(self.editDeferralTimeController == nil)
-        {
-            self.editDeferralTimeController =
-            [[EditDeferralTimeController alloc] initWithNibName:@"EditDeferralTimeController" bundle:[NSBundle mainBundle]];
-        }
-
-        self.editDeferralTimeController.dataSender = _dataSender;
-        self.editDeferralTimeController.status     = _status;
-        [self.navigationController pushViewController:self.editDeferralTimeController animated:YES];
+        [self showDeferralDatePicker];
     }
 }
 

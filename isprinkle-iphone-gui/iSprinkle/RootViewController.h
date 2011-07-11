@@ -2,23 +2,20 @@
 #import "DataFetcher.h"
 #import "DataSender.h"
 #import "Status.h"
-#import "EditDeferralTimeController.h"
 
-@class EditDeferralTimeController;
-
-@interface RootViewController : UITableViewController
+@interface RootViewController : UITableViewController <UIActionSheetDelegate>
 {
     NSMutableArray *_waterings;
     Status         *_status;
     DataFetcher    *_dataFetcher;
     DataSender     *_dataSender;
-    EditDeferralTimeController *_editDeferralTimeController;
+    UIDatePicker   *_deferralDatePicker;
 }
 
 @property (retain) NSMutableArray *waterings;
 @property (retain) DataFetcher    *dataFetcher;
 @property (retain) DataSender     *dataSender;
 @property (retain) Status         *status;
-@property (retain) EditDeferralTimeController *editDeferralTimeController;
+@property (retain) UIDatePicker   *deferralDatePicker;
 
 @end

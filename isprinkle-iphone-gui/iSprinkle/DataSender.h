@@ -6,5 +6,6 @@
 }
 
 - (void) sendDeferralDate:(NSDate*)date;
+- (void) clearDeferralDate;
 
 @end

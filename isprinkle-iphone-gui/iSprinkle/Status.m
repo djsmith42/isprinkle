@@ -43,7 +43,7 @@
 - (NSString*) _prettyStringFromDate:(NSDate*)date
 {
     NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
-    [formatter setDateFormat:@"MMM d, hh:mm a"];
+    [formatter setDateFormat:@"MMM d, h:mm a"];
     [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
     
     return [formatter stringFromDate:date];    
@@ -56,10 +56,17 @@
 
 - (NSString*) prettyDeferralDateString
 {
-    if (self.inDeferralPeriod)
-        return [self _prettyStringFromDate:self.deferralDate];
-    else
-        return @"None";
+    NSString *ret = @"None";
+    
+    if (self.deferralDate != nil)
+    {
+        ret = [self _prettyStringFromDate:self.deferralDate];
+        
+        if (self.inDeferralPeriod == NO)
+            ret = [ret stringByAppendingString:@" (past)"];
+    }
+    
+    return ret;
 }
 
 - (void) dealloc

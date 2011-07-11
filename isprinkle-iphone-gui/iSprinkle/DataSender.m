@@ -32,20 +32,25 @@ static const NSInteger Port     = 8080;
 
 - (void) sendDeferralDate:(NSDate *)date
 {
-    NSString *dateString = @"";
-    NSString *postPath = @"clear-deferral-time";
+    NSString *postPath = @"set-deferral-time";
     
-    if (date != nil)
-    {
-        NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
-        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-        [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
-        dateString = [formatter stringFromDate:date];
-        postPath   = @"set-deferral-time";
-    }
+    NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+
+    NSString *dateString = [formatter stringFromDate:date];
 
     NSLog(@"Posting date string: '%@' to path '%@'", dateString, postPath);
+    
     [self doHttpPost:postPath withData:dateString];
+}
+
+- (void) clearDeferralDate
+{
+    NSString *postPath = @"clear-deferral-time";
+    
+    NSLog(@"Posting to '%@'", postPath);
+    [self doHttpPost:postPath withData:@""];
 }
 
 @end
