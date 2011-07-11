@@ -1,5 +1,5 @@
 #import "RootViewController.h"
-#import "Watering.h"
+#import "Waterings.h"
 
 @implementation RootViewController
 
@@ -29,15 +29,10 @@ static const NSInteger SetupZoneNamesRow = 1;
 {
     [super viewDidLoad];
     
-    // Setup fake waterings (FIXME: We'll need to download these from the server)
-    Watering *watering1 = [[Watering alloc] initWithName:@"Watering 1"];
-    Watering *watering2 = [[Watering alloc] initWithName:@"Watering 2"];
-    Watering *watering3 = [[Watering alloc] initWithName:@"Watering 3"];
-
     self.title       = @"iSprinkle";
-    self.waterings   = [NSMutableArray arrayWithObjects:watering1, watering2, watering3, nil];
+    self.waterings   = [[Waterings alloc] init];
     self.status      = [[Status alloc] init];
-    self.dataFetcher = [[DataFetcher alloc] initWithModels:self.status];
+    self.dataFetcher = [[DataFetcher alloc] initWithModels:self.status waterings:self.waterings];
     self.dataSender  = [[DataSender  alloc] init];
 
     [self.status addObserver:self forKeyPath:@"currentAction"    options:0 context:nil];
@@ -73,7 +68,7 @@ static const NSInteger SetupZoneNamesRow = 1;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if      (section == HeaderSection)   return HeaderSectionRows;
-    else if (section == WateringSection) return _waterings.count;
+    else if (section == WateringSection) return self.waterings.count;
     else if (section == SetupSection)    return SetupSectionRows;
     else                                 return 0;
 }
@@ -92,8 +87,8 @@ static const NSInteger SetupZoneNamesRow = 1;
             cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:WateringCellIdentifier] autorelease];
         }
         // Configure the cell.
-        Watering *doc = [_waterings objectAtIndex:indexPath.row];
-        cell.textLabel.text = doc.wateringName;
+        Watering *watering = [self.waterings wateringAtIndex:indexPath.row];
+        cell.textLabel.text = [watering prettyDescription];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.imageView.image = [UIImage imageNamed:@"waterdrop.png"];
     }

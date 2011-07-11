@@ -5,17 +5,17 @@
 
 @interface RootViewController : UITableViewController <UIActionSheetDelegate>
 {
-    NSMutableArray *_waterings;
+    Waterings      *_waterings;
     Status         *_status;
     DataFetcher    *_dataFetcher;
     DataSender     *_dataSender;
     UIDatePicker   *_deferralDatePicker;
 }
 
-@property (retain) NSMutableArray *waterings;
-@property (retain) DataFetcher    *dataFetcher;
-@property (retain) DataSender     *dataSender;
-@property (retain) Status         *status;
-@property (retain) UIDatePicker   *deferralDatePicker;
+@property (retain) Waterings    *waterings;
+@property (retain) DataFetcher  *dataFetcher;
+@property (retain) DataSender   *dataSender;
+@property (retain) Status       *status;
+@property (retain) UIDatePicker *deferralDatePicker;
 
 @end
