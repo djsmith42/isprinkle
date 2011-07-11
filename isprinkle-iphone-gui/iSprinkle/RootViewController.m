@@ -41,7 +41,11 @@ static const NSInteger SetupZoneNamesRow = 1;
     self.dataSender  = [[DataSender  alloc] init];
 
     [self.status addObserver:self forKeyPath:@"currentAction"    options:0 context:nil];
+    [self.status addObserver:self forKeyPath:@"currentDate"      options:0 context:nil];
     [self.status addObserver:self forKeyPath:@"inDeferralPeriod" options:0 context:nil];
+    [self.status addObserver:self forKeyPath:@"activeZone"       options:0 context:nil];
+    [self.status addObserver:self forKeyPath:@"deferralDate"     options:0 context:nil];
+
     [self.dataFetcher startFetching];
 }
 
