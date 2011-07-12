@@ -1,0 +1,599 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9610AFED13C6BB4700FE9867 /* api.c in Sources */ = {isa = PBXBuildFile; fileRef = 9610AFE513C6BB4700FE9867 /* api.c */; };
+		9610AFEE13C6BB4700FE9867 /* dumper.c in Sources */ = {isa = PBXBuildFile; fileRef = 9610AFE613C6BB4700FE9867 /* dumper.c */; };
+		9610AFEF13C6BB4700FE9867 /* emitter.c in Sources */ = {isa = PBXBuildFile; fileRef = 9610AFE713C6BB4700FE9867 /* emitter.c */; };
+		9610AFF013C6BB4700FE9867 /* loader.c in Sources */ = {isa = PBXBuildFile; fileRef = 9610AFE813C6BB4700FE9867 /* loader.c */; };
+		9610AFF113C6BB4700FE9867 /* parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 9610AFE913C6BB4700FE9867 /* parser.c */; };
+		9610AFF213C6BB4700FE9867 /* reader.c in Sources */ = {isa = PBXBuildFile; fileRef = 9610AFEA13C6BB4700FE9867 /* reader.c */; };
+		9610AFF313C6BB4700FE9867 /* scanner.c in Sources */ = {isa = PBXBuildFile; fileRef = 9610AFEB13C6BB4700FE9867 /* scanner.c */; };
+		9610AFF413C6BB4700FE9867 /* writer.c in Sources */ = {isa = PBXBuildFile; fileRef = 9610AFEC13C6BB4700FE9867 /* writer.c */; };
+		9610AFF913C6BB6400FE9867 /* YAMLSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 9610AFF813C6BB6400FE9867 /* YAMLSerialization.m */; };
+		961EBDC213C8191800A3B746 /* Status.m in Sources */ = {isa = PBXBuildFile; fileRef = 961EBDC113C8191800A3B746 /* Status.m */; };
+		961EBDD013C82B4700A3B746 /* DataFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 961EBDCF13C82B4700A3B746 /* DataFetcher.m */; };
+		962F653213C40C5F00A3BAE7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 962F653113C40C5F00A3BAE7 /* UIKit.framework */; };
+		962F653413C40C5F00A3BAE7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 962F653313C40C5F00A3BAE7 /* Foundation.framework */; };
+		962F653613C40C5F00A3BAE7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 962F653513C40C5F00A3BAE7 /* CoreGraphics.framework */; };
+		962F653C13C40C5F00A3BAE7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 962F653A13C40C5F00A3BAE7 /* InfoPlist.strings */; };
+		962F653F13C40C5F00A3BAE7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 962F653E13C40C5F00A3BAE7 /* main.m */; };
+		962F654213C40C5F00A3BAE7 /* iSprinkleAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 962F654113C40C5F00A3BAE7 /* iSprinkleAppDelegate.m */; };
+		962F654513C40C5F00A3BAE7 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 962F654313C40C5F00A3BAE7 /* MainWindow.xib */; };
+		962F654813C40C5F00A3BAE7 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 962F654713C40C5F00A3BAE7 /* RootViewController.m */; };
+		962F654B13C40C6000A3BAE7 /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 962F654913C40C6000A3BAE7 /* RootViewController.xib */; };
+		962F655213C40C6000A3BAE7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 962F653113C40C5F00A3BAE7 /* UIKit.framework */; };
+		962F655313C40C6000A3BAE7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 962F653313C40C5F00A3BAE7 /* Foundation.framework */; };
+		962F655413C40C6000A3BAE7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 962F653513C40C5F00A3BAE7 /* CoreGraphics.framework */; };
+		962F655C13C40C6000A3BAE7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 962F655A13C40C6000A3BAE7 /* InfoPlist.strings */; };
+		962F655F13C40C6000A3BAE7 /* iSprinkleTests.h in Resources */ = {isa = PBXBuildFile; fileRef = 962F655E13C40C6000A3BAE7 /* iSprinkleTests.h */; };
+		962F656113C40C6000A3BAE7 /* iSprinkleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 962F656013C40C6000A3BAE7 /* iSprinkleTests.m */; };
+		962F657013C40F6F00A3BAE7 /* Waterings.m in Sources */ = {isa = PBXBuildFile; fileRef = 962F656F13C40F6F00A3BAE7 /* Waterings.m */; };
+		962F657313C4141900A3BAE7 /* waterdrop.png in Resources */ = {isa = PBXBuildFile; fileRef = 962F657213C4141900A3BAE7 /* waterdrop.png */; };
+		96B16D9F13CC065A000D75DF /* EditWateringController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B16D9D13CC065A000D75DF /* EditWateringController.m */; };
+		96B16DA013CC065A000D75DF /* EditWateringController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 96B16D9E13CC065A000D75DF /* EditWateringController.xib */; };
+		96B971A813C8FD14008235D9 /* DataSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B971A713C8FD14008235D9 /* DataSender.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		962F655513C40C6000A3BAE7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 962F652413C40C5E00A3BAE7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 962F652C13C40C5E00A3BAE7;
+			remoteInfo = iSprinkle;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		9610AFE413C6BB4700FE9867 /* yaml_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yaml_private.h; sourceTree = "<group>"; };
+		9610AFE513C6BB4700FE9867 /* api.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = api.c; sourceTree = "<group>"; };
+		9610AFE613C6BB4700FE9867 /* dumper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dumper.c; sourceTree = "<group>"; };
+		9610AFE713C6BB4700FE9867 /* emitter.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = emitter.c; sourceTree = "<group>"; };
+		9610AFE813C6BB4700FE9867 /* loader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = loader.c; sourceTree = "<group>"; };
+		9610AFE913C6BB4700FE9867 /* parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = parser.c; sourceTree = "<group>"; };
+		9610AFEA13C6BB4700FE9867 /* reader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = reader.c; sourceTree = "<group>"; };
+		9610AFEB13C6BB4700FE9867 /* scanner.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scanner.c; sourceTree = "<group>"; };
+		9610AFEC13C6BB4700FE9867 /* writer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = writer.c; sourceTree = "<group>"; };
+		9610AFF513C6BB5400FE9867 /* yaml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yaml.h; sourceTree = "<group>"; };
+		9610AFF613C6BB6400FE9867 /* YAMLSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YAMLSerialization.h; sourceTree = "<group>"; };
+		9610AFF713C6BB6400FE9867 /* YAML_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YAML_Prefix.pch; sourceTree = "<group>"; };
+		9610AFF813C6BB6400FE9867 /* YAMLSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YAMLSerialization.m; sourceTree = "<group>"; };
+		961EBDC013C8191800A3B746 /* Status.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Status.h; sourceTree = "<group>"; };
+		961EBDC113C8191800A3B746 /* Status.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Status.m; sourceTree = "<group>"; };
+		961EBDCE13C82B4700A3B746 /* DataFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataFetcher.h; sourceTree = "<group>"; };
+		961EBDCF13C82B4700A3B746 /* DataFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataFetcher.m; sourceTree = "<group>"; };
+		962F652D13C40C5F00A3BAE7 /* iSprinkle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iSprinkle.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		962F653113C40C5F00A3BAE7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		962F653313C40C5F00A3BAE7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		962F653513C40C5F00A3BAE7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		962F653913C40C5F00A3BAE7 /* iSprinkle-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iSprinkle-Info.plist"; sourceTree = "<group>"; };
+		962F653B13C40C5F00A3BAE7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		962F653D13C40C5F00A3BAE7 /* iSprinkle-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iSprinkle-Prefix.pch"; sourceTree = "<group>"; };
+		962F653E13C40C5F00A3BAE7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		962F654013C40C5F00A3BAE7 /* iSprinkleAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = iSprinkleAppDelegate.h; path = iSprinkle/iSprinkleAppDelegate.h; sourceTree = "<group>"; };
+		962F654113C40C5F00A3BAE7 /* iSprinkleAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = iSprinkleAppDelegate.m; path = iSprinkle/iSprinkleAppDelegate.m; sourceTree = "<group>"; };
+		962F654413C40C5F00A3BAE7 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
+		962F654613C40C5F00A3BAE7 /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		962F654713C40C5F00A3BAE7 /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		962F654A13C40C6000A3BAE7 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/RootViewController.xib; sourceTree = "<group>"; };
+		962F655113C40C6000A3BAE7 /* iSprinkleTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iSprinkleTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		962F655913C40C6000A3BAE7 /* iSprinkleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iSprinkleTests-Info.plist"; sourceTree = "<group>"; };
+		962F655B13C40C6000A3BAE7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		962F655D13C40C6000A3BAE7 /* iSprinkleTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iSprinkleTests-Prefix.pch"; sourceTree = "<group>"; };
+		962F655E13C40C6000A3BAE7 /* iSprinkleTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iSprinkleTests.h; sourceTree = "<group>"; };
+		962F656013C40C6000A3BAE7 /* iSprinkleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iSprinkleTests.m; sourceTree = "<group>"; };
+		962F656E13C40F6F00A3BAE7 /* Waterings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Waterings.h; sourceTree = "<group>"; };
+		962F656F13C40F6F00A3BAE7 /* Waterings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Waterings.m; sourceTree = "<group>"; };
+		962F657213C4141900A3BAE7 /* waterdrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = waterdrop.png; sourceTree = "<group>"; };
+		96B16D9C13CC065A000D75DF /* EditWateringController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditWateringController.h; path = iSprinkle.xcodeproj/EditWateringController.h; sourceTree = SOURCE_ROOT; };
+		96B16D9D13CC065A000D75DF /* EditWateringController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EditWateringController.m; path = iSprinkle.xcodeproj/EditWateringController.m; sourceTree = SOURCE_ROOT; };
+		96B16D9E13CC065A000D75DF /* EditWateringController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditWateringController.xib; path = iSprinkle.xcodeproj/EditWateringController.xib; sourceTree = SOURCE_ROOT; };
+		96B971A613C8FD14008235D9 /* DataSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSender.h; sourceTree = "<group>"; };
+		96B971A713C8FD14008235D9 /* DataSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataSender.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		962F652A13C40C5E00A3BAE7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				962F653213C40C5F00A3BAE7 /* UIKit.framework in Frameworks */,
+				962F653413C40C5F00A3BAE7 /* Foundation.framework in Frameworks */,
+				962F653613C40C5F00A3BAE7 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		962F654D13C40C6000A3BAE7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				962F655213C40C6000A3BAE7 /* UIKit.framework in Frameworks */,
+				962F655313C40C6000A3BAE7 /* Foundation.framework in Frameworks */,
+				962F655413C40C6000A3BAE7 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		961EBDCC13C823E700A3B746 /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				962F654013C40C5F00A3BAE7 /* iSprinkleAppDelegate.h */,
+				962F654113C40C5F00A3BAE7 /* iSprinkleAppDelegate.m */,
+			);
+			name = Delegates;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		961EBDD113C82B5000A3B746 /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				961EBDCE13C82B4700A3B746 /* DataFetcher.h */,
+				961EBDCF13C82B4700A3B746 /* DataFetcher.m */,
+				96B971A613C8FD14008235D9 /* DataSender.h */,
+				96B971A713C8FD14008235D9 /* DataSender.m */,
+				962F653E13C40C5F00A3BAE7 /* main.m */,
+			);
+			name = Misc;
+			sourceTree = "<group>";
+		};
+		962F652213C40C5E00A3BAE7 = {
+			isa = PBXGroup;
+			children = (
+				962F653713C40C5F00A3BAE7 /* iSprinkle */,
+				962F655713C40C6000A3BAE7 /* iSprinkleTests */,
+				962F653013C40C5F00A3BAE7 /* Frameworks */,
+				962F652E13C40C5F00A3BAE7 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		962F652E13C40C5F00A3BAE7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				962F652D13C40C5F00A3BAE7 /* iSprinkle.app */,
+				962F655113C40C6000A3BAE7 /* iSprinkleTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		962F653013C40C5F00A3BAE7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				962F653113C40C5F00A3BAE7 /* UIKit.framework */,
+				962F653313C40C5F00A3BAE7 /* Foundation.framework */,
+				962F653513C40C5F00A3BAE7 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		962F653713C40C5F00A3BAE7 /* iSprinkle */ = {
+			isa = PBXGroup;
+			children = (
+				96B971AE13C91303008235D9 /* Views */,
+				961EBDD113C82B5000A3B746 /* Misc */,
+				961EBDCC13C823E700A3B746 /* Delegates */,
+				962F658413C41CEB00A3BAE7 /* View Controllers */,
+				962F657113C4140400A3BAE7 /* Resources */,
+				962F656A13C40E4F00A3BAE7 /* Model */,
+				96A6D98813C5EDF500BF6A5F /* YAML */,
+				962F653813C40C5F00A3BAE7 /* Supporting Files */,
+			);
+			path = iSprinkle;
+			sourceTree = "<group>";
+		};
+		962F653813C40C5F00A3BAE7 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				962F653913C40C5F00A3BAE7 /* iSprinkle-Info.plist */,
+				962F653A13C40C5F00A3BAE7 /* InfoPlist.strings */,
+				962F653D13C40C5F00A3BAE7 /* iSprinkle-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		962F655713C40C6000A3BAE7 /* iSprinkleTests */ = {
+			isa = PBXGroup;
+			children = (
+				962F655E13C40C6000A3BAE7 /* iSprinkleTests.h */,
+				962F656013C40C6000A3BAE7 /* iSprinkleTests.m */,
+				962F655813C40C6000A3BAE7 /* Supporting Files */,
+			);
+			path = iSprinkleTests;
+			sourceTree = "<group>";
+		};
+		962F655813C40C6000A3BAE7 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				962F655913C40C6000A3BAE7 /* iSprinkleTests-Info.plist */,
+				962F655A13C40C6000A3BAE7 /* InfoPlist.strings */,
+				962F655D13C40C6000A3BAE7 /* iSprinkleTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		962F656A13C40E4F00A3BAE7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				961EBDC013C8191800A3B746 /* Status.h */,
+				961EBDC113C8191800A3B746 /* Status.m */,
+				962F656E13C40F6F00A3BAE7 /* Waterings.h */,
+				962F656F13C40F6F00A3BAE7 /* Waterings.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		962F657113C4140400A3BAE7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				962F657213C4141900A3BAE7 /* waterdrop.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		962F658413C41CEB00A3BAE7 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				962F654613C40C5F00A3BAE7 /* RootViewController.h */,
+				962F654713C40C5F00A3BAE7 /* RootViewController.m */,
+				962F654913C40C6000A3BAE7 /* RootViewController.xib */,
+				96B16D9C13CC065A000D75DF /* EditWateringController.h */,
+				96B16D9D13CC065A000D75DF /* EditWateringController.m */,
+				96B16D9E13CC065A000D75DF /* EditWateringController.xib */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		96A6D98813C5EDF500BF6A5F /* YAML */ = {
+			isa = PBXGroup;
+			children = (
+				9610AFF613C6BB6400FE9867 /* YAMLSerialization.h */,
+				9610AFF713C6BB6400FE9867 /* YAML_Prefix.pch */,
+				9610AFF813C6BB6400FE9867 /* YAMLSerialization.m */,
+				9610AFF513C6BB5400FE9867 /* yaml.h */,
+				9610AFE413C6BB4700FE9867 /* yaml_private.h */,
+				9610AFE513C6BB4700FE9867 /* api.c */,
+				9610AFE613C6BB4700FE9867 /* dumper.c */,
+				9610AFE713C6BB4700FE9867 /* emitter.c */,
+				9610AFE813C6BB4700FE9867 /* loader.c */,
+				9610AFE913C6BB4700FE9867 /* parser.c */,
+				9610AFEA13C6BB4700FE9867 /* reader.c */,
+				9610AFEB13C6BB4700FE9867 /* scanner.c */,
+				9610AFEC13C6BB4700FE9867 /* writer.c */,
+			);
+			name = YAML;
+			sourceTree = "<group>";
+		};
+		96B971AE13C91303008235D9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				962F654313C40C5F00A3BAE7 /* MainWindow.xib */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		962F652C13C40C5E00A3BAE7 /* iSprinkle */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 962F656413C40C6000A3BAE7 /* Build configuration list for PBXNativeTarget "iSprinkle" */;
+			buildPhases = (
+				962F652913C40C5E00A3BAE7 /* Sources */,
+				962F652A13C40C5E00A3BAE7 /* Frameworks */,
+				962F652B13C40C5E00A3BAE7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iSprinkle;
+			productName = iSprinkle;
+			productReference = 962F652D13C40C5F00A3BAE7 /* iSprinkle.app */;
+			productType = "com.apple.product-type.application";
+		};
+		962F655013C40C6000A3BAE7 /* iSprinkleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 962F656713C40C6000A3BAE7 /* Build configuration list for PBXNativeTarget "iSprinkleTests" */;
+			buildPhases = (
+				962F654C13C40C6000A3BAE7 /* Sources */,
+				962F654D13C40C6000A3BAE7 /* Frameworks */,
+				962F654E13C40C6000A3BAE7 /* Resources */,
+				962F654F13C40C6000A3BAE7 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				962F655613C40C6000A3BAE7 /* PBXTargetDependency */,
+			);
+			name = iSprinkleTests;
+			productName = iSprinkleTests;
+			productReference = 962F655113C40C6000A3BAE7 /* iSprinkleTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		962F652413C40C5E00A3BAE7 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 962F652713C40C5E00A3BAE7 /* Build configuration list for PBXProject "iSprinkle" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 962F652213C40C5E00A3BAE7;
+			productRefGroup = 962F652E13C40C5F00A3BAE7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				962F652C13C40C5E00A3BAE7 /* iSprinkle */,
+				962F655013C40C6000A3BAE7 /* iSprinkleTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		962F652B13C40C5E00A3BAE7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				962F653C13C40C5F00A3BAE7 /* InfoPlist.strings in Resources */,
+				962F654513C40C5F00A3BAE7 /* MainWindow.xib in Resources */,
+				962F654B13C40C6000A3BAE7 /* RootViewController.xib in Resources */,
+				962F657313C4141900A3BAE7 /* waterdrop.png in Resources */,
+				96B16DA013CC065A000D75DF /* EditWateringController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		962F654E13C40C6000A3BAE7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				962F655C13C40C6000A3BAE7 /* InfoPlist.strings in Resources */,
+				962F655F13C40C6000A3BAE7 /* iSprinkleTests.h in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		962F654F13C40C6000A3BAE7 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		962F652913C40C5E00A3BAE7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				962F653F13C40C5F00A3BAE7 /* main.m in Sources */,
+				962F654213C40C5F00A3BAE7 /* iSprinkleAppDelegate.m in Sources */,
+				962F654813C40C5F00A3BAE7 /* RootViewController.m in Sources */,
+				962F657013C40F6F00A3BAE7 /* Waterings.m in Sources */,
+				9610AFED13C6BB4700FE9867 /* api.c in Sources */,
+				9610AFEE13C6BB4700FE9867 /* dumper.c in Sources */,
+				9610AFEF13C6BB4700FE9867 /* emitter.c in Sources */,
+				9610AFF013C6BB4700FE9867 /* loader.c in Sources */,
+				9610AFF113C6BB4700FE9867 /* parser.c in Sources */,
+				9610AFF213C6BB4700FE9867 /* reader.c in Sources */,
+				9610AFF313C6BB4700FE9867 /* scanner.c in Sources */,
+				9610AFF413C6BB4700FE9867 /* writer.c in Sources */,
+				9610AFF913C6BB6400FE9867 /* YAMLSerialization.m in Sources */,
+				961EBDC213C8191800A3B746 /* Status.m in Sources */,
+				961EBDD013C82B4700A3B746 /* DataFetcher.m in Sources */,
+				96B971A813C8FD14008235D9 /* DataSender.m in Sources */,
+				96B16D9F13CC065A000D75DF /* EditWateringController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		962F654C13C40C6000A3BAE7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				962F656113C40C6000A3BAE7 /* iSprinkleTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		962F655613C40C6000A3BAE7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 962F652C13C40C5E00A3BAE7 /* iSprinkle */;
+			targetProxy = 962F655513C40C6000A3BAE7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		962F653A13C40C5F00A3BAE7 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				962F653B13C40C5F00A3BAE7 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		962F654313C40C5F00A3BAE7 /* MainWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				962F654413C40C5F00A3BAE7 /* en */,
+			);
+			name = MainWindow.xib;
+			sourceTree = "<group>";
+		};
+		962F654913C40C6000A3BAE7 /* RootViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				962F654A13C40C6000A3BAE7 /* en */,
+			);
+			name = RootViewController.xib;
+			sourceTree = "<group>";
+		};
+		962F655A13C40C6000A3BAE7 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				962F655B13C40C6000A3BAE7 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		962F656213C40C6000A3BAE7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		962F656313C40C6000A3BAE7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+		962F656513C40C6000A3BAE7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iSprinkle/iSprinkle-Prefix.pch";
+				INFOPLIST_FILE = "iSprinkle/iSprinkle-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		962F656613C40C6000A3BAE7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iSprinkle/iSprinkle-Prefix.pch";
+				INFOPLIST_FILE = "iSprinkle/iSprinkle-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		962F656813C40C6000A3BAE7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/iSprinkle.app/iSprinkle";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iSprinkleTests/iSprinkleTests-Prefix.pch";
+				INFOPLIST_FILE = "iSprinkleTests/iSprinkleTests-Info.plist";
+				OTHER_LDFLAGS = (
+					"-framework",
+					SenTestingKit,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		962F656913C40C6000A3BAE7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/iSprinkle.app/iSprinkle";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iSprinkleTests/iSprinkleTests-Prefix.pch";
+				INFOPLIST_FILE = "iSprinkleTests/iSprinkleTests-Info.plist";
+				OTHER_LDFLAGS = (
+					"-framework",
+					SenTestingKit,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		962F652713C40C5E00A3BAE7 /* Build configuration list for PBXProject "iSprinkle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				962F656213C40C6000A3BAE7 /* Debug */,
+				962F656313C40C6000A3BAE7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		962F656413C40C6000A3BAE7 /* Build configuration list for PBXNativeTarget "iSprinkle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				962F656513C40C6000A3BAE7 /* Debug */,
+				962F656613C40C6000A3BAE7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		962F656713C40C6000A3BAE7 /* Build configuration list for PBXNativeTarget "iSprinkleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				962F656813C40C6000A3BAE7 /* Debug */,
+				962F656913C40C6000A3BAE7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 962F652413C40C5E00A3BAE7 /* Project object */;
+}
