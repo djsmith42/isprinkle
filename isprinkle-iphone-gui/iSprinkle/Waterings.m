@@ -39,6 +39,9 @@
         case SingleShot:
             return @"Single shot (FIXME)";
     }
+    
+    NSAssert(false, @"Unhandled schedule type in switch statement");
+    return @"";
 }
 
 - (void)copyDataFromWatering:(Watering*)watering
@@ -91,17 +94,16 @@
     Watering *w = [self wateringWithUuid:watering.uuid];
     if (w != nil)
     {
-        NSLog(@"Updating existing watering with UUID %@", w.uuid);
         [w copyDataFromWatering:watering];
     }
     else
     {
-        NSLog(@"Add new watering with UUID %@", w.uuid);
         Watering *newWatering = [[Watering alloc] init];
         [newWatering copyDataFromWatering:watering];
         [_waterings addObject:newWatering];
     }
-    NSLog(@"There are now %d waterings", [_waterings count]);
+    
+    self.watcherKey = @"magic";
 }
 
 -(Watering*) wateringWithUuid:(NSString *)uuid

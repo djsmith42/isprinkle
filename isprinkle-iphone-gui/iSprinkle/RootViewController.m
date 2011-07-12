@@ -8,6 +8,7 @@
 @synthesize dataFetcher                = _dataFetcher;
 @synthesize dataSender                 = _dataSender;
 @synthesize deferralDatePicker         = _deferralDatePicker;
+@synthesize editWateringController     = _editWateringController;
 
 // Sections in the root table view:
 static const NSInteger SectionCount    = 3;
@@ -28,18 +29,19 @@ static const NSInteger SetupZoneNamesRow = 1;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.title       = @"iSprinkle";
     self.waterings   = [[Waterings alloc] init];
     self.status      = [[Status alloc] init];
     self.dataFetcher = [[DataFetcher alloc] initWithModels:self.status waterings:self.waterings];
     self.dataSender  = [[DataSender  alloc] init];
 
-    [self.status addObserver:self forKeyPath:@"currentAction"    options:0 context:nil];
-    [self.status addObserver:self forKeyPath:@"currentDate"      options:0 context:nil];
-    [self.status addObserver:self forKeyPath:@"inDeferralPeriod" options:0 context:nil];
-    [self.status addObserver:self forKeyPath:@"activeZone"       options:0 context:nil];
-    [self.status addObserver:self forKeyPath:@"deferralDate"     options:0 context:nil];
+    [self.status    addObserver:self forKeyPath:@"currentAction"    options:0 context:nil];
+    [self.status    addObserver:self forKeyPath:@"currentDate"      options:0 context:nil];
+    [self.status    addObserver:self forKeyPath:@"inDeferralPeriod" options:0 context:nil];
+    [self.status    addObserver:self forKeyPath:@"activeZone"       options:0 context:nil];
+    [self.status    addObserver:self forKeyPath:@"deferralDate"     options:0 context:nil];
+    [self.waterings addObserver:self forKeyPath:@"watcherKey"       options:0 context:nil];
 
     [self.dataFetcher startFetching];
 }
@@ -218,11 +220,26 @@ static const NSInteger SetupZoneNamesRow = 1;
     [self.deferralDatePicker setBounds:pickerRect];
 }
 
+- (void)navigateToWatering:(Watering*)watering
+{
+    if (self.editWateringController == nil)
+    {
+        self.editWateringController = [[[EditWateringController alloc] initWithNibName:@"EditWateringController" bundle:[NSBundle mainBundle]] autorelease];
+    }
+
+    self.editWateringController.watering = watering;
+    [self.navigationController pushViewController:self.editWateringController animated:YES]; 
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == SetupSection && indexPath.row == SetupDeferralRow)
     {
         [self showDeferralDatePicker];
+    }
+    else if (indexPath.section == WateringSection)
+    {
+        [self navigateToWatering:[self.waterings.waterings objectAtIndex:indexPath.row]];
     }
 }
 

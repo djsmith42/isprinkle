@@ -18,6 +18,8 @@ static const NSInteger Port     = 8080;
         
         _receivedData = [[NSMutableData data] retain];
         _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(startFetching) userInfo:nil repeats:YES];
+        
+        _firstTime = YES;
     }
     return self;
 }
@@ -81,12 +83,22 @@ static NSString *ZoneDurations = @"zone durations";
     NSLog(@"Error fetching data: %@", [error localizedDescription]);
 }
 
--(NSDate*) stringToDate:(NSString*)string
+-(NSDateFormatter*) createDateFormatter:(NSString*)format
 {
     NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
-    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    [formatter setDateFormat:format];
     [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
-    return [formatter dateFromString:string];
+    return formatter;
+}
+
+-(NSDate*) stringToDate:(NSString*)string
+{
+    return [[self createDateFormatter:@"yyyy-MM-dd HH:mm:ss"] dateFromString:string];
+}
+
+-(NSDate*) stringToTime:(NSString*)string
+{
+    return [[self createDateFormatter:@"HH:mm:ss"] dateFromString:string];
 }
 
 - (void)_handleStatusResponseWithStream:(NSInputStream*)stream
@@ -193,6 +205,10 @@ static NSString *ZoneDurations = @"zone durations";
                     {
                         tempWatering.scheduleType = [(NSString*)value integerValue];
                     }
+                    else if ([key isEqualToString:@"start time"])
+                    {
+                        tempWatering.startTime = [self stringToTime:(NSString*)value];
+                    }
                     else
                     {
                         NSLog(@"TODO: Handle the watering key: '%@'", key);
@@ -236,6 +252,13 @@ static NSString *ZoneDurations = @"zone durations";
             [self _handleWateringsResponseWithStream:stream];
             self.state = FetchingStatus;
             break;
+    }
+    
+    if (_firstTime)
+    {
+        // Immediately fetch watering info so we don't have to wait for the timer
+        _firstTime = NO;
+        [self startFetching];
     }
 }
 

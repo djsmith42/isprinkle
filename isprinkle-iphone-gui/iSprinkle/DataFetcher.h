@@ -8,6 +8,7 @@
     NSMutableData *_receivedData;
     NSTimer       *_timer;
     enum State { FetchingStatus, FetchingWaterings } _state;
+    BOOL           _firstTime;
 }
 
 @property enum State state;
