@@ -45,6 +45,25 @@
     return @"";
 }
 
+- (NSString*) _prettyStringFromDate:(NSDate*)date withFormat:(NSString*)format
+{
+    NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
+    [formatter setDateFormat:format];
+    [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+    return [formatter stringFromDate:date];
+}
+
+-(NSString*) prettyStartDate
+{
+    return [self _prettyStringFromDate:self.startDate withFormat:@"MMM d"];
+}
+
+-(NSString*) prettyStartTime
+{
+    return [self _prettyStringFromDate:self.startTime withFormat:@"h:mm a"];
+}
+
+
 - (void)copyDataFromWatering:(Watering*)watering
 {
     self.uuid = watering.uuid;

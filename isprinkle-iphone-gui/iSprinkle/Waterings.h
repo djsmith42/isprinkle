@@ -32,6 +32,8 @@
 @property (retain) NSMutableArray *zoneDurations;
 
 -(NSString*) prettyDescription;
+-(NSString*) prettyStartTime;
+-(NSString*) prettyStartDate;
 -(void) copyDataFromWatering:(Watering*) watering;
 
 @end
