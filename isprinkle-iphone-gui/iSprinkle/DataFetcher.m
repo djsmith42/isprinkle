@@ -109,6 +109,7 @@ static NSString *ZoneDurations = @"zone durations";
         if ([array count] > 0)
         {
             NSDictionary *statusDictionary = (NSDictionary*)[array objectAtIndex:0];
+            Watering *activeWatering = nil;
             NSArray * keys = [statusDictionary allKeys];
             for (NSString *key in keys)
             {
@@ -134,10 +135,20 @@ static NSString *ZoneDurations = @"zone durations";
                 {
                     _status.deferralDate = [self stringToDate:value];
                 }
+                else if ([key isEqualToString:@"active watering"])
+                {
+                    _status.activeWatering = [_waterings wateringWithUuid:value];
+                    activeWatering = _status.activeWatering;
+                }
                 else
                 {
                     NSLog(@"TODO: Implement handling for status '%@' (with value '%@')", key, value);
                 }
+            }
+            
+            if (activeWatering == nil)
+            {
+                _status.activeWatering = nil;
             }
         }
         else
@@ -208,6 +219,10 @@ static NSString *ZoneDurations = @"zone durations";
                     else if ([key isEqualToString:@"start time"])
                     {
                         tempWatering.startTime = [self stringToTime:(NSString*)value];
+                    }
+                    else if ([key isEqualToString:@"start date"])
+                    {
+                        tempWatering.startDate = [self stringToTime:(NSString*)value];
                     }
                     else
                     {

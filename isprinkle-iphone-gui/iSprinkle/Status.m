@@ -8,6 +8,7 @@
 @synthesize activeZone       = _activeZone;
 @synthesize currentDate      = _currentDate;
 @synthesize deferralDate     = _deferralDate;
+@synthesize activeWatering   = _activeWatering;
 
 
 - (id) init

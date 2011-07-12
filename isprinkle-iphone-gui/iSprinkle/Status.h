@@ -1,5 +1,7 @@
 #import <Foundation/Foundation.h>
 
+#import "Waterings.h"
+
 @interface Status : NSObject
 {
     NSString *_currentAction;
@@ -7,6 +9,7 @@
     int       _activeZone;
     NSDate   *_currentDate;
     NSDate   *_deferralDate;
+    Watering *_activeWatering;
 }
 
 - (NSString*) statusSummary;
@@ -18,6 +21,6 @@
 @property          NSInteger activeZone;
 @property (retain) NSDate*   currentDate;
 @property (retain) NSDate*   deferralDate;
-
+@property (retain) Watering* activeWatering;
 
 @end

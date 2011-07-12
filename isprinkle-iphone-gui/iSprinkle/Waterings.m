@@ -12,11 +12,12 @@
 @end
 
 @implementation Watering
-@synthesize uuid         = _uuid;
-@synthesize enabled      = _enabled;
-@synthesize periodDays   = _periodDays;
-@synthesize startTime    = _startTime;
-@synthesize scheduleType = _scheduleType;
+@synthesize uuid          = _uuid;
+@synthesize enabled       = _enabled;
+@synthesize periodDays    = _periodDays;
+@synthesize startTime     = _startTime;
+@synthesize startDate     = _startDate;
+@synthesize scheduleType  = _scheduleType;
 @synthesize zoneDurations = _zoneDurations;
 
 - (id)init

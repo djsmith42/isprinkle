@@ -41,6 +41,7 @@ static const NSInteger SetupZoneNamesRow = 1;
     [self.status    addObserver:self forKeyPath:@"inDeferralPeriod" options:0 context:nil];
     [self.status    addObserver:self forKeyPath:@"activeZone"       options:0 context:nil];
     [self.status    addObserver:self forKeyPath:@"deferralDate"     options:0 context:nil];
+    [self.status    addObserver:self forKeyPath:@"activeWatering"   options:0 context:nil];
     [self.waterings addObserver:self forKeyPath:@"watcherKey"       options:0 context:nil];
 
     [self.dataFetcher startFetching];
@@ -93,6 +94,9 @@ static const NSInteger SetupZoneNamesRow = 1;
         cell.textLabel.text = [watering prettyDescription];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.imageView.image = [UIImage imageNamed:@"waterdrop.png"];
+        
+        cell.textLabel.textColor = (self.status.activeWatering == watering ?
+                                    [UIColor blueColor] : [UIColor blackColor]);
     }
     else if (indexPath.section == HeaderSection)
     {

@@ -19,6 +19,7 @@
     enum ScheduleType { EveryNDays = 0, FixedDaysOfWeek = 1, SingleShot = 2 } _scheduleType;
     NSInteger _periodDays;
     NSDate *_startTime;
+    NSDate *_startDate; // only for single shot
     NSMutableArray *_zoneDurations;
 }
 
@@ -27,6 +28,7 @@
 @property          enum ScheduleType scheduleType;
 @property          NSInteger periodDays;
 @property (retain) NSDate *startTime;
+@property (retain) NSDate *startDate;
 @property (retain) NSMutableArray *zoneDurations;
 
 -(NSString*) prettyDescription;
