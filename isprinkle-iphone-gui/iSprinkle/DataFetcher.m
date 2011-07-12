@@ -110,8 +110,7 @@ static NSString *ZoneDurations = @"zone durations";
         {
             NSDictionary *statusDictionary = (NSDictionary*)[array objectAtIndex:0];
             Watering *activeWatering = nil;
-            NSArray * keys = [statusDictionary allKeys];
-            for (NSString *key in keys)
+            for (NSString *key in [statusDictionary allKeys])
             {
                 NSString *value = [statusDictionary objectForKey:key];
                 if ([key isEqualToString:CurrentActionString])
@@ -125,7 +124,6 @@ static NSString *ZoneDurations = @"zone durations";
                 else if ([key isEqualToString:ActiveZoneString])
                 {
                     [_status setActiveZone:([value intValue])];
-                    NSLog(@"Active zone: %d", _status.activeZone);
                 }
                 else if ([key isEqualToString:CurrentDateTimeString])
                 {
@@ -169,13 +167,13 @@ static NSString *ZoneDurations = @"zone durations";
     @try
     {
         NSMutableArray *array = [YAMLSerialization YAMLWithStream:stream options:kYAMLReadOptionStringScalars error:nil];
+
         if ([array count] > 0)
         {
             array = [array objectAtIndex:0];
 
-            NSEnumerator * enumerator = [array objectEnumerator];
-            NSDictionary *wateringDictionary;
-            while((wateringDictionary = (NSDictionary*)[enumerator nextObject]) != nil)
+            NSMutableArray *uuidsReceived = [[NSMutableArray alloc] init];
+            for(NSDictionary *wateringDictionary in array)
             {
                 Watering *tempWatering = [[Watering alloc] init];
                 NSArray * keys = [wateringDictionary allKeys];
@@ -186,12 +184,8 @@ static NSString *ZoneDurations = @"zone durations";
                     {
                         NSMutableArray *array = (NSMutableArray*)value;
                         NSMutableArray *tempZoneDurations = [[NSMutableArray alloc] initWithCapacity:[array count]];
-                        NSEnumerator *subArrayEnumerator = [array objectEnumerator];
-
-                        NSMutableArray *subArray;
-                        while ((subArray = (NSMutableArray*)[subArrayEnumerator nextObject]) != nil)
+                        for(NSMutableArray *subArray in array)
                         {
-                            //NSLog(@"Zone %d for %d minutes", [[subArray objectAtIndex:0] integerValue], [[subArray objectAtIndex:1] integerValue]);
                             ZoneDuration *tempZoneDuration = [[ZoneDuration alloc] init];
                             tempZoneDuration.zone    = [[subArray objectAtIndex:0] integerValue];
                             tempZoneDuration.minutes = [[subArray objectAtIndex:1] integerValue];
@@ -203,6 +197,7 @@ static NSString *ZoneDurations = @"zone durations";
                     else if ([key isEqualToString:@"uuid"])
                     {
                         tempWatering.uuid = [NSString stringWithString:(NSString*)value];
+                        [uuidsReceived addObject:tempWatering.uuid];
                     }
                     else if ([key isEqualToString:@"enabled"])
                     {
@@ -237,6 +232,29 @@ static NSString *ZoneDurations = @"zone durations";
                 else
                 {
                     NSLog(@"Got bogus watering from YAML with no UUID");
+                }
+            }
+
+            NSLog(@"There are %d waterings on the unit", [uuidsReceived count]);
+
+            // Are there any waterings that we have that no longer exist on the unit?
+            NSArray *tempWaterings = [NSArray arrayWithArray:_waterings.waterings];
+            for (Watering *watering in tempWaterings)
+            {
+                BOOL existsOnUnit = NO;
+                for (NSString *uuid in uuidsReceived)
+                {
+                    if ([watering.uuid isEqualToString:uuid])
+                    {
+                        existsOnUnit = YES;
+                        break;
+                    }
+                }
+
+                if (!existsOnUnit)
+                {
+                    NSLog(@"Removing watering: %@", [watering prettyDescription]);
+                    [_waterings removeWatering:watering];
                 }
             }
         }

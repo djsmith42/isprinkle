@@ -54,9 +54,7 @@
     self.scheduleType = watering.scheduleType;
     
     [self.zoneDurations removeAllObjects];
-    NSEnumerator *e = [watering.zoneDurations objectEnumerator];
-    ZoneDuration *tempZoneDuration;
-    while ((tempZoneDuration = [e nextObject]) != nil)
+    for(ZoneDuration *tempZoneDuration in watering.zoneDurations)
     {
         ZoneDuration *z = [[ZoneDuration alloc] init];
         [z copyDataFromZoneDuration:tempZoneDuration];
@@ -107,11 +105,14 @@
     self.watcherKey = @"magic";
 }
 
+-(void) removeWatering:(Watering*)watering
+{
+    [self.waterings removeObject:watering];
+}
+
 -(Watering*) wateringWithUuid:(NSString *)uuid
 {
-    NSEnumerator *e = [self.waterings objectEnumerator];
-    Watering *w;
-    while ((w = [e nextObject]) != nil)
+    for (Watering *w in self.waterings)
     {
         if ([w.uuid isEqualToString:uuid])
         {

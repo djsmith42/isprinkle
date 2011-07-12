@@ -49,5 +49,6 @@
 -(void) addOrUpdateWatering:(Watering*)watering;
 -(Watering*) wateringAtIndex: (NSInteger)index;
 -(Watering*) wateringWithUuid:(NSString*)uuid;
+-(void) removeWatering:(Watering*)watering;
 
 @end

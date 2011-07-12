@@ -90,13 +90,21 @@ static const NSInteger SetupZoneNamesRow = 1;
             cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:WateringCellIdentifier] autorelease];
         }
         // Configure the cell.
-        Watering *watering = [self.waterings wateringAtIndex:indexPath.row];
-        cell.textLabel.text = [watering prettyDescription];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.imageView.image = [UIImage imageNamed:@"waterdrop.png"];
-        
-        cell.textLabel.textColor = (self.status.activeWatering == watering ?
-                                    [UIColor blueColor] : [UIColor blackColor]);
+        if (indexPath.row < [self.waterings.waterings count])
+        {
+            Watering *watering = [self.waterings wateringAtIndex:indexPath.row];
+            cell.textLabel.text = [watering prettyDescription];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.imageView.image = [UIImage imageNamed:@"waterdrop.png"];
+            cell.textLabel.textColor = (self.status.activeWatering == watering ?
+                                        [UIColor blueColor] : [UIColor blackColor]);
+        }
+        else
+        {
+            cell.textLabel.text = @"Deleted";
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.textLabel.textColor = [UIColor redColor];
+        }
     }
     else if (indexPath.section == HeaderSection)
     {
