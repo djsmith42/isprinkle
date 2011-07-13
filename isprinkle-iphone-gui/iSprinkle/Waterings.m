@@ -55,7 +55,7 @@
 
 -(NSString*) prettyStartDate
 {
-    return [self _prettyStringFromDate:self.startDate withFormat:@"MMM d"];
+    return [self _prettyStringFromDate:self.startDate withFormat:@"MMM d yyyy"];
 }
 
 -(NSString*) prettyStartTime
@@ -70,6 +70,7 @@
     self.enabled = watering.enabled;
     self.periodDays = watering.periodDays;
     self.startTime = watering.startTime;
+    self.startDate = watering.startDate;
     self.scheduleType = watering.scheduleType;
     
     [self.zoneDurations removeAllObjects];

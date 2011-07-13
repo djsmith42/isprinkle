@@ -93,7 +93,10 @@ static NSString *ZoneDurations = @"zone durations";
 
 -(NSDate*) stringToDate:(NSString*)string
 {
-    return [[self createDateFormatter:@"yyyy-MM-dd HH:mm:ss"] dateFromString:string];
+    NSDate *ret = [[self createDateFormatter:@"yyyy-MM-dd HH:mm:ss"] dateFromString:string];
+    if (ret == nil)
+        ret = [[self createDateFormatter:@"yyyy-MM-dd"] dateFromString:string];
+    return ret;
 }
 
 -(NSDate*) stringToTime:(NSString*)string
@@ -217,7 +220,7 @@ static NSString *ZoneDurations = @"zone durations";
                     }
                     else if ([key isEqualToString:@"start date"])
                     {
-                        tempWatering.startDate = [self stringToTime:(NSString*)value];
+                        tempWatering.startDate = [self stringToDate:(NSString*)value];
                     }
                     else
                     {
