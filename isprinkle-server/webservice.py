@@ -80,6 +80,7 @@ def handle_delete_all_single_shot_waterings(model, post_data):
 
     iSprinklePersister().save(model)
 
+    print "Deleted " + len(uuids_to_delete) + " waterings"
     return "Deleted " + len(uuids_to_delete) + " waterings"
 
 def handle_set_deferral_datetime(model, post_data):
@@ -176,7 +177,7 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
                         'uuid'           : str(watering.get_uuid()),
                         'schedule type'  : watering.get_schedule_type(),
                         'enabled'        : watering.is_enabled(),
-                        'start time'     : str(watering.get_start_time()),
+                        'start time'     : re.sub("\.\d+$", "", str(watering.get_start_time())),
                         'zone durations' : watering.get_zone_durations()
                         }
                 if watering.get_schedule_type() == iSprinkleWatering.EVERY_N_DAYS:
