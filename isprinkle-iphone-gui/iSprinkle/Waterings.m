@@ -29,6 +29,14 @@
     return self;
 }
 
+- (NSString*) _prettyStringFromDate:(NSDate*)date withFormat:(NSString*)format
+{
+    NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
+    [formatter setDateFormat:format];
+    [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+    return [formatter stringFromDate:date];
+}
+
 - (NSString*) prettyDescription
 {
     switch (self.scheduleType)
@@ -38,24 +46,16 @@
         case FixedDaysOfWeek:
             return @"Days of week (FIXME)";
         case SingleShot:
-            return @"Single shot (FIXME)";
+            return [NSString stringWithFormat:@"Single shot on %@", [self _prettyStringFromDate:self.startDate withFormat:@"MMMM d"]];
     }
     
     NSAssert(false, @"Unhandled schedule type in switch statement");
     return @"";
 }
 
-- (NSString*) _prettyStringFromDate:(NSDate*)date withFormat:(NSString*)format
-{
-    NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
-    [formatter setDateFormat:format];
-    [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
-    return [formatter stringFromDate:date];
-}
-
 -(NSString*) prettyStartDate
 {
-    return [self _prettyStringFromDate:self.startDate withFormat:@"MMM d yyyy"];
+    return [self _prettyStringFromDate:self.startDate withFormat:@"MMM d, yyyy"];
 }
 
 -(NSString*) prettyStartTime

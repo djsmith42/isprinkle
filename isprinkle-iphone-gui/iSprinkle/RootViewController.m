@@ -9,6 +9,7 @@
 @synthesize dataSender                 = _dataSender;
 @synthesize deferralDatePicker         = _deferralDatePicker;
 @synthesize editWateringController     = _editWateringController;
+@synthesize deferralActionSheet        = _deferralActionSheet;
 
 // Sections in the root table view:
 static const NSInteger SectionCount    = 3;
@@ -215,17 +216,20 @@ static const NSInteger SetupZoneNamesRow = 1;
         self.status.deferralDate :
         self.status.currentDate;
 
-    UIActionSheet *actionSheet = [[UIActionSheet alloc]
+    if (self.deferralActionSheet == nil)
+    {
+        self.deferralActionSheet = [[UIActionSheet alloc]
                                               initWithTitle:@"Choose a deferral date"
                                                    delegate:self
                                           cancelButtonTitle:nil 
                                      destructiveButtonTitle:@"Clear Deferral Date"
                                           otherButtonTitles:@"Done", nil];
-    
-    [actionSheet showInView:self.tableView];
-    [actionSheet addSubview:self.deferralDatePicker];
-    [actionSheet sendSubviewToBack:self.deferralDatePicker];
-    [actionSheet setBounds:CGRectMake(0,0,320, 590)];
+    }
+
+    [self.deferralActionSheet showInView:self.tableView];
+    [self.deferralActionSheet addSubview:self.deferralDatePicker];
+    [self.deferralActionSheet sendSubviewToBack:self.deferralDatePicker];
+    [self.deferralActionSheet setBounds:CGRectMake(0,0,320, 590)];
     
     CGRect pickerRect = [self.deferralDatePicker bounds];
     pickerRect.origin.y = -160;

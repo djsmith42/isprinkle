@@ -12,13 +12,15 @@
     DataSender     *_dataSender;
     UIDatePicker   *_deferralDatePicker;
     EditWateringController *_editWateringController;
+    UIActionSheet  *_deferralActionSheet;
 }
 
-@property (retain) Waterings    *waterings;
-@property (retain) DataFetcher  *dataFetcher;
-@property (retain) DataSender   *dataSender;
-@property (retain) Status       *status;
-@property (retain) UIDatePicker *deferralDatePicker;
+@property (retain) Waterings     *waterings;
+@property (retain) DataFetcher   *dataFetcher;
+@property (retain) DataSender    *dataSender;
+@property (retain) Status        *status;
+@property (retain) UIDatePicker  *deferralDatePicker;
+@property (retain) UIActionSheet *deferralActionSheet;
 @property (retain) EditWateringController *editWateringController;
 
 @end
