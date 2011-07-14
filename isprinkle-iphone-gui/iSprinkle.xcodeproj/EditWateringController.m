@@ -4,12 +4,18 @@
 
 @synthesize tableView;
 @synthesize watering;
+@synthesize startDatePicker;
+@synthesize startDateActionSheet;
+@synthesize startTimePicker;
+@synthesize startTimeActionSheet;
 
 static const NSInteger EnabledSection = 0;
 static const NSInteger ScheduleTypeSection = 1;
 static const NSInteger DateSection = 2;
 static const NSInteger ZoneDurationsSection = 3;
 
+static const NSInteger StartTimeRow = 0;
+static const NSInteger StartDateRow = 1;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -192,12 +198,12 @@ static const NSInteger ZoneDurationsSection = 3;
             cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
         }
         
-        if(indexPath.row == 0)
+        if(indexPath.row == StartTimeRow)
         {
             cell.textLabel.text = @"Start Time";
             cell.detailTextLabel.text = [self.watering prettyStartTime];
         }
-        else if(indexPath.row == 1)
+        else if(indexPath.row == StartDateRow)
         {
             cell.textLabel.text = @"Start Date";
             cell.detailTextLabel.text = [self.watering prettyStartDate];
@@ -207,11 +213,94 @@ static const NSInteger ZoneDurationsSection = 3;
     return cell;
 }
 
+- (void) actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (actionSheet == self.startDateActionSheet)
+    {
+        self.watering.startDate = self.startTimePicker.date;
+        NSLog(@"TODO Send start date '%@' to watering '%@'", self.watering.startDate, [self.watering prettyDescription]);
+    }
+    else if (actionSheet == self.startTimeActionSheet)
+    {
+        self.watering.startTime = self.startTimePicker.date;
+        NSLog(@"TODO Send start time '%@' to watering '%@'", self.watering.startTime, [self.watering prettyDescription]);
+    }
+}
+
+- (void) _showStartDatePicker
+{
+    if (self.startDatePicker == nil)
+    {
+        self.startDatePicker = [[UIDatePicker alloc] init];
+        self.startDatePicker.datePickerMode = UIDatePickerModeDate;
+        self.startDatePicker.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+    }
+    
+    if (self.startDateActionSheet == nil)
+    {
+        self.startDateActionSheet = [[UIActionSheet alloc]
+                                    initWithTitle:@"Choose a start date"
+                                    delegate:self
+                                    cancelButtonTitle:nil 
+                                    destructiveButtonTitle:nil
+                                    otherButtonTitles:@"Done", nil];
+    }
+    
+    self.startDatePicker.date = self.watering.startDate;
+    
+    [self.startDateActionSheet showInView:self.tableView];
+    [self.startDateActionSheet addSubview:self.startDatePicker];
+    [self.startDateActionSheet sendSubviewToBack:self.startDatePicker];
+    [self.startDateActionSheet setBounds:CGRectMake(0,0,320, 520)];
+    
+    CGRect pickerRect = [self.startDatePicker bounds];
+    pickerRect.origin.y = -100;
+    [self.startDatePicker setBounds:pickerRect];
+}
+
+- (void) _showStartTimePicker
+{
+    if (self.startTimePicker == nil)
+    {
+        self.startTimePicker = [[UIDatePicker alloc] init];
+        self.startTimePicker.datePickerMode = UIDatePickerModeTime;
+        self.startTimePicker.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+    }
+    
+    if (self.startTimeActionSheet == nil)
+    {
+        self.startTimeActionSheet = [[UIActionSheet alloc]
+                                     initWithTitle:@"Choose a start time"
+                                     delegate:self
+                                     cancelButtonTitle:nil 
+                                     destructiveButtonTitle:nil
+                                     otherButtonTitles:@"Done", nil];
+    }
+    
+    self.startTimePicker.date = self.watering.startTime;
+    
+    [self.startTimeActionSheet showInView:self.tableView];
+    [self.startTimeActionSheet addSubview:self.startTimePicker];
+    [self.startTimeActionSheet sendSubviewToBack:self.startTimePicker];
+    [self.startTimeActionSheet setBounds:CGRectMake(0,0,320, 520)];
+    
+    CGRect pickerRect = [self.startTimePicker bounds];
+    pickerRect.origin.y = -100;
+    [self.startTimePicker setBounds:pickerRect];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 1)
+    if (indexPath.section == DateSection)
     {
-        
+        if (indexPath.row == StartDateRow)
+        {
+            [self _showStartDatePicker];
+        }
+        else if (indexPath.row == StartTimeRow)
+        {
+            [self _showStartTimePicker];
+        }
     }
 }
 

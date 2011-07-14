@@ -211,11 +211,7 @@ static const NSInteger SetupZoneNamesRow = 1;
         self.deferralDatePicker.datePickerMode = UIDatePickerModeDateAndTime;
         self.deferralDatePicker.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
     }
-    
-    self.deferralDatePicker.date = self.status.deferralDate != nil ?
-        self.status.deferralDate :
-        self.status.currentDate;
-
+ 
     if (self.deferralActionSheet == nil)
     {
         self.deferralActionSheet = [[UIActionSheet alloc]
@@ -225,12 +221,16 @@ static const NSInteger SetupZoneNamesRow = 1;
                                      destructiveButtonTitle:@"Clear Deferral Date"
                                           otherButtonTitles:@"Done", nil];
     }
-
+    
+    self.deferralDatePicker.date = self.status.deferralDate != nil ?
+    self.status.deferralDate :
+    self.status.currentDate;
+    
     [self.deferralActionSheet showInView:self.tableView];
     [self.deferralActionSheet addSubview:self.deferralDatePicker];
     [self.deferralActionSheet sendSubviewToBack:self.deferralDatePicker];
     [self.deferralActionSheet setBounds:CGRectMake(0,0,320, 590)];
-    
+
     CGRect pickerRect = [self.deferralDatePicker bounds];
     pickerRect.origin.y = -160;
     [self.deferralDatePicker setBounds:pickerRect];

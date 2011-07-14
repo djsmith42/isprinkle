@@ -111,6 +111,12 @@ static NSString *ZoneDurations = @"zone durations";
         NSMutableArray *array = [YAMLSerialization YAMLWithStream:stream options:kYAMLReadOptionStringScalars error:nil];
         if ([array count] > 0)
         {
+            if(![[array objectAtIndex:0] isKindOfClass:[NSDictionary class]])
+            {
+                NSLog(@"Got bogus YAML results. Ignoring.");
+                return;
+            }
+            
             NSDictionary *statusDictionary = (NSDictionary*)[array objectAtIndex:0];
             Watering *activeWatering = nil;
             for (NSString *key in [statusDictionary allKeys])
@@ -237,8 +243,6 @@ static NSString *ZoneDurations = @"zone durations";
                     NSLog(@"Got bogus watering from YAML with no UUID");
                 }
             }
-
-            NSLog(@"There are %d waterings on the unit", [uuidsReceived count]);
 
             // Are there any waterings that we have that no longer exist on the unit?
             NSArray *tempWaterings = [NSArray arrayWithArray:_waterings.waterings];
