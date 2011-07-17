@@ -60,4 +60,9 @@ static const NSInteger Port     = 8080;
     [self doHttpPost:postPath withData:postData];
 }
 
+- (void) deleteWatering:(Watering *)watering
+{
+    [self doHttpPost:@"delete-watering" withData:watering.uuid];
+}
+
 @end

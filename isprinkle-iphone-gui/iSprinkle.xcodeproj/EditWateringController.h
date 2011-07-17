@@ -11,6 +11,7 @@
     UIActionSheet *startDateActionSheet;
     UIDatePicker  *startTimePicker;
     UIActionSheet *startTimeActionSheet;
+    UIActionSheet *deleteActionSheet;
     UIView        *tableFooterView;
 }
 
@@ -25,5 +26,6 @@
 @property (retain) UIActionSheet *startDateActionSheet;
 @property (retain) UIDatePicker  *startTimePicker;
 @property (retain) UIActionSheet *startTimeActionSheet;
+@property (retain) UIActionSheet *deleteActionSheet;
 @property (retain) DataSender    *dataSender;
 @end

@@ -8,6 +8,7 @@
 @synthesize startDateActionSheet;
 @synthesize startTimePicker;
 @synthesize startTimeActionSheet;
+@synthesize deleteActionSheet;
 @synthesize toolBar;
 @synthesize dataSender;
 
@@ -228,6 +229,11 @@ static const NSInteger StartDateRow = 1;
         self.watering.startTime = self.startTimePicker.date;
         NSLog(@"TODO Send start time '%@' to watering '%@'", self.watering.startTime, [self.watering prettyDescription]);
     }
+    else if (actionSheet == self.deleteActionSheet && buttonIndex == 0)
+    {
+        [self.dataSender deleteWatering:self.watering];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void) _showStartDatePicker
@@ -259,6 +265,22 @@ static const NSInteger StartDateRow = 1;
     CGRect pickerRect = [self.startDatePicker bounds];
     pickerRect.origin.y = -100;
     [self.startDatePicker setBounds:pickerRect];
+}
+
+- (void) _showDeleteConfirmation
+{
+    NSLog(@"%s", __FUNCTION__);
+    if (self.deleteActionSheet == nil)
+    {
+        self.deleteActionSheet = [[UIActionSheet alloc]
+                                     initWithTitle:@"Confirm watering deletion"
+                                     delegate:self
+                                     cancelButtonTitle:@"Cancel"
+                                     destructiveButtonTitle:@"Delete this watering"
+                                     otherButtonTitles:nil, nil];
+    }
+    
+    [self.deleteActionSheet showInView:self.tableView];
 }
 
 - (void) _showStartTimePicker
@@ -309,13 +331,12 @@ static const NSInteger StartDateRow = 1;
 
 - (IBAction) runNowButtonPressed:(id)sender
 {
-    NSLog(@"%s", __FUNCTION__);
     [self.dataSender runWateringNow:self.watering];
 }
 
 - (IBAction) deleteButtonPressed:(id)sender
 {
-    NSLog(@"%s", __FUNCTION__);
+    [self _showDeleteConfirmation];
 }
 
 @end
