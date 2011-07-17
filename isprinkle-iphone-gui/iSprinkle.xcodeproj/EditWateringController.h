@@ -27,5 +27,6 @@
 @property (retain) UIDatePicker  *startTimePicker;
 @property (retain) UIActionSheet *startTimeActionSheet;
 @property (retain) UIActionSheet *deleteActionSheet;
+@property (retain) UIActionSheet *runNowActionSheet;
 @property (retain) DataSender    *dataSender;
 @end

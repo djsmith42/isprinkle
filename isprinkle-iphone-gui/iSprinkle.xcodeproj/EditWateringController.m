@@ -9,6 +9,7 @@
 @synthesize startTimePicker;
 @synthesize startTimeActionSheet;
 @synthesize deleteActionSheet;
+@synthesize runNowActionSheet;
 @synthesize toolBar;
 @synthesize dataSender;
 
@@ -234,6 +235,11 @@ static const NSInteger StartDateRow = 1;
         [self.dataSender deleteWatering:self.watering];
         [self.navigationController popViewControllerAnimated:YES];
     }
+    else if (actionSheet == self.runNowActionSheet && buttonIndex == 0)
+    {
+        [self.dataSender runWateringNow:self.watering];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void) _showStartDatePicker
@@ -269,7 +275,6 @@ static const NSInteger StartDateRow = 1;
 
 - (void) _showDeleteConfirmation
 {
-    NSLog(@"%s", __FUNCTION__);
     if (self.deleteActionSheet == nil)
     {
         self.deleteActionSheet = [[UIActionSheet alloc]
@@ -281,6 +286,21 @@ static const NSInteger StartDateRow = 1;
     }
     
     [self.deleteActionSheet showInView:self.tableView];
+}
+
+- (void) _showRunNowConfirmation
+{
+    if (self.runNowActionSheet == nil)
+    {
+        self.runNowActionSheet = [[UIActionSheet alloc]
+                                  initWithTitle:@"You wanna run this watering now?"
+                                  delegate:self
+                                  cancelButtonTitle:@"Cancel"
+                                  destructiveButtonTitle:nil
+                                  otherButtonTitles:@"Run this watering now", nil];
+    }
+    
+    [self.runNowActionSheet showInView:self.tableView];
 }
 
 - (void) _showStartTimePicker
@@ -331,7 +351,7 @@ static const NSInteger StartDateRow = 1;
 
 - (IBAction) runNowButtonPressed:(id)sender
 {
-    [self.dataSender runWateringNow:self.watering];
+    [self _showRunNowConfirmation];
 }
 
 - (IBAction) deleteButtonPressed:(id)sender
