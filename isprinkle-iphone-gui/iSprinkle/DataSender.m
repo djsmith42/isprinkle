@@ -30,6 +30,27 @@ static const NSInteger Port     = 8080;
     }
 }
 
+- (void) connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    NSLog(@"HTTP failure: %@", [error description]);
+}
+
+- (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
+    if ([httpResponse statusCode] != 200)
+    {
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle: @"Communicatio Error"
+                              message: [NSString stringWithFormat:@"Woops. Could not update the sprinkler unit (code %d)!", [httpResponse statusCode]]
+                              delegate: nil
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+    }
+}
+
 - (void) sendDeferralDate:(NSDate *)date
 {
     NSString *postPath = @"set-deferral-time";
@@ -41,28 +62,71 @@ static const NSInteger Port     = 8080;
     NSString *dateString = [formatter stringFromDate:date];
 
     NSLog(@"Posting date string: '%@' to path '%@'", dateString, postPath);
-    
     [self doHttpPost:postPath withData:dateString];
 }
 
 - (void) clearDeferralDate
 {
-    NSString *postPath = @"clear-deferral-time";
-    
-    NSLog(@"Posting to '%@'", postPath);
-    [self doHttpPost:postPath withData:@""];
+    NSLog(@"Clearing deferral date");
+    [self doHttpPost:@"clear-deferral-time" withData:@""];
 }
 
 - (void) runWateringNow:(Watering *)watering
 {
-    NSString *postPath = @"run-watering-now";
-    NSString *postData = watering.uuid;
-    [self doHttpPost:postPath withData:postData];
+    NSLog(@"Running watering %@ now", watering.uuid);
+    [self doHttpPost:@"run-watering-now" withData:watering.uuid];
 }
 
 - (void) deleteWatering:(Watering *)watering
 {
+    NSLog(@"Deleting watering %@", watering.uuid);
     [self doHttpPost:@"delete-watering" withData:watering.uuid];
+}
+
+
+-(NSDateFormatter*) createDateFormatter:(NSString*)format
+{
+    NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
+    [formatter setDateFormat:format];
+    [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+    return formatter;
+}
+
+- (void) updateWatering:(Watering *)watering
+{
+    NSLog(@"Updating watering %@", watering.uuid);
+    NSString *yamlString = [NSString stringWithFormat:
+                            @"uuid: %@\n"
+                            "enabled: %@\n"
+                            "schedule type: %d\n"
+                            "period days: %d\n"
+                            "start time: %@\n"
+                            , watering.uuid
+                            , watering.enabled ? @"true" : @"false"
+                            , watering.scheduleType
+                            , watering.periodDays
+                            , [[self createDateFormatter:@"HH:mm:ss"] stringFromDate:watering.startTime]
+                            ];
+    
+    if (watering.scheduleType == SingleShot)
+    {
+        yamlString = [yamlString stringByAppendingFormat:
+                      @"start date: %@\n"
+                      , [[self createDateFormatter:@"yyyy-MM-dd"] stringFromDate:watering.startDate]
+                      ];
+    }
+
+    yamlString = [yamlString stringByAppendingString:@"zone durations:\n"];
+    for (ZoneDuration *duration in watering.zoneDurations)
+    {
+        yamlString = [yamlString stringByAppendingFormat:
+                      @"- [%d, %d]\n"
+                      , duration.zone, duration.minutes
+                      ];
+    }
+
+    NSLog(@"  YAML:\n%@", yamlString);
+    [self doHttpPost:@"update-watering" withData:yamlString];
 }
 
 @end

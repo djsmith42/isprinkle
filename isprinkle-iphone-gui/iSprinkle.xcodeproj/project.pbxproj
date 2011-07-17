@@ -501,6 +501,7 @@
 				GCC_PREFIX_HEADER = "iSprinkle/iSprinkle-Prefix.pch";
 				INFOPLIST_FILE = "iSprinkle/iSprinkle-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;

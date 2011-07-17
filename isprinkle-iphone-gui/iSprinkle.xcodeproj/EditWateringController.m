@@ -223,12 +223,14 @@ static const NSInteger StartDateRow = 1;
     if (actionSheet == self.startDateActionSheet)
     {
         self.watering.startDate = self.startTimePicker.date;
-        NSLog(@"TODO Send start date '%@' to watering '%@'", self.watering.startDate, [self.watering prettyDescription]);
+        [self.dataSender updateWatering:self.watering];
+        [self.tableView reloadData];
     }
     else if (actionSheet == self.startTimeActionSheet)
     {
         self.watering.startTime = self.startTimePicker.date;
-        NSLog(@"TODO Send start time '%@' to watering '%@'", self.watering.startTime, [self.watering prettyDescription]);
+        [self.dataSender updateWatering:self.watering];
+        [self.tableView reloadData];
     }
     else if (actionSheet == self.deleteActionSheet && buttonIndex == 0)
     {
