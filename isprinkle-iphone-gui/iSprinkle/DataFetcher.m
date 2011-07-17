@@ -104,11 +104,11 @@ static NSString *ZoneDurations = @"zone durations";
     return [[self createDateFormatter:@"HH:mm:ss"] dateFromString:string];
 }
 
-- (void)_handleStatusResponseWithStream:(NSInputStream*)stream
+- (void) _handleStatusResponse:(NSData*)data;
 {
     @try
     {
-        NSMutableArray *array = [YAMLSerialization YAMLWithStream:stream options:kYAMLReadOptionStringScalars error:nil];
+        NSMutableArray *array = [YAMLSerialization YAMLWithData:data options:kYAMLReadOptionStringScalars error:nil];
         if ([array count] > 0)
         {
             if(![[array objectAtIndex:0] isKindOfClass:[NSDictionary class]])
@@ -116,7 +116,7 @@ static NSString *ZoneDurations = @"zone durations";
                 NSLog(@"Got bogus YAML results. Ignoring.");
                 return;
             }
-            
+
             NSDictionary *statusDictionary = (NSDictionary*)[array objectAtIndex:0];
             Watering *activeWatering = nil;
             for (NSString *key in [statusDictionary allKeys])
@@ -152,7 +152,7 @@ static NSString *ZoneDurations = @"zone durations";
                     NSLog(@"TODO: Implement handling for status '%@' (with value '%@')", key, value);
                 }
             }
-            
+
             if (activeWatering == nil)
             {
                 _status.activeWatering = nil;
@@ -171,11 +171,11 @@ static NSString *ZoneDurations = @"zone durations";
     }
 }
 
-- (void)_handleWateringsResponseWithStream:(NSInputStream*)stream
+- (void)_handleWateringsResponse:(NSData*)data
 {
     @try
     {
-        NSMutableArray *array = [YAMLSerialization YAMLWithStream:stream options:kYAMLReadOptionStringScalars error:nil];
+        NSMutableArray *array = [YAMLSerialization YAMLWithData:data options:kYAMLReadOptionStringScalars error:nil];
 
         if ([array count] > 0)
         {
@@ -233,7 +233,7 @@ static NSString *ZoneDurations = @"zone durations";
                         NSLog(@"TODO: Handle the watering key: '%@'", key);
                     }
                 }
-                
+
                 if ([tempWatering.uuid length] > 0)
                 {
                     [_waterings addOrUpdateWatering:tempWatering];
@@ -280,16 +280,14 @@ static NSString *ZoneDurations = @"zone durations";
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    NSInputStream *stream = [[NSInputStream alloc] initWithData:_receivedData];
-
     switch (self.state)
     {
         case FetchingStatus:
-            [self _handleStatusResponseWithStream:stream];
+            [self _handleStatusResponse:_receivedData];
             self.state = FetchingWaterings;
             break;
         case FetchingWaterings:
-            [self _handleWateringsResponseWithStream:stream];
+            [self _handleWateringsResponse:_receivedData];
             self.state = FetchingStatus;
             break;
     }
