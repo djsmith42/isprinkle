@@ -8,6 +8,8 @@
 @synthesize startDateActionSheet;
 @synthesize startTimePicker;
 @synthesize startTimeActionSheet;
+@synthesize toolBar;
+@synthesize dataSender;
 
 static const NSInteger EnabledSection = 0;
 static const NSInteger ScheduleTypeSection = 1;
@@ -44,6 +46,7 @@ static const NSInteger StartDateRow = 1;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
 }
 
 - (void)viewDidUnload
@@ -302,6 +305,17 @@ static const NSInteger StartDateRow = 1;
             [self _showStartTimePicker];
         }
     }
+}
+
+- (IBAction) runNowButtonPressed:(id)sender
+{
+    NSLog(@"%s", __FUNCTION__);
+    [self.dataSender runWateringNow:self.watering];
+}
+
+- (IBAction) deleteButtonPressed:(id)sender
+{
+    NSLog(@"%s", __FUNCTION__);
 }
 
 @end

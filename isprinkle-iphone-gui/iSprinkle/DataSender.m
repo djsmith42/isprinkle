@@ -53,4 +53,11 @@ static const NSInteger Port     = 8080;
     [self doHttpPost:postPath withData:@""];
 }
 
+- (void) runWateringNow:(Watering *)watering
+{
+    NSString *postPath = @"run-watering-now";
+    NSString *postData = watering.uuid;
+    [self doHttpPost:postPath withData:postData];
+}
+
 @end
