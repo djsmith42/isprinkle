@@ -37,7 +37,6 @@ def yaml_watering_to_watering(yaml_watering):
         if yaml_watering['schedule type'] == iSprinkleWatering.EVERY_N_DAYS:
             watering.set_period_days(yaml_watering['period days'])
         elif yaml_watering['schedule type'] == iSprinkleWatering.SINGLE_SHOT:
-            # TODO Test this
             watering.set_start_date(string_to_date(yaml_watering['start date']))
         elif yaml_watering['schedule type'] == iSprinkleWatering.FIXED_DAYS_OF_WEEK:
             watering.set_days_of_week_mask(yaml_watering['days of week'])
