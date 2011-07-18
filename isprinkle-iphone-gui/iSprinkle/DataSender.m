@@ -30,9 +30,22 @@ static const NSInteger Port     = 8080;
     }
 }
 
+- (void) _alert:(NSString*)message
+{
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle: @"Communication Error"
+                          message: message
+                          delegate: nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+    [alert show];
+    [alert release];
+
+}
+
 - (void) connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-    NSLog(@"HTTP failure: %@", [error description]);
+    [self _alert:[NSString stringWithFormat:@"Woops. %@", [error localizedDescription]]];
 }
 
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
@@ -40,14 +53,7 @@ static const NSInteger Port     = 8080;
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
     if ([httpResponse statusCode] != 200)
     {
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle: @"Communicatio Error"
-                              message: [NSString stringWithFormat:@"Woops. Could not update the sprinkler unit (code %d)!", [httpResponse statusCode]]
-                              delegate: nil
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil];
-        [alert show];
-        [alert release];
+        [self _alert:[NSString stringWithFormat:@"Woops. Could not update the sprinkler unit (code %d)!", [httpResponse statusCode]]];
     }
 }
 
@@ -100,7 +106,7 @@ static const NSInteger Port     = 8080;
                             "enabled: %@\n"
                             "schedule type: %d\n"
                             "period days: %d\n"
-                            "start time: %@\n"
+                            "start time: '%@'\n"
                             , watering.uuid
                             , watering.enabled ? @"true" : @"false"
                             , watering.scheduleType
@@ -111,7 +117,7 @@ static const NSInteger Port     = 8080;
     if (watering.scheduleType == SingleShot)
     {
         yamlString = [yamlString stringByAppendingFormat:
-                      @"start date: %@\n"
+                      @"start date: '%@'\n"
                       , [[self createDateFormatter:@"yyyy-MM-dd"] stringFromDate:watering.startDate]
                       ];
     }
@@ -124,6 +130,8 @@ static const NSInteger Port     = 8080;
                       , duration.zone, duration.minutes
                       ];
     }
+    
+    yamlString = [yamlString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
     NSLog(@"  YAML:\n%@", yamlString);
     [self doHttpPost:@"update-watering" withData:yamlString];
