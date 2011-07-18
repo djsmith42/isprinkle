@@ -222,7 +222,7 @@ static const NSInteger StartDateRow = 1;
 {
     if (actionSheet == self.startDateActionSheet)
     {
-        self.watering.startDate = self.startTimePicker.date;
+        self.watering.startDate = self.startDatePicker.date;
         [self.dataSender updateWatering:self.watering];
         [self.tableView reloadData];
     }
