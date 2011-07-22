@@ -14,6 +14,8 @@
     UIActionSheet *deleteActionSheet;
     UIView        *tableFooterView;
     UIPickerView  *periodPicker;
+    UIButton      *editZonesButton;
+    UIView        *editZonesHeader;
 }
 
 - (IBAction) runNowButtonPressed:(id)sender;
@@ -32,4 +34,6 @@
 @property (retain) DataSender    *dataSender;
 @property (retain) UIPickerView  *periodPicker;
 @property (retain) UIActionSheet *periodActionSheet;
+@property (retain) UIButton      *editZonesButton;
+@property (retain) UIView        *editZonesHeader;
 @end

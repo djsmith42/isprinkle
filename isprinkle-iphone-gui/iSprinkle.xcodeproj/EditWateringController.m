@@ -15,6 +15,8 @@
 @synthesize dataSender;
 @synthesize periodPicker;
 @synthesize periodActionSheet;
+@synthesize editZonesButton;
+@synthesize editZonesHeader;
 
 static const NSInteger EnabledSection = 0;
 static const NSInteger ScheduleTypeSection = 1;
@@ -53,19 +55,12 @@ static const NSInteger PeriodRow    = 1;
 {
     [super viewDidLoad];
     self.title = @"Edit Watering";
-    self.tableView.editing = YES;
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
     self.tableView = nil;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [self.tableView reloadData];
-    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -124,10 +119,6 @@ static const NSInteger PeriodRow    = 1;
     if (section == ScheduleTypeSection)
     {
         return @"Watering type";
-    }
-    else if (section == ZoneDurationsSection)
-    {
-        return @"Zones to Water";
     }
     else
     {
@@ -457,6 +448,56 @@ static const NSInteger PeriodRow    = 1;
             35 :
             self.tableView.rowHeight);
 }
+- (void)addZoneClicked:(id)sender
+{
+    NSLog(@"TODO: Handle this case");
+}
+
+- (void) reloadZoneDurationsSection
+{
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:(NSUInteger)ZoneDurationsSection] withRowAnimation:UITableViewRowAnimationNone];
+}
+
+- (void)editZonesClicked:(id)sender
+{
+    if (self.tableView.editing)
+    {
+        [self.editZonesButton setTitle:@"Edit Zones" forState:UIControlStateNormal];
+        [self.tableView setEditing:NO animated:YES];
+    }
+    else
+    {
+        [self.editZonesButton setTitle:@"Done Editing" forState:UIControlStateNormal];
+        [self.tableView setEditing:YES animated:YES];
+    }
+    
+    [self performSelector:@selector(reloadZoneDurationsSection) withObject:self afterDelay:0.2];
+}
+
+- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if(section == ZoneDurationsSection)
+    {
+        if(self.editZonesButton == nil)
+        {
+            self.editZonesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [self.editZonesButton setTitle:@"Edit Zones" forState:UIControlStateNormal];
+            [self.editZonesButton setFrame:CGRectMake(60, 3, 235, 35)];
+            [self.editZonesButton setTitleColor:[[UIColor alloc] initWithRed:0.3 green:0 blue:0 alpha:1] forState:UIControlStateNormal];
+            [self.editZonesButton addTarget:self action:@selector(editZonesClicked:) forControlEvents:UIControlEventTouchUpInside];
+
+            self.editZonesHeader  = [[UIView alloc] init];
+            [self.editZonesHeader addSubview:self.editZonesButton];
+        }
+
+        return self.editZonesHeader;
+    }
+    else
+    {
+        return nil;
+    }
+
+}
 
 - (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
@@ -464,15 +505,17 @@ static const NSInteger PeriodRow    = 1;
     {
         UIView *footerView  = [[UIView alloc] init];
 
+        if(self.tableView.editing)
+        {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [button setTitle:@"Add new zone" forState:UIControlStateNormal];
         [button setFrame:CGRectMake(60, 3, 235, 35)];
         [button setTitleColor:[[UIColor alloc] initWithRed:0 green:0.4 blue:0 alpha:1] forState:UIControlStateNormal];
-
-        //set action of the button
-        //[button addTarget:self action:@selector(removeAction:)
+        //[button addTarget:self action:@selector(addZoneClicked:)];
+        [button addTarget:self action:@selector(addZoneClicked:) forControlEvents:UIControlEventTouchUpInside];
 
         [footerView addSubview:button];
+        }
         return footerView;
     }
     else
@@ -483,7 +526,12 @@ static const NSInteger PeriodRow    = 1;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return section == ZoneDurationsSection ? 45 : 0; // room for the 'add zone' button (with some margin)
+    return section == ZoneDurationsSection ? 40 : 0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 40;
 }
 
 - (IBAction) runNowButtonPressed:(id)sender
@@ -527,6 +575,15 @@ static const NSInteger PeriodRow    = 1;
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     // Ignore
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self.tableView reloadData];
+    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+    
+    if (self.tableView.editing)
+        [self editZonesClicked:self];
 }
 
 @end
