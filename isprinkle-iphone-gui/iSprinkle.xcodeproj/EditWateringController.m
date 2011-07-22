@@ -1,4 +1,5 @@
 #import "EditWateringController.h"
+#import "ActionSheetPicker.h"
 
 @implementation EditWateringController
 
@@ -367,8 +368,15 @@ static const NSInteger PeriodRow    = 1;
     [self.startTimeActionSheet setBounds:CGRectMake(0, 0, 320, 520)];
 }
 
+// to be used in conjunection with ActionSheetPicker
+//- (void)periodWasSelected:(NSNumber*)rowNumber
+//{
+//}
+
 - (void) _showPeriodPicker
 {
+    //[ActionSheetPicker displayActionPickerWithView:[[UIApplication sharedApplication] keyWindow] data:[NSArray arrayWithObjects:@"foo",@"bar",@"baz",nil] selectedIndex:1 target:self action:@selector(periodWasSelected:) title:@"Pick a foo!"];
+
     if (self.periodPicker == nil)
     {
         CGRect pickerFrame = CGRectMake(0, 100, 0, 0);

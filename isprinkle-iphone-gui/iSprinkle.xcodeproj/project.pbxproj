@@ -36,6 +36,7 @@
 		962F657013C40F6F00A3BAE7 /* Waterings.m in Sources */ = {isa = PBXBuildFile; fileRef = 962F656F13C40F6F00A3BAE7 /* Waterings.m */; };
 		962F657313C4141900A3BAE7 /* waterdrop.png in Resources */ = {isa = PBXBuildFile; fileRef = 962F657213C4141900A3BAE7 /* waterdrop.png */; };
 		96A6DF1A13D9128A00D5727E /* TestView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 96A6DF1913D9128A00D5727E /* TestView.xib */; };
+		96A6DF1E13D91E4D00D5727E /* ActionSheetPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 96A6DF1D13D91E4D00D5727E /* ActionSheetPicker.m */; };
 		96B16D9F13CC065A000D75DF /* EditWateringController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B16D9D13CC065A000D75DF /* EditWateringController.m */; };
 		96B16DA013CC065A000D75DF /* EditWateringController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 96B16D9E13CC065A000D75DF /* EditWateringController.xib */; };
 		96B971A813C8FD14008235D9 /* DataSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B971A713C8FD14008235D9 /* DataSender.m */; };
@@ -93,6 +94,8 @@
 		962F656F13C40F6F00A3BAE7 /* Waterings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Waterings.m; sourceTree = "<group>"; };
 		962F657213C4141900A3BAE7 /* waterdrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = waterdrop.png; sourceTree = "<group>"; };
 		96A6DF1913D9128A00D5727E /* TestView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestView.xib; sourceTree = "<group>"; };
+		96A6DF1C13D91E4D00D5727E /* ActionSheetPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionSheetPicker.h; sourceTree = "<group>"; };
+		96A6DF1D13D91E4D00D5727E /* ActionSheetPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetPicker.m; sourceTree = "<group>"; };
 		96B16D9C13CC065A000D75DF /* EditWateringController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditWateringController.h; path = iSprinkle.xcodeproj/EditWateringController.h; sourceTree = SOURCE_ROOT; };
 		96B16D9D13CC065A000D75DF /* EditWateringController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EditWateringController.m; path = iSprinkle.xcodeproj/EditWateringController.m; sourceTree = SOURCE_ROOT; };
 		96B16D9E13CC065A000D75DF /* EditWateringController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditWateringController.xib; path = iSprinkle.xcodeproj/EditWateringController.xib; sourceTree = SOURCE_ROOT; };
@@ -141,6 +144,8 @@
 				961EBDCF13C82B4700A3B746 /* DataFetcher.m */,
 				96B971A613C8FD14008235D9 /* DataSender.h */,
 				96B971A713C8FD14008235D9 /* DataSender.m */,
+				96A6DF1C13D91E4D00D5727E /* ActionSheetPicker.h */,
+				96A6DF1D13D91E4D00D5727E /* ActionSheetPicker.m */,
 				962F653E13C40C5F00A3BAE7 /* main.m */,
 			);
 			name = Misc;
@@ -406,6 +411,7 @@
 				961EBDD013C82B4700A3B746 /* DataFetcher.m in Sources */,
 				96B971A813C8FD14008235D9 /* DataSender.m in Sources */,
 				96B16D9F13CC065A000D75DF /* EditWateringController.m in Sources */,
+				96A6DF1E13D91E4D00D5727E /* ActionSheetPicker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
