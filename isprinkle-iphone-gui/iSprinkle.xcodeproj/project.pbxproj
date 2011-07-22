@@ -35,6 +35,7 @@
 		962F656113C40C6000A3BAE7 /* iSprinkleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 962F656013C40C6000A3BAE7 /* iSprinkleTests.m */; };
 		962F657013C40F6F00A3BAE7 /* Waterings.m in Sources */ = {isa = PBXBuildFile; fileRef = 962F656F13C40F6F00A3BAE7 /* Waterings.m */; };
 		962F657313C4141900A3BAE7 /* waterdrop.png in Resources */ = {isa = PBXBuildFile; fileRef = 962F657213C4141900A3BAE7 /* waterdrop.png */; };
+		96A6DF1A13D9128A00D5727E /* TestView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 96A6DF1913D9128A00D5727E /* TestView.xib */; };
 		96B16D9F13CC065A000D75DF /* EditWateringController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B16D9D13CC065A000D75DF /* EditWateringController.m */; };
 		96B16DA013CC065A000D75DF /* EditWateringController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 96B16D9E13CC065A000D75DF /* EditWateringController.xib */; };
 		96B971A813C8FD14008235D9 /* DataSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B971A713C8FD14008235D9 /* DataSender.m */; };
@@ -91,6 +92,7 @@
 		962F656E13C40F6F00A3BAE7 /* Waterings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Waterings.h; sourceTree = "<group>"; };
 		962F656F13C40F6F00A3BAE7 /* Waterings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Waterings.m; sourceTree = "<group>"; };
 		962F657213C4141900A3BAE7 /* waterdrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = waterdrop.png; sourceTree = "<group>"; };
+		96A6DF1913D9128A00D5727E /* TestView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestView.xib; sourceTree = "<group>"; };
 		96B16D9C13CC065A000D75DF /* EditWateringController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditWateringController.h; path = iSprinkle.xcodeproj/EditWateringController.h; sourceTree = SOURCE_ROOT; };
 		96B16D9D13CC065A000D75DF /* EditWateringController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EditWateringController.m; path = iSprinkle.xcodeproj/EditWateringController.m; sourceTree = SOURCE_ROOT; };
 		96B16D9E13CC065A000D75DF /* EditWateringController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditWateringController.xib; path = iSprinkle.xcodeproj/EditWateringController.xib; sourceTree = SOURCE_ROOT; };
@@ -246,6 +248,7 @@
 				96B16D9C13CC065A000D75DF /* EditWateringController.h */,
 				96B16D9D13CC065A000D75DF /* EditWateringController.m */,
 				96B16D9E13CC065A000D75DF /* EditWateringController.xib */,
+				96A6DF1913D9128A00D5727E /* TestView.xib */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 				962F654B13C40C6000A3BAE7 /* RootViewController.xib in Resources */,
 				962F657313C4141900A3BAE7 /* waterdrop.png in Resources */,
 				96B16DA013CC065A000D75DF /* EditWateringController.xib in Resources */,
+				96A6DF1A13D9128A00D5727E /* TestView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

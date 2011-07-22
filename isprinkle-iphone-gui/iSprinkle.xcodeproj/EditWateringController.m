@@ -12,14 +12,17 @@
 @synthesize runNowActionSheet;
 @synthesize toolBar;
 @synthesize dataSender;
+@synthesize periodPicker;
+@synthesize periodActionSheet;
 
 static const NSInteger EnabledSection = 0;
 static const NSInteger ScheduleTypeSection = 1;
-static const NSInteger DateSection = 2;
+static const NSInteger WateringEditSection = 2;
 static const NSInteger ZoneDurationsSection = 3;
 
 static const NSInteger StartTimeRow = 0;
 static const NSInteger StartDateRow = 1;
+static const NSInteger PeriodRow    = 1;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -48,7 +51,7 @@ static const NSInteger StartDateRow = 1;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    self.title = @"Edit Watering";
 }
 
 - (void)viewDidUnload
@@ -81,12 +84,20 @@ static const NSInteger StartDateRow = 1;
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if(section == EnabledSection)
+    {
         return 1;
+    }
     else if(section == ScheduleTypeSection)
+    {
         return 3;
-    else if(section == DateSection)
+    }
+    else if(section == WateringEditSection)
     {
         if(self.watering.scheduleType == SingleShot)
+        {
+            return 2;
+        }
+        else if(self.watering.scheduleType  == EveryNDays)
         {
             return 2;
         }
@@ -96,9 +107,13 @@ static const NSInteger StartDateRow = 1;
         }
     }
     else if(section == ZoneDurationsSection)
+    {
         return [self.watering.zoneDurations count];
+    }
     else
+    {
         return 0;
+    }
 }
 
 -(NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -195,7 +210,7 @@ static const NSInteger StartDateRow = 1;
         cell.textLabel.text       = [NSString stringWithFormat:@"Zone %d",    [[self.watering.zoneDurations objectAtIndex:indexPath.row] zone]];
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%d minutes", [[self.watering.zoneDurations objectAtIndex:indexPath.row] minutes]];
     }
-    else if(indexPath.section == DateSection)
+    else if(indexPath.section == WateringEditSection)
     {
         static NSString *CellIdentifier = @"DateCell";
         cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -208,10 +223,24 @@ static const NSInteger StartDateRow = 1;
             cell.textLabel.text = @"Start Time";
             cell.detailTextLabel.text = [self.watering prettyStartTime];
         }
-        else if(indexPath.row == StartDateRow)
+        else
         {
-            cell.textLabel.text = @"Start Date";
-            cell.detailTextLabel.text = [self.watering prettyStartDate];
+            if(self.watering.scheduleType == SingleShot)
+            {
+                if(indexPath.row == StartDateRow)
+                {
+                    cell.textLabel.text = @"Start Date";
+                    cell.detailTextLabel.text = [self.watering prettyStartDate];
+                }   
+            }
+            else if(self.watering.scheduleType == EveryNDays)
+            {
+                if(indexPath.row == PeriodRow)
+                {
+                    cell.textLabel.text = @"How Often";
+                    cell.detailTextLabel.text = [NSString stringWithFormat:@"Every %d days", self.watering.periodDays];
+                }   
+            }
         }
     }
 
@@ -242,37 +271,13 @@ static const NSInteger StartDateRow = 1;
         [self.dataSender runWateringNow:self.watering];
         [self.navigationController popViewControllerAnimated:YES];
     }
-}
-
-- (void) _showStartDatePicker
-{
-    if (self.startDatePicker == nil)
+    else if (actionSheet == self.periodActionSheet)
     {
-        self.startDatePicker = [[UIDatePicker alloc] init];
-        self.startDatePicker.datePickerMode = UIDatePickerModeDate;
-        self.startDatePicker.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+        NSInteger newPeriod = [self.periodPicker selectedRowInComponent:0] + 1;
+        self.watering.periodDays = newPeriod;
+        [self.dataSender updateWatering:self.watering];
+        [self.tableView reloadData];
     }
-    
-    if (self.startDateActionSheet == nil)
-    {
-        self.startDateActionSheet = [[UIActionSheet alloc]
-                                    initWithTitle:@"Choose a start date"
-                                    delegate:self
-                                    cancelButtonTitle:nil 
-                                    destructiveButtonTitle:nil
-                                    otherButtonTitles:@"Done", nil];
-    }
-    
-    self.startDatePicker.date = self.watering.startDate;
-    
-    [self.startDateActionSheet showInView:self.tableView];
-    [self.startDateActionSheet addSubview:self.startDatePicker];
-    [self.startDateActionSheet sendSubviewToBack:self.startDatePicker];
-    [self.startDateActionSheet setBounds:CGRectMake(0,0,320, 520)];
-    
-    CGRect pickerRect = [self.startDatePicker bounds];
-    pickerRect.origin.y = -100;
-    [self.startDatePicker setBounds:pickerRect];
 }
 
 - (void) _showDeleteConfirmation
@@ -305,11 +310,41 @@ static const NSInteger StartDateRow = 1;
     [self.runNowActionSheet showInView:self.tableView];
 }
 
+
+- (void) _showStartDatePicker
+{
+    if (self.startDatePicker == nil)
+    {
+        CGRect pickerFrame = CGRectMake(0, 100, 0, 0);
+        self.startDatePicker = [[UIDatePicker alloc] initWithFrame:pickerFrame];
+        self.startDatePicker.datePickerMode = UIDatePickerModeDate;
+        self.startDatePicker.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+    }
+    
+    if (self.startDateActionSheet == nil)
+    {
+        self.startDateActionSheet = [[UIActionSheet alloc]
+                                     initWithTitle:@"Choose a start date"
+                                     delegate:self
+                                     cancelButtonTitle:nil 
+                                     destructiveButtonTitle:nil
+                                     otherButtonTitles:@"Done", nil];
+
+        [self.startDateActionSheet addSubview:self.startDatePicker];
+    }
+    
+    self.startDatePicker.date = self.watering.startDate;
+    
+    [self.startDateActionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+    [self.startDateActionSheet setBounds:CGRectMake(0, 0, 320, 520)];
+}
+
 - (void) _showStartTimePicker
 {
     if (self.startTimePicker == nil)
     {
-        self.startTimePicker = [[UIDatePicker alloc] init];
+        CGRect pickerFrame = CGRectMake(0, 100, 0, 0);
+        self.startTimePicker = [[UIDatePicker alloc] initWithFrame:pickerFrame];
         self.startTimePicker.datePickerMode = UIDatePickerModeTime;
         self.startTimePicker.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
     }
@@ -322,29 +357,64 @@ static const NSInteger StartDateRow = 1;
                                      cancelButtonTitle:nil 
                                      destructiveButtonTitle:nil
                                      otherButtonTitles:@"Done", nil];
+
+        [self.startTimeActionSheet addSubview:self.startTimePicker];
     }
     
     self.startTimePicker.date = self.watering.startTime;
+
+    [self.startTimeActionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+    [self.startTimeActionSheet setBounds:CGRectMake(0, 0, 320, 520)];
+}
+
+- (void) _showPeriodPicker
+{
+    if (self.periodPicker == nil)
+    {
+        CGRect pickerFrame = CGRectMake(0, 100, 0, 0);
+        self.periodPicker = [[UIPickerView alloc] initWithFrame:pickerFrame];
+        self.periodPicker.dataSource = self;
+        self.periodPicker.delegate   = self;
+        self.periodPicker.showsSelectionIndicator = YES;
+    }
     
-    [self.startTimeActionSheet showInView:self.tableView];
-    [self.startTimeActionSheet addSubview:self.startTimePicker];
-    [self.startTimeActionSheet sendSubviewToBack:self.startTimePicker];
-    [self.startTimeActionSheet setBounds:CGRectMake(0,0,320, 520)];
-    
-    CGRect pickerRect = [self.startTimePicker bounds];
-    pickerRect.origin.y = -100;
-    [self.startTimePicker setBounds:pickerRect];
+    if (self.periodActionSheet == nil)
+    {
+        self.periodActionSheet = [[UIActionSheet alloc]
+                                     initWithTitle:@"How often to water?"
+                                     delegate:self
+                                     cancelButtonTitle:nil 
+                                     destructiveButtonTitle:nil
+                                     otherButtonTitles:@"Done", nil];
+        [self.periodActionSheet addSubview:self.periodPicker];
+    }
+
+    [self.periodPicker reloadAllComponents];
+    [self.periodPicker selectRow:(self.watering.periodDays-1) inComponent:0 animated:YES];
+    [self.periodActionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+    [self.periodActionSheet setBounds:CGRectMake(0,0,320, 520)];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == DateSection)
+    if (indexPath.section == WateringEditSection)
     {
-        if (indexPath.row == StartDateRow)
+        if(self.watering.scheduleType == SingleShot)
         {
-            [self _showStartDatePicker];
+            if (indexPath.row == StartDateRow)
+            {
+                [self _showStartDatePicker];
+            }
         }
-        else if (indexPath.row == StartTimeRow)
+        else if(self.watering.scheduleType == EveryNDays)
+        {
+            if (indexPath.row == PeriodRow)
+            {
+                [self _showPeriodPicker];
+            }
+        }
+
+        if (indexPath.row == StartTimeRow)
         {
             [self _showStartTimePicker];
         }
@@ -359,6 +429,39 @@ static const NSInteger StartDateRow = 1;
 - (IBAction) deleteButtonPressed:(id)sender
 {
     [self _showDeleteConfirmation];
+}
+
+#pragma mark - periodPicker methods
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    if(self.periodPicker == pickerView)
+    {
+        return 50;
+    }
+    return 0;
+}
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    if(self.periodPicker == pickerView)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+- (NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    if(row == 0)
+        return @"Every day";
+    else
+        return [NSString stringWithFormat:@"Every %d days", (row+1)];
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    // Ignore
 }
 
 @end

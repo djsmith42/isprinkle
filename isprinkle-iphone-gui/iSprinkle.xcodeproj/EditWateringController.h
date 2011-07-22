@@ -2,7 +2,7 @@
 #import "Waterings.h"
 #import "DataSender.h"
 
-@interface EditWateringController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate>
+@interface EditWateringController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
 {
     UITableView   *tableView;
     Watering      *watering;
@@ -13,6 +13,7 @@
     UIActionSheet *startTimeActionSheet;
     UIActionSheet *deleteActionSheet;
     UIView        *tableFooterView;
+    UIPickerView  *periodPicker;
 }
 
 - (IBAction) runNowButtonPressed:(id)sender;
@@ -29,4 +30,6 @@
 @property (retain) UIActionSheet *deleteActionSheet;
 @property (retain) UIActionSheet *runNowActionSheet;
 @property (retain) DataSender    *dataSender;
+@property (retain) UIPickerView  *periodPicker;
+@property (retain) UIActionSheet *periodActionSheet;
 @end
