@@ -53,6 +53,7 @@ static const NSInteger PeriodRow    = 1;
 {
     [super viewDidLoad];
     self.title = @"Edit Watering";
+    self.tableView.editing = YES;
 }
 
 - (void)viewDidUnload
@@ -64,6 +65,7 @@ static const NSInteger PeriodRow    = 1;
 - (void)viewWillAppear:(BOOL)animated
 {
     [self.tableView reloadData];
+    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -125,7 +127,7 @@ static const NSInteger PeriodRow    = 1;
     }
     else if (section == ZoneDurationsSection)
     {
-        return @"Zone Waterings";
+        return @"Zones to Water";
     }
     else
     {
@@ -427,6 +429,61 @@ static const NSInteger PeriodRow    = 1;
             [self _showStartTimePicker];
         }
     }
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return (indexPath.section == ZoneDurationsSection);
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return (indexPath.section == ZoneDurationsSection);
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+    NSLog(@"%s", __FUNCTION__);
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return (indexPath.section == ZoneDurationsSection);
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return (indexPath.section == ZoneDurationsSection ?
+            35 :
+            self.tableView.rowHeight);
+}
+
+- (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    if(section == ZoneDurationsSection)
+    {
+        UIView *footerView  = [[UIView alloc] init];
+
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [button setTitle:@"Add new zone" forState:UIControlStateNormal];
+        [button setFrame:CGRectMake(60, 3, 235, 35)];
+        [button setTitleColor:[[UIColor alloc] initWithRed:0 green:0.4 blue:0 alpha:1] forState:UIControlStateNormal];
+
+        //set action of the button
+        //[button addTarget:self action:@selector(removeAction:)
+
+        [footerView addSubview:button];
+        return footerView;
+    }
+    else
+    {
+        return nil;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return section == ZoneDurationsSection ? 45 : 0; // room for the 'add zone' button (with some margin)
 }
 
 - (IBAction) runNowButtonPressed:(id)sender
