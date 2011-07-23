@@ -207,7 +207,8 @@ static const NSInteger SetupZoneNamesRow = 1;
 {
     if (self.deferralDatePicker == nil)
     {
-        self.deferralDatePicker = [[UIDatePicker alloc] init];
+        CGRect pickerFrame = CGRectMake(0, 160, 0, 0);
+        self.deferralDatePicker = [[UIDatePicker alloc] initWithFrame:pickerFrame];
         self.deferralDatePicker.datePickerMode = UIDatePickerModeDateAndTime;
         self.deferralDatePicker.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
     }
@@ -220,20 +221,15 @@ static const NSInteger SetupZoneNamesRow = 1;
                                           cancelButtonTitle:nil 
                                      destructiveButtonTitle:@"Clear Deferral Date"
                                           otherButtonTitles:@"Done", nil];
+        [self.deferralActionSheet addSubview:self.deferralDatePicker];
     }
     
     self.deferralDatePicker.date = self.status.deferralDate != nil ?
     self.status.deferralDate :
     self.status.currentDate;
     
-    [self.deferralActionSheet showInView:self.tableView];
-    [self.deferralActionSheet addSubview:self.deferralDatePicker];
-    [self.deferralActionSheet sendSubviewToBack:self.deferralDatePicker];
+    [self.deferralActionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
     [self.deferralActionSheet setBounds:CGRectMake(0,0,320, 590)];
-
-    CGRect pickerRect = [self.deferralDatePicker bounds];
-    pickerRect.origin.y = -160;
-    [self.deferralDatePicker setBounds:pickerRect];
 }
 
 - (void)navigateToWatering:(Watering*)watering
