@@ -12,7 +12,6 @@
     UIDatePicker  *startTimePicker;
     UIActionSheet *startTimeActionSheet;
     UIActionSheet *deleteActionSheet;
-    UIView        *tableFooterView;
     UIPickerView  *periodPicker;
     UIButton      *editZonesButton;
     UIView        *editZonesHeader;
