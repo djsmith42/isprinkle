@@ -16,6 +16,7 @@
     UIPickerView  *periodPicker;
     UIButton      *editZonesButton;
     UIView        *editZonesHeader;
+    NSMutableArray *tempEditingZones;
 }
 
 - (IBAction) runNowButtonPressed:(id)sender;
@@ -36,4 +37,5 @@
 @property (retain) UIActionSheet *periodActionSheet;
 @property (retain) UIButton      *editZonesButton;
 @property (retain) UIView        *editZonesHeader;
+@property (retain) NSMutableArray *tempEditingZones;
 @end

@@ -17,6 +17,7 @@
 @synthesize periodActionSheet;
 @synthesize editZonesButton;
 @synthesize editZonesHeader;
+@synthesize tempEditingZones;
 
 static const NSInteger EnabledSection = 0;
 static const NSInteger ScheduleTypeSection = 1;
@@ -106,7 +107,7 @@ static const NSInteger PeriodRow    = 1;
     }
     else if(section == ZoneDurationsSection)
     {
-        return [self.watering.zoneDurations count];
+        return (self.tableView.editing == YES ? self.tempEditingZones.count : self.watering.zoneDurations.count);
     }
     else
     {
@@ -201,8 +202,14 @@ static const NSInteger PeriodRow    = 1;
             cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
         }
 
-        cell.textLabel.text       = [NSString stringWithFormat:@"Zone %d",    [[self.watering.zoneDurations objectAtIndex:indexPath.row] zone]];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%d minutes", [[self.watering.zoneDurations objectAtIndex:indexPath.row] minutes]];
+        ZoneDuration *zoneDuration = nil;
+        if(self.tableView.editing == YES)
+            zoneDuration = [self.tempEditingZones objectAtIndex:indexPath.row];
+        else
+            zoneDuration = [self.watering.zoneDurations objectAtIndex:indexPath.row];
+        
+        cell.textLabel.text       = [NSString stringWithFormat:@"Zone %d",    zoneDuration.zone];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%d minutes", zoneDuration.minutes];
     }
     else if(indexPath.section == WateringEditSection)
     {
@@ -432,11 +439,6 @@ static const NSInteger PeriodRow    = 1;
     return (indexPath.section == ZoneDurationsSection);
 }
 
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
-{
-    NSLog(@"%s", __FUNCTION__);
-}
-
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return (indexPath.section == ZoneDurationsSection);
@@ -445,9 +447,10 @@ static const NSInteger PeriodRow    = 1;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return (indexPath.section == ZoneDurationsSection ?
-            35 :
+            40 :
             self.tableView.rowHeight);
 }
+
 - (void)addZoneClicked:(id)sender
 {
     NSLog(@"TODO: Handle this case");
@@ -462,13 +465,34 @@ static const NSInteger PeriodRow    = 1;
 {
     if (self.tableView.editing)
     {
-        [self.editZonesButton setTitle:@"Edit Zones" forState:UIControlStateNormal];
+        [self.editZonesButton setTitle:@"Delete or Move Zones" forState:UIControlStateNormal];
         [self.tableView setEditing:NO animated:YES];
+        
+        // TODO Save the new zone durations with self.dataSender
     }
     else
     {
         [self.editZonesButton setTitle:@"Done Editing" forState:UIControlStateNormal];
         [self.tableView setEditing:YES animated:YES];
+        
+        if (self.tempEditingZones == nil)
+        {
+            self.tempEditingZones = [NSMutableArray array];
+        }
+        
+        for(ZoneDuration *zoneDuration in self.tempEditingZones)
+        {
+            [zoneDuration release];
+        }
+        
+        [self.tempEditingZones removeAllObjects];
+
+        for(ZoneDuration *zoneDuration in self.watering.zoneDurations)
+        {
+            ZoneDuration *tempZoneDuration = [[ZoneDuration alloc] init];
+            [tempZoneDuration copyDataFromZoneDuration:zoneDuration];
+            [self.tempEditingZones addObject:tempZoneDuration];
+        }
     }
     
     [self performSelector:@selector(reloadZoneDurationsSection) withObject:self afterDelay:0.2];
@@ -481,8 +505,8 @@ static const NSInteger PeriodRow    = 1;
         if(self.editZonesButton == nil)
         {
             self.editZonesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            [self.editZonesButton setTitle:@"Edit Zones" forState:UIControlStateNormal];
-            [self.editZonesButton setFrame:CGRectMake(60, 3, 235, 35)];
+            [self.editZonesButton setTitle:@"Delete or Move Zones" forState:UIControlStateNormal];
+            [self.editZonesButton setFrame:CGRectMake(60, 3, 235, 40)];
             [self.editZonesButton setTitleColor:[[UIColor alloc] initWithRed:0.3 green:0 blue:0 alpha:1] forState:UIControlStateNormal];
             [self.editZonesButton addTarget:self action:@selector(editZonesClicked:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -526,12 +550,12 @@ static const NSInteger PeriodRow    = 1;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return section == ZoneDurationsSection ? 40 : 0;
+    return section == ZoneDurationsSection ? 45 : 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 40;
+    return 45;
 }
 
 - (IBAction) runNowButtonPressed:(id)sender
@@ -584,6 +608,23 @@ static const NSInteger PeriodRow    = 1;
     
     if (self.tableView.editing)
         [self editZonesClicked:self];
+}
+
+- (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete && indexPath != nil)
+    {
+        [[self.tempEditingZones objectAtIndex:indexPath.row] release];
+        [self.tempEditingZones removeObjectAtIndex:indexPath.row];
+        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+    [self.tempEditingZones exchangeObjectAtIndex:sourceIndexPath.row withObjectAtIndex:destinationIndexPath.row];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:(NSUInteger)ZoneDurationsSection] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 @end
