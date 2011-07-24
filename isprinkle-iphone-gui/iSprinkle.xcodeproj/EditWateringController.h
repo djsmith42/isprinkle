@@ -16,6 +16,11 @@
     UIButton      *editZonesButton;
     UIView        *editZonesHeader;
     NSMutableArray *tempEditingZones;
+    UIActionSheet *zoneActionSheet;
+    UIPickerView  *zonePicker;
+    UIActionSheet *minutesActionSheet;
+    UIPickerView  *minutesPicker;
+    NSInteger      clickedZoneDurationNumber;
 }
 
 - (IBAction) runNowButtonPressed:(id)sender;
@@ -37,4 +42,9 @@
 @property (retain) UIButton      *editZonesButton;
 @property (retain) UIView        *editZonesHeader;
 @property (retain) NSMutableArray *tempEditingZones;
+@property (retain) UIActionSheet *zoneActionSheet;
+@property (retain) UIPickerView  *zonePicker;
+@property (retain) UIActionSheet *minutesActionSheet;
+@property (retain) UIPickerView  *minutesPicker;
+@property ()       NSInteger     clickedZoneDurationNumber;
 @end

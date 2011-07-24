@@ -18,6 +18,11 @@
 @synthesize editZonesButton;
 @synthesize editZonesHeader;
 @synthesize tempEditingZones;
+@synthesize zoneActionSheet;
+@synthesize zonePicker;
+@synthesize minutesPicker;
+@synthesize minutesActionSheet;
+@synthesize clickedZoneDurationNumber;
 
 static const NSInteger EnabledSection = 0;
 static const NSInteger ScheduleTypeSection = 1;
@@ -71,6 +76,11 @@ static const NSInteger PeriodRow    = 1;
 }
 
 #pragma mark - UITableView Methods
+
+- (void) reloadZoneDurationsSection
+{
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:(NSUInteger)ZoneDurationsSection] withRowAnimation:UITableViewRowAnimationNone];
+}
 
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -295,6 +305,26 @@ static const NSInteger PeriodRow    = 1;
         [self.dataSender updateWatering:self.watering];
         [self.tableView reloadData];
     }
+    else if (actionSheet == self.zoneActionSheet)
+    {
+        NSInteger newZone = [self.zonePicker selectedRowInComponent:0] + 1;
+        ZoneDuration *newZoneDuration = [[ZoneDuration alloc] init];
+        newZoneDuration.zone    = newZone;
+        newZoneDuration.minutes = 10; // TODO Figure out a better way instead of hard-code number here
+        [self.tempEditingZones addObject:newZoneDuration];
+        
+        [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.tempEditingZones.count-1 inSection:ZoneDurationsSection]]
+                              withRowAnimation:UITableViewRowAnimationFade];
+    }
+    else if (actionSheet == self.minutesActionSheet)
+    {
+        NSInteger newMinutes = [self.minutesPicker selectedRowInComponent:0] + 1;
+        NSLog(@"New minutes: %d", newMinutes);
+        ZoneDuration *zoneDuration = [self.watering.zoneDurations objectAtIndex:self.clickedZoneDurationNumber];
+        zoneDuration.minutes = newMinutes;
+        [self reloadZoneDurationsSection];
+        [self.dataSender updateWatering:self.watering];
+    }
 }
 
 - (void) _showDeleteConfirmation
@@ -419,6 +449,68 @@ static const NSInteger PeriodRow    = 1;
     [self.periodActionSheet setBounds:CGRectMake(0,0,320, 520)];
 }
 
+- (void) _showZonePicker
+{
+    //[ActionSheetPicker displayActionPickerWithView:[[UIApplication sharedApplication] keyWindow] data:[NSArray arrayWithObjects:@"foo",@"bar",@"baz",nil] selectedIndex:1 target:self action:@selector(periodWasSelected:) title:@"Pick a foo!"];
+
+    // TODO Get the zone count from the device (not yet implemented)
+
+    if (self.zonePicker == nil)
+    {
+        CGRect pickerFrame = CGRectMake(0, 100, 0, 0);
+        self.zonePicker = [[UIPickerView alloc] initWithFrame:pickerFrame];
+        self.zonePicker.dataSource = self;
+        self.zonePicker.delegate   = self;
+        self.zonePicker.showsSelectionIndicator = YES;
+    }
+
+    if (self.zoneActionSheet == nil)
+    {
+        self.zoneActionSheet = [[UIActionSheet alloc]
+                                  initWithTitle:@"Which zone?"
+                                  delegate:self
+                                  cancelButtonTitle:nil 
+                                  destructiveButtonTitle:nil
+                                  otherButtonTitles:@"Done", nil];
+        [self.zoneActionSheet addSubview:self.zonePicker];
+    }
+
+    [self.zonePicker reloadAllComponents];
+    [self.zonePicker selectRow:(self.watering.periodDays-1) inComponent:0 animated:YES];
+    [self.zoneActionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+    [self.zoneActionSheet setBounds:CGRectMake(0,0,320, 520)];
+}
+
+- (void) _showMinutesPicker:(int)withSelectedMinutes
+{
+    //[ActionSheetPicker displayActionPickerWithView:[[UIApplication sharedApplication] keyWindow] data:[NSArray arrayWithObjects:@"foo",@"bar",@"baz",nil] selectedIndex:1 target:self action:@selector(periodWasSelected:) title:@"Pick a foo!"];
+    
+    if (self.minutesPicker == nil)
+    {
+        CGRect pickerFrame = CGRectMake(0, 100, 0, 0);
+        self.minutesPicker = [[UIPickerView alloc] initWithFrame:pickerFrame];
+        self.minutesPicker.dataSource = self;
+        self.minutesPicker.delegate   = self;
+        self.minutesPicker.showsSelectionIndicator = YES;
+    }
+
+    if (self.minutesActionSheet == nil)
+    {
+        self.minutesActionSheet = [[UIActionSheet alloc]
+                                initWithTitle:@"How long to water this zone?"
+                                delegate:self
+                                cancelButtonTitle:nil 
+                                destructiveButtonTitle:nil
+                                otherButtonTitles:@"Done", nil];
+        [self.minutesActionSheet addSubview:self.minutesPicker];
+    }
+
+    [self.minutesPicker reloadAllComponents];
+    [self.minutesPicker selectRow:(withSelectedMinutes-1) inComponent:0 animated:YES];
+    [self.minutesActionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+    [self.minutesActionSheet setBounds:CGRectMake(0,0,320, 520)];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == WateringEditSection)
@@ -428,6 +520,7 @@ static const NSInteger PeriodRow    = 1;
             if (indexPath.row == StartDateRow)
             {
                 [self _showStartDatePicker];
+                return;
             }
         }
         else if(self.watering.scheduleType == EveryNDays)
@@ -435,12 +528,22 @@ static const NSInteger PeriodRow    = 1;
             if (indexPath.row == PeriodRow)
             {
                 [self _showPeriodPicker];
+                return;
             }
         }
 
         if (indexPath.row == StartTimeRow)
         {
             [self _showStartTimePicker];
+        }
+    }
+    else if (indexPath.section == ZoneDurationsSection)
+    {
+        if (self.tableView.editing == NO)
+        {
+            self.clickedZoneDurationNumber = indexPath.row;
+            ZoneDuration *clickedZoneDuration = [self.watering.zoneDurations objectAtIndex:self.clickedZoneDurationNumber];
+            [self _showMinutesPicker:clickedZoneDuration.minutes];
         }
     }
 }
@@ -473,16 +576,12 @@ static const NSInteger PeriodRow    = 1;
     NSLog(@"TODO: Handle this case");
 }
 
-- (void) reloadZoneDurationsSection
-{
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:(NSUInteger)ZoneDurationsSection] withRowAnimation:UITableViewRowAnimationNone];
-}
 
 - (void)editZonesClicked:(id)sender
 {
     if (self.tableView.editing)
     {
-        [self.editZonesButton setTitle:@"Edit Order" forState:UIControlStateNormal];
+        [self.editZonesButton setTitle:@"Edit Zones" forState:UIControlStateNormal];
         [self.tableView setEditing:NO animated:YES];
         [self.watering.zoneDurations removeAllObjects];
         for(ZoneDuration *zoneDuration in self.tempEditingZones)
@@ -527,8 +626,8 @@ static const NSInteger PeriodRow    = 1;
         if(self.editZonesButton == nil)
         {
             self.editZonesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            [self.editZonesButton setTitle:@"Edit Order" forState:UIControlStateNormal];
-            [self.editZonesButton setFrame:CGRectMake(60, 3, 235, 40)];
+            [self.editZonesButton setTitle:@"Edit Zones" forState:UIControlStateNormal];
+            [self.editZonesButton setFrame:CGRectMake(40, 3, 245, 40)];
             [self.editZonesButton setTitleColor:[[UIColor alloc] initWithRed:0.3 green:0 blue:0 alpha:1] forState:UIControlStateNormal];
             [self.editZonesButton addTarget:self action:@selector(editZonesClicked:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -564,28 +663,50 @@ static const NSInteger PeriodRow    = 1;
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
-    if(self.periodPicker == pickerView)
+    if (self.periodPicker == pickerView)
     {
         return 50;
+    }
+    else if (self.zonePicker == pickerView)
+    {
+        return 16; // TODO Get the zone count fro the device (not yet implmented)
+    }
+    else if (self.minutesPicker == pickerView)
+    {
+        return 120;
     }
     return 0;
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
-    if(self.periodPicker == pickerView)
-    {
-        return 1;
-    }
-    return 0;
+    return 1;
 }
 
 - (NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    if(row == 0)
-        return @"Every day";
+    if(pickerView == self.periodPicker)
+    {
+        if(row == 0)
+            return @"Every day";
+        else
+            return [NSString stringWithFormat:@"Every %d days", (row+1)];
+    }
+    else if (pickerView == self.zonePicker)
+    {
+        return [NSString stringWithFormat:@"Zone %d", (row+1)];
+    }
+    else if (pickerView == self.minutesPicker)
+    {
+        if(row == 0)
+            return @"1 minute";
+        else
+            return [NSString stringWithFormat:@"%d minutes", row+1];
+    }
     else
-        return [NSString stringWithFormat:@"Every %d days", (row+1)];
+    {
+        return @"Error dude!";
+    }
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
@@ -612,12 +733,7 @@ static const NSInteger PeriodRow    = 1;
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert)
     {
-        ZoneDuration *newZoneDuration = [[ZoneDuration alloc] init];
-        newZoneDuration.zone = 1;
-        newZoneDuration.minutes = 10;
-        [self.tempEditingZones addObject:newZoneDuration];
-        [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.tempEditingZones.count-1 inSection:ZoneDurationsSection]]
-                              withRowAnimation:UITableViewRowAnimationBottom];
+        [self _showZonePicker];
     }
 }
 
