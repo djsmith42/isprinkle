@@ -166,11 +166,7 @@ static const NSInteger SetupZoneNamesRow = 1;
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section == HeaderSection)
-    {
-        return @"Status";
-    }
-    else if (section == WateringSection)
+    if (section == WateringSection)
     {
         return @"Waterings";
     }

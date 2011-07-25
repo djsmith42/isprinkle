@@ -23,6 +23,8 @@
 @synthesize minutesPicker;
 @synthesize minutesActionSheet;
 @synthesize clickedZoneDurationNumber;
+@synthesize editZoneDurationViewController;
+@synthesize editingZoneDuration;
 
 static const NSInteger EnabledSection = 0;
 static const NSInteger ScheduleTypeSection = 1;
@@ -36,9 +38,6 @@ static const NSInteger PeriodRow    = 1;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
     return self;
 }
 
@@ -61,6 +60,9 @@ static const NSInteger PeriodRow    = 1;
 {
     [super viewDidLoad];
     self.title = @"Edit Watering";
+    
+    // To catch navigation events so we can commit changes to zone durations
+    self.navigationController.delegate = self;
 }
 
 - (void)viewDidUnload
@@ -73,6 +75,20 @@ static const NSInteger PeriodRow    = 1;
 {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (void)navigateToZoneDuration:(ZoneDuration*)zoneDuration
+{
+    if (self.editZoneDurationViewController == nil)
+    {
+        self.editZoneDurationViewController = [[[EditZoneDurationViewController alloc] initWithNibName:@"EditZoneDurationViewController" bundle:[NSBundle mainBundle]] autorelease];
+    }
+
+    self.editZoneDurationViewController.zone    = zoneDuration.zone;
+    self.editZoneDurationViewController.minutes = zoneDuration.minutes;
+    self.editingZoneDuration = YES; // so we know when the user comes back to this screen (and we can send the changes to the device)
+
+    [self.navigationController pushViewController:self.editZoneDurationViewController animated:YES];
 }
 
 #pragma mark - UITableView Methods
@@ -235,6 +251,7 @@ static const NSInteger PeriodRow    = 1;
             
             cell.textLabel.text       = [NSString stringWithFormat:@"Zone %d",    zoneDuration.zone];
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d minutes", zoneDuration.minutes];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
     else if(indexPath.section == WateringEditSection)
@@ -539,12 +556,26 @@ static const NSInteger PeriodRow    = 1;
     }
     else if (indexPath.section == ZoneDurationsSection)
     {
-        if (self.tableView.editing == NO)
+        ZoneDuration *zoneDuration = nil;
+        if (self.tableView.editing)
         {
-            self.clickedZoneDurationNumber = indexPath.row;
-            ZoneDuration *clickedZoneDuration = [self.watering.zoneDurations objectAtIndex:self.clickedZoneDurationNumber];
-            [self _showMinutesPicker:clickedZoneDuration.minutes];
+            if(indexPath.row < self.tempEditingZones.count)
+                zoneDuration = [self.tempEditingZones objectAtIndex:indexPath.row];
         }
+        else
+        {
+            if(indexPath.row < self.watering.zoneDurations.count)
+                zoneDuration = [self.watering.zoneDurations objectAtIndex:indexPath.row];
+        }
+        
+        if (zoneDuration != nil)
+            [self navigateToZoneDuration:zoneDuration];
+
+        /*
+         self.clickedZoneDurationNumber = indexPath.row;
+         ZoneDuration *clickedZoneDuration = [self.watering.zoneDurations objectAtIndex:self.clickedZoneDurationNumber];
+         [self _showMinutesPicker:clickedZoneDuration.minutes];
+         */
     }
 }
 
@@ -562,13 +593,6 @@ static const NSInteger PeriodRow    = 1;
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return (indexPath.section == ZoneDurationsSection);
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return (indexPath.section == ZoneDurationsSection ?
-            40 :
-            self.tableView.rowHeight);
 }
 
 - (void)addZoneClicked:(id)sender
@@ -646,7 +670,18 @@ static const NSInteger PeriodRow    = 1;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 45;
+    if(section == ZoneDurationsSection)
+    {
+        return 45; // gives room for the edit button
+    }
+    else if(section == ScheduleTypeSection)
+    {
+        return 25;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 - (IBAction) runNowButtonPressed:(id)sender
@@ -757,6 +792,45 @@ static const NSInteger PeriodRow    = 1;
         return;
 
     [self.tempEditingZones exchangeObjectAtIndex:sourceIndexPath.row withObjectAtIndex:destinationIndexPath.row];
+}
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if(viewController == self && self.editingZoneDuration)
+    {
+        self.editingZoneDuration = NO;
+        NSLog(@"Back from the zone duration screen");
+
+        ZoneDuration *zoneDuration = nil;
+        NSInteger index = self.editZoneDurationViewController.zoneDurationIndex;
+        if(self.tableView.editing)
+        {
+            if (index < self.tempEditingZones.count)
+                zoneDuration = [self.tempEditingZones objectAtIndex:index];
+        }
+        else
+        {
+            if (index < self.watering.zoneDurations.count)
+                zoneDuration = [self.watering.zoneDurations objectAtIndex:index];
+        }
+        
+        if (zoneDuration != nil)
+        {
+            zoneDuration.minutes = self.editZoneDurationViewController.minutes;
+            zoneDuration.zone    = self.editZoneDurationViewController.zone;
+
+            if (self.tableView.editing == NO)
+            {
+                [self.dataSender updateWatering:self.watering];
+            }
+        }
+        else
+        {        
+            NSLog(@"Woops, zone durations appear to have changed out from under the user while editing. Not updating.");
+        }
+        
+        [self.tableView reloadData];
+    }
 }
 
 @end

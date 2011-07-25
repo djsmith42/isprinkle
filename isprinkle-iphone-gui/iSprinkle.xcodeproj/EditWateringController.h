@@ -1,8 +1,9 @@
 #import <UIKit/UIKit.h>
 #import "Waterings.h"
 #import "DataSender.h"
+#import "EditZoneDurationViewController.h"
 
-@interface EditWateringController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
+@interface EditWateringController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UINavigationControllerDelegate>
 {
     UITableView   *tableView;
     Watering      *watering;
@@ -21,6 +22,8 @@
     UIActionSheet *minutesActionSheet;
     UIPickerView  *minutesPicker;
     NSInteger      clickedZoneDurationNumber;
+    EditZoneDurationViewController *editZoneDurationViewController;
+    BOOL editingZoneDuration;
 }
 
 - (IBAction) runNowButtonPressed:(id)sender;
@@ -47,4 +50,6 @@
 @property (retain) UIActionSheet *minutesActionSheet;
 @property (retain) UIPickerView  *minutesPicker;
 @property ()       NSInteger     clickedZoneDurationNumber;
+@property (retain) EditZoneDurationViewController *editZoneDurationViewController;
+@property ()       BOOL          editingZoneDuration;
 @end

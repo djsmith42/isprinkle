@@ -40,7 +40,6 @@ static const NSInteger Port     = 8080;
                           otherButtonTitles:nil];
     [alert show];
     [alert release];
-
 }
 
 - (void) connection:(NSURLConnection *)connection didFailWithError:(NSError *)error

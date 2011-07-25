@@ -16,6 +16,8 @@
 		9610AFF313C6BB4700FE9867 /* scanner.c in Sources */ = {isa = PBXBuildFile; fileRef = 9610AFEB13C6BB4700FE9867 /* scanner.c */; };
 		9610AFF413C6BB4700FE9867 /* writer.c in Sources */ = {isa = PBXBuildFile; fileRef = 9610AFEC13C6BB4700FE9867 /* writer.c */; };
 		9610AFF913C6BB6400FE9867 /* YAMLSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 9610AFF813C6BB6400FE9867 /* YAMLSerialization.m */; };
+		96120C2E13DCB2F400A0D666 /* EditZoneDurationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96120C2C13DCB2F400A0D666 /* EditZoneDurationViewController.m */; };
+		96120C2F13DCB2F400A0D666 /* EditZoneDurationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 96120C2D13DCB2F400A0D666 /* EditZoneDurationViewController.xib */; };
 		961EBDC213C8191800A3B746 /* Status.m in Sources */ = {isa = PBXBuildFile; fileRef = 961EBDC113C8191800A3B746 /* Status.m */; };
 		961EBDD013C82B4700A3B746 /* DataFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 961EBDCF13C82B4700A3B746 /* DataFetcher.m */; };
 		962F653213C40C5F00A3BAE7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 962F653113C40C5F00A3BAE7 /* UIKit.framework */; };
@@ -66,6 +68,9 @@
 		9610AFF613C6BB6400FE9867 /* YAMLSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YAMLSerialization.h; sourceTree = "<group>"; };
 		9610AFF713C6BB6400FE9867 /* YAML_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YAML_Prefix.pch; sourceTree = "<group>"; };
 		9610AFF813C6BB6400FE9867 /* YAMLSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YAMLSerialization.m; sourceTree = "<group>"; };
+		96120C2B13DCB2F400A0D666 /* EditZoneDurationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditZoneDurationViewController.h; sourceTree = "<group>"; };
+		96120C2C13DCB2F400A0D666 /* EditZoneDurationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditZoneDurationViewController.m; sourceTree = "<group>"; };
+		96120C2D13DCB2F400A0D666 /* EditZoneDurationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditZoneDurationViewController.xib; sourceTree = "<group>"; };
 		961EBDC013C8191800A3B746 /* Status.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Status.h; sourceTree = "<group>"; };
 		961EBDC113C8191800A3B746 /* Status.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Status.m; sourceTree = "<group>"; };
 		961EBDCE13C82B4700A3B746 /* DataFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataFetcher.h; sourceTree = "<group>"; };
@@ -254,6 +259,9 @@
 				96B16D9D13CC065A000D75DF /* EditWateringController.m */,
 				96B16D9E13CC065A000D75DF /* EditWateringController.xib */,
 				96A6DF1913D9128A00D5727E /* TestView.xib */,
+				96120C2B13DCB2F400A0D666 /* EditZoneDurationViewController.h */,
+				96120C2C13DCB2F400A0D666 /* EditZoneDurationViewController.m */,
+				96120C2D13DCB2F400A0D666 /* EditZoneDurationViewController.xib */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -359,6 +367,7 @@
 				962F657313C4141900A3BAE7 /* waterdrop.png in Resources */,
 				96B16DA013CC065A000D75DF /* EditWateringController.xib in Resources */,
 				96A6DF1A13D9128A00D5727E /* TestView.xib in Resources */,
+				96120C2F13DCB2F400A0D666 /* EditZoneDurationViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -412,6 +421,7 @@
 				96B971A813C8FD14008235D9 /* DataSender.m in Sources */,
 				96B16D9F13CC065A000D75DF /* EditWateringController.m in Sources */,
 				96A6DF1E13D91E4D00D5727E /* ActionSheetPicker.m in Sources */,
+				96120C2E13DCB2F400A0D666 /* EditZoneDurationViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
