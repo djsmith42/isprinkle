@@ -73,12 +73,21 @@
     self.startDate = watering.startDate;
     self.scheduleType = watering.scheduleType;
     
-    [self.zoneDurations removeAllObjects];
+    NSInteger count = 0;
     for(ZoneDuration *tempZoneDuration in watering.zoneDurations)
     {
-        ZoneDuration *z = [[ZoneDuration alloc] init];
+        ZoneDuration *z = nil;
+        if (count < self.zoneDurations.count)
+        {
+            z = [self.zoneDurations objectAtIndex:count];
+        }
+        else
+        {
+            z = [[ZoneDuration alloc] init];
+            [self.zoneDurations addObject:z];
+        }
         [z copyDataFromZoneDuration:tempZoneDuration];
-        [self.zoneDurations addObject:z];
+        count++;
     }
 }
 
