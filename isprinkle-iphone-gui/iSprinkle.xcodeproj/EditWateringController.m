@@ -177,7 +177,7 @@ static const NSInteger PeriodRow    = 1;
 
 -(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell;
+    UITableViewCell *cell = nil;
     if(indexPath.section == EnabledSection)
     {
         static NSString *CellIdentifier = @"EnabledCell";
