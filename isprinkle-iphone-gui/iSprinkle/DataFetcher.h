@@ -9,11 +9,10 @@
     NSTimer       *_timer;
     enum State { FetchingStatus, FetchingWaterings } _state;
     BOOL           _firstTime;
-    NSURLConnection *connection;
+    NSURLConnection *_connection;
 }
 
 @property enum State state;
-@property (retain) NSURLConnection *connection;
 
 - (id) initWithModels:(Status*)status waterings:(Waterings*)waterings;
 - (void) startFetching;

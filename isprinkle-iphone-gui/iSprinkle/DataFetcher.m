@@ -8,7 +8,6 @@ static const NSInteger Port     = 8080;
 @implementation DataFetcher
 
 @synthesize state = _state;
-@synthesize connection;
 
 - (id) initWithModels:(Status *)status waterings:(Waterings*) waterings;
 {
@@ -17,7 +16,7 @@ static const NSInteger Port     = 8080;
         _status    = status;
         _waterings = waterings;
         
-        _receivedData = [[NSMutableData data] retain];
+        _receivedData = [[NSMutableData alloc] init];
         _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(startFetching) userInfo:nil repeats:YES];
         
         _firstTime = YES;
@@ -47,8 +46,8 @@ static const NSInteger Port     = 8080;
                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
                              timeoutInterval:60.0];
 
-    self.connection=[[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
-    if (self.connection == nil)
+    _connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
+    if (_connection == nil)
     {
         // FIXME Inform the user that the connection failed.
         NSLog(@"Fail!");
@@ -76,7 +75,8 @@ static NSString *DeferralDateTimeString = @"deferral datetime";
 {
     // FIXME Inform the user about the breakage
     NSLog(@"Error fetching data: %@", [error localizedDescription]);
-    self.connection = nil;
+    [_connection release];
+    _connection = nil;
 }
 
 -(NSDateFormatter*) createDateFormatter:(NSString*)format
@@ -279,7 +279,8 @@ static NSString *DeferralDateTimeString = @"deferral datetime";
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    self.connection = nil;
+    [_connection release];
+    _connection = nil;
 
     switch (self.state)
     {

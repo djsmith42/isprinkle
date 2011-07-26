@@ -24,7 +24,7 @@
 {
     if ((self = [super init]))
     {
-        self.zoneDurations = [[NSMutableArray alloc] initWithCapacity:0];
+        _zoneDurations = [[NSMutableArray alloc] initWithCapacity:0];
     }
     return self;
 }
@@ -77,14 +77,14 @@
     for(ZoneDuration *tempZoneDuration in watering.zoneDurations)
     {
         ZoneDuration *z = nil;
-        if (count < self.zoneDurations.count)
+        if (count < _zoneDurations.count)
         {
-            z = [self.zoneDurations objectAtIndex:count];
+            z = [_zoneDurations objectAtIndex:count];
         }
         else
         {
             z = [[ZoneDuration alloc] init];
-            [self.zoneDurations addObject:z];
+            [_zoneDurations addObject:z];
         }
         [z copyDataFromZoneDuration:tempZoneDuration];
         count++;
@@ -93,7 +93,7 @@
 
 - (void)dealloc
 {
-    for(ZoneDuration *z in self.zoneDurations)
+    for(ZoneDuration *z in _zoneDurations)
     {
         [z release];
     }
