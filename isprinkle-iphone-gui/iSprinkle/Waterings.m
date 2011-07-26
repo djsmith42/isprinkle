@@ -85,6 +85,7 @@
         {
             z = [[ZoneDuration alloc] init];
             [_zoneDurations addObject:z];
+            [z release]; // the array retains it now
         }
         [z copyDataFromZoneDuration:tempZoneDuration];
         count++;
@@ -93,8 +94,10 @@
 
 - (void)dealloc
 {
-    for(ZoneDuration *z in _zoneDurations)
+    while (_zoneDurations.count > 0)
     {
+        ZoneDuration *z = [_zoneDurations objectAtIndex:0];
+        [_zoneDurations removeObjectAtIndex:0];
         [z release];
     }
 
@@ -139,6 +142,7 @@
         Watering *newWatering = [[Watering alloc] init];
         [newWatering copyDataFromWatering:watering];
         [_waterings addObject:newWatering];
+        [newWatering release]; // the array retains it now
     }
     
     self.watcherKey = @"magic";
