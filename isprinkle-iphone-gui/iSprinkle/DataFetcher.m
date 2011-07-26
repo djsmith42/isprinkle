@@ -198,6 +198,7 @@ static NSString *DeferralDateTimeString = @"deferral datetime";
                         }
 
                         tempWatering.zoneDurations = tempZoneDurations;
+                        [tempZoneDurations release]; // the Watering owns it now
                     }
                     else if ([key isEqualToString:@"uuid"])
                     {
@@ -263,6 +264,8 @@ static NSString *DeferralDateTimeString = @"deferral datetime";
                     [watering release];
                 }
             }
+
+            [uuidsReceived release];
         }
         else
         {
