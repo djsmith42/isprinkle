@@ -238,6 +238,8 @@ static NSString *DeferralDateTimeString = @"deferral datetime";
                 {
                     NSLog(@"Got bogus watering from YAML with no UUID");
                 }
+
+                [tempWatering release];
             }
 
             // Are there any waterings that we have that no longer exist on the unit?
@@ -258,6 +260,7 @@ static NSString *DeferralDateTimeString = @"deferral datetime";
                 {
                     NSLog(@"Removing watering: %@", [watering prettyDescription]);
                     [_waterings removeWatering:watering];
+                    [watering release];
                 }
             }
         }

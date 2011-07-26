@@ -93,6 +93,16 @@
 
 - (void)dealloc
 {
+    for(ZoneDuration *z in self.zoneDurations)
+    {
+        [z release];
+    }
+
+    self.uuid          = nil;
+    self.zoneDurations = nil;
+    self.startDate     = nil;
+    self.startTime     = nil;
+
     [super dealloc];
 }
 
