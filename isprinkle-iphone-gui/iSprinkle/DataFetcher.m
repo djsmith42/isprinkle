@@ -8,6 +8,7 @@ static const NSInteger Port     = 8080;
 @implementation DataFetcher
 
 @synthesize state = _state;
+@synthesize connection;
 
 - (id) initWithModels:(Status *)status waterings:(Waterings*) waterings;
 {
@@ -26,7 +27,6 @@ static const NSInteger Port     = 8080;
 
 - (void) startFetching
 {
-    //NSLog(@"DataFetcher: Fetching");
     [_receivedData setLength:0];
 
     NSString *pathToFetch = nil;
@@ -41,15 +41,14 @@ static const NSInteger Port     = 8080;
     }
     
     NSString *urlString = [NSString stringWithFormat:@"http://%@:%d/%@", HostName, Port, pathToFetch];
-    
+
     NSURLRequest *urlRequest=[NSURLRequest
                               requestWithURL:[NSURL URLWithString:urlString]
                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
                              timeoutInterval:60.0];
-    
-    NSURLConnection *connection=[[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
-    
-    if (!connection)
+
+    self.connection=[[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
+    if (self.connection == nil)
     {
         // FIXME Inform the user that the connection failed.
         NSLog(@"Fail!");
@@ -68,12 +67,8 @@ static NSString *ActiveZoneString       = @"active zone";
 static NSString *CurrentDateTimeString  = @"current time";
 static NSString *DeferralDateTimeString = @"deferral datetime";
 
-// Watering keys:
-static NSString *ZoneDurations = @"zone durations";
-
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
-    //NSLog(@"DataFetcher: Received incremental data: %d bytes", [data length]);
     [_receivedData appendData:data];
 }
 
@@ -81,6 +76,7 @@ static NSString *ZoneDurations = @"zone durations";
 {
     // FIXME Inform the user about the breakage
     NSLog(@"Error fetching data: %@", [error localizedDescription]);
+    self.connection = nil;
 }
 
 -(NSDateFormatter*) createDateFormatter:(NSString*)format
@@ -189,7 +185,7 @@ static NSString *ZoneDurations = @"zone durations";
                 for (NSString *key in keys)
                 {
                     NSObject *value = [wateringDictionary objectForKey:key];
-                    if ([key isEqualToString:ZoneDurations])
+                    if ([key isEqualToString:@"zone durations"])
                     {
                         NSMutableArray *array = (NSMutableArray*)value;
                         NSMutableArray *tempZoneDurations = [[NSMutableArray alloc] initWithCapacity:[array count]];
@@ -280,6 +276,8 @@ static NSString *ZoneDurations = @"zone durations";
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
+    self.connection = nil;
+
     switch (self.state)
     {
         case FetchingStatus:
@@ -299,6 +297,5 @@ static NSString *ZoneDurations = @"zone durations";
         [self startFetching];
     }
 }
-
 
 @end
