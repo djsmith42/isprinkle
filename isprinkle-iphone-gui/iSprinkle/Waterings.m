@@ -147,6 +147,7 @@
 -(void) removeWatering:(Watering*)watering
 {
     [self.waterings removeObject:watering];
+    self.watcherKey = @"magic";
 }
 
 -(Watering*) wateringWithUuid:(NSString *)uuid
