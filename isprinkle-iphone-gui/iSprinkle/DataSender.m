@@ -1,6 +1,7 @@
 #import "DataSender.h"
 
 @implementation DataSender
+@synthesize connection;
 
 // FIXME The host and port need to come from user input, not hard-coded:
 static const NSString *HostName = @"10.42.42.11";
@@ -18,8 +19,8 @@ static const NSInteger Port     = 8080;
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPBody:postData];
     
-    NSURLConnection *conn=[[NSURLConnection alloc] initWithRequest:request delegate:self];
-    if (conn) 
+    self.connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    if (self.connection != nil)
     {
         _receivedData = [[NSMutableData data] retain];
     } 
@@ -45,6 +46,7 @@ static const NSInteger Port     = 8080;
 - (void) connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     [self _alert:[NSString stringWithFormat:@"Woops. %@", [error localizedDescription]]];
+    self.connection = nil;
 }
 
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
@@ -54,6 +56,8 @@ static const NSInteger Port     = 8080;
     {
         [self _alert:[NSString stringWithFormat:@"Woops. Could not update the sprinkler unit (code %d)!", [httpResponse statusCode]]];
     }
+
+    self.connection = nil;
 }
 
 - (void) sendDeferralDate:(NSDate *)date
