@@ -94,7 +94,7 @@
 
 - (void)dealloc
 {
-    [_zoneDurations removeAllObjects];
+    [_zoneDurations removeAllObjects]; // auto-releases all the ZoneDurations
 
     self.uuid          = nil;
     self.zoneDurations = nil;
