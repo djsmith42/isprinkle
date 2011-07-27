@@ -3,11 +3,8 @@
 
 @interface DataSender : NSObject
 {
-    NSMutableData *_receivedData;
-    NSURLConnection *connection;
+    NSURLConnection *_connection;
 }
-
-@property (retain) NSURLConnection *connection;
 
 - (void) sendDeferralDate:(NSDate*)date;
 - (void) clearDeferralDate;
