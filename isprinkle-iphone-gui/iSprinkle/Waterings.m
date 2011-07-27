@@ -94,10 +94,7 @@
 
 - (void)dealloc
 {
-    while (_zoneDurations.count > 0)
-    {
-        [_zoneDurations removeObjectAtIndex:0];
-    }
+    [_zoneDurations removeAllObjects];
 
     self.uuid          = nil;
     self.zoneDurations = nil;
