@@ -104,6 +104,7 @@ static const NSInteger DurationRow = 1;
                                                 target:self
                                                 action:@selector(zoneWasSelected:)
                                                  title:@"Which zone to water?"];
+        [choices release];
     }
     else if(indexPath.row == DurationRow)
     {
@@ -119,6 +120,7 @@ static const NSInteger DurationRow = 1;
                                                 target:self
                                                 action:@selector(durationWasSelected:)
                                                  title:@"How long to water this zone?"];
+        [choices release];
     }
 }
 
