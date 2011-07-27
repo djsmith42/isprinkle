@@ -195,6 +195,7 @@ static NSString *DeferralDateTimeString = @"deferral datetime";
                             tempZoneDuration.zone    = [[subArray objectAtIndex:0] integerValue];
                             tempZoneDuration.minutes = [[subArray objectAtIndex:1] integerValue];
                             [tempZoneDurations addObject:tempZoneDuration];
+                            [tempZoneDuration release]; // the array owns it now
                         }
 
                         tempWatering.zoneDurations = tempZoneDurations;

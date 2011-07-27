@@ -72,7 +72,7 @@
     self.startTime = watering.startTime;
     self.startDate = watering.startDate;
     self.scheduleType = watering.scheduleType;
-    
+
     NSInteger count = 0;
     for(ZoneDuration *tempZoneDuration in watering.zoneDurations)
     {
@@ -96,9 +96,7 @@
 {
     while (_zoneDurations.count > 0)
     {
-        ZoneDuration *z = [_zoneDurations objectAtIndex:0];
         [_zoneDurations removeObjectAtIndex:0];
-        [z release];
     }
 
     self.uuid          = nil;
