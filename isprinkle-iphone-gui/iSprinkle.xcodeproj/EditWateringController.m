@@ -48,10 +48,7 @@ static const NSInteger PeriodRow    = 1;
 
 - (void)didReceiveMemoryWarning
 {
-    // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
 }
 
 #pragma mark - View lifecycle
@@ -329,6 +326,7 @@ static const NSInteger PeriodRow    = 1;
         newZoneDuration.zone    = newZone;
         newZoneDuration.minutes = 10; // TODO Figure out a better way instead of hard-code number here
         [self.tempEditingZones addObject:newZoneDuration];
+        [newZoneDuration release];
         
         [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.tempEditingZones.count-1 inSection:ZoneDurationsSection]]
                               withRowAnimation:UITableViewRowAnimationFade];
@@ -621,12 +619,7 @@ static const NSInteger PeriodRow    = 1;
         {
             self.tempEditingZones = [NSMutableArray array];
         }
-        
-        for(ZoneDuration *zoneDuration in self.tempEditingZones)
-        {
-            [zoneDuration release];
-        }
-        
+
         [self.tempEditingZones removeAllObjects];
 
         for(ZoneDuration *zoneDuration in self.watering.zoneDurations)
@@ -634,6 +627,7 @@ static const NSInteger PeriodRow    = 1;
             ZoneDuration *tempZoneDuration = [[ZoneDuration alloc] init];
             [tempZoneDuration copyDataFromZoneDuration:zoneDuration];
             [self.tempEditingZones addObject:tempZoneDuration];
+            [tempZoneDuration release];
         }
         
         [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.tempEditingZones.count-1 inSection:ZoneDurationsSection]]
@@ -652,7 +646,7 @@ static const NSInteger PeriodRow    = 1;
             self.editZonesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [self.editZonesButton setTitle:@"Edit Zones" forState:UIControlStateNormal];
             [self.editZonesButton setFrame:CGRectMake(40, 3, 245, 40)];
-            [self.editZonesButton setTitleColor:[[UIColor alloc] initWithRed:0.3 green:0 blue:0 alpha:1] forState:UIControlStateNormal];
+            [self.editZonesButton setTitleColor:[UIColor colorWithRed:0.3 green:0 blue:0 alpha:1] forState:UIControlStateNormal];
             [self.editZonesButton addTarget:self action:@selector(editZonesClicked:) forControlEvents:UIControlEventTouchUpInside];
 
             self.editZonesHeader  = [[UIView alloc] init];
@@ -762,7 +756,6 @@ static const NSInteger PeriodRow    = 1;
 {
     if (editingStyle == UITableViewCellEditingStyleDelete && indexPath != nil)
     {
-        [[self.tempEditingZones objectAtIndex:indexPath.row] release];
         [self.tempEditingZones removeObjectAtIndex:indexPath.row];
         [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
