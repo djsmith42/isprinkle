@@ -326,7 +326,7 @@ static const NSInteger PeriodRow    = 1;
         NSInteger newZone = [self.zonePicker selectedRowInComponent:0] + 1;
         ZoneDuration *newZoneDuration = [[ZoneDuration alloc] init];
         newZoneDuration.zone    = newZone;
-        newZoneDuration.minutes = 10; // TODO Figure out a better way instead of hard-code number here
+        newZoneDuration.minutes = 10;
         [self.tempEditingZones addObject:newZoneDuration];
         [newZoneDuration release];
         
@@ -725,7 +725,7 @@ static const NSInteger PeriodRow    = 1;
     }
     else if (pickerView == self.zonePicker)
     {
-        return [NSString stringWithFormat:@"Zone %d", (row+1)];
+        return [self.status prettyZoneName:row+1];
     }
     else if (pickerView == self.minutesPicker)
     {
