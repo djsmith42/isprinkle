@@ -35,7 +35,7 @@
         
         if ([[self.currentAction lowercaseString] isEqualToString:@"watering"] && self.activeZone > 0)
         {
-            ret = [ret stringByAppendingString:[NSString stringWithFormat:@" Zone %d", self.activeZone]];
+            ret = [ret stringByAppendingString:[NSString stringWithFormat:@" %@", [self prettyZoneName:self.activeZone]]];
         }
     }
 
