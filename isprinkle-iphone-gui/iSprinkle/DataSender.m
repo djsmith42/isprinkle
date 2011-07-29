@@ -129,11 +129,27 @@ static const NSInteger Port     = 8080;
                       , duration.zone, duration.minutes
                       ];
     }
-    
+
     yamlString = [yamlString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
     NSLog(@"  YAML:\n%@", yamlString);
     [self doHttpPost:@"update-watering" withData:yamlString];
+}
+
+- (void) sendZoneNames:(NSDictionary *)names
+{
+    NSString *yamlString = @"{";
+    BOOL first = YES;
+    for (NSString *key in [names allKeys])
+    {
+        NSInteger zoneNumber = [key integerValue];
+        NSString  *zoneName  = [names objectForKey:key];
+        yamlString = [yamlString stringByAppendingFormat:@"%@%d: %@", first ? @"" : @", ", zoneNumber, zoneName];
+        first = NO;
+    }
+    yamlString = [yamlString stringByAppendingString:@"}"];
+    NSLog(@"   YAML:\n%@", yamlString);
+    [self doHttpPost:@"update-zone-info" withData:yamlString];
 }
 
 @end

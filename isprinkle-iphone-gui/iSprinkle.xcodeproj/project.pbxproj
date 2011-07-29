@@ -37,6 +37,9 @@
 		962F656113C40C6000A3BAE7 /* iSprinkleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 962F656013C40C6000A3BAE7 /* iSprinkleTests.m */; };
 		962F657013C40F6F00A3BAE7 /* Waterings.m in Sources */ = {isa = PBXBuildFile; fileRef = 962F656F13C40F6F00A3BAE7 /* Waterings.m */; };
 		962F657313C4141900A3BAE7 /* waterdrop.png in Resources */ = {isa = PBXBuildFile; fileRef = 962F657213C4141900A3BAE7 /* waterdrop.png */; };
+		965D488213E26ACD00C74202 /* EditZoneNamesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 965D488013E26ACD00C74202 /* EditZoneNamesController.m */; };
+		965D488313E26ACD00C74202 /* EditZoneNamesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 965D488113E26ACD00C74202 /* EditZoneNamesController.xib */; };
+		965D489613E274F300C74202 /* EditableDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 965D489513E274F200C74202 /* EditableDetailCell.m */; };
 		96A6DF1A13D9128A00D5727E /* TestView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 96A6DF1913D9128A00D5727E /* TestView.xib */; };
 		96A6DF1E13D91E4D00D5727E /* ActionSheetPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 96A6DF1D13D91E4D00D5727E /* ActionSheetPicker.m */; };
 		96B16D9F13CC065A000D75DF /* EditWateringController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B16D9D13CC065A000D75DF /* EditWateringController.m */; };
@@ -98,6 +101,11 @@
 		962F656E13C40F6F00A3BAE7 /* Waterings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Waterings.h; sourceTree = "<group>"; };
 		962F656F13C40F6F00A3BAE7 /* Waterings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Waterings.m; sourceTree = "<group>"; };
 		962F657213C4141900A3BAE7 /* waterdrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = waterdrop.png; sourceTree = "<group>"; };
+		965D487F13E26ACD00C74202 /* EditZoneNamesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditZoneNamesController.h; sourceTree = "<group>"; };
+		965D488013E26ACD00C74202 /* EditZoneNamesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditZoneNamesController.m; sourceTree = "<group>"; };
+		965D488113E26ACD00C74202 /* EditZoneNamesController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditZoneNamesController.xib; sourceTree = "<group>"; };
+		965D489513E274F200C74202 /* EditableDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditableDetailCell.m; sourceTree = "<group>"; };
+		965D489713E274F900C74202 /* EditableDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditableDetailCell.h; sourceTree = "<group>"; };
 		96A6DF1913D9128A00D5727E /* TestView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestView.xib; sourceTree = "<group>"; };
 		96A6DF1C13D91E4D00D5727E /* ActionSheetPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionSheetPicker.h; sourceTree = "<group>"; };
 		96A6DF1D13D91E4D00D5727E /* ActionSheetPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetPicker.m; sourceTree = "<group>"; };
@@ -152,6 +160,8 @@
 				96A6DF1C13D91E4D00D5727E /* ActionSheetPicker.h */,
 				96A6DF1D13D91E4D00D5727E /* ActionSheetPicker.m */,
 				962F653E13C40C5F00A3BAE7 /* main.m */,
+				965D489713E274F900C74202 /* EditableDetailCell.h */,
+				965D489513E274F200C74202 /* EditableDetailCell.m */,
 			);
 			name = Misc;
 			sourceTree = "<group>";
@@ -254,6 +264,9 @@
 			children = (
 				962F654613C40C5F00A3BAE7 /* RootViewController.h */,
 				962F654713C40C5F00A3BAE7 /* RootViewController.m */,
+				965D487F13E26ACD00C74202 /* EditZoneNamesController.h */,
+				965D488013E26ACD00C74202 /* EditZoneNamesController.m */,
+				965D488113E26ACD00C74202 /* EditZoneNamesController.xib */,
 				962F654913C40C6000A3BAE7 /* RootViewController.xib */,
 				96B16D9C13CC065A000D75DF /* EditWateringController.h */,
 				96B16D9D13CC065A000D75DF /* EditWateringController.m */,
@@ -368,6 +381,7 @@
 				96B16DA013CC065A000D75DF /* EditWateringController.xib in Resources */,
 				96A6DF1A13D9128A00D5727E /* TestView.xib in Resources */,
 				96120C2F13DCB2F400A0D666 /* EditZoneDurationViewController.xib in Resources */,
+				965D488313E26ACD00C74202 /* EditZoneNamesController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,6 +436,8 @@
 				96B16D9F13CC065A000D75DF /* EditWateringController.m in Sources */,
 				96A6DF1E13D91E4D00D5727E /* ActionSheetPicker.m in Sources */,
 				96120C2E13DCB2F400A0D666 /* EditZoneDurationViewController.m in Sources */,
+				965D488213E26ACD00C74202 /* EditZoneNamesController.m in Sources */,
+				965D489613E274F300C74202 /* EditableDetailCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,6 +9,7 @@
 @synthesize dataSender                 = _dataSender;
 @synthesize deferralDatePicker         = _deferralDatePicker;
 @synthesize editWateringController     = _editWateringController;
+@synthesize editZoneNamesController    = _editZoneNamesController;
 @synthesize deferralActionSheet        = _deferralActionSheet;
 
 // Sections in the root table view:
@@ -240,6 +241,18 @@ static const NSInteger SetupZoneNamesRow = 1;
     [self.navigationController pushViewController:self.editWateringController animated:YES];
 }
 
+- (void)navigateToZoneNames
+{
+    if (self.editZoneNamesController == nil)
+    {
+        self.editZoneNamesController = [[[EditZoneNamesController alloc] initWithNibName:@"EditZoneNamesController" bundle:[NSBundle mainBundle]] autorelease];
+    }
+    
+    self.editZoneNamesController.status = self.status;
+    self.editZoneNamesController.dataSender = self.dataSender;
+    [self.navigationController pushViewController:self.editZoneNamesController animated:YES];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == SetupSection && indexPath.row == SetupDeferralRow)
@@ -249,6 +262,10 @@ static const NSInteger SetupZoneNamesRow = 1;
     else if (indexPath.section == WateringSection)
     {
         [self navigateToWatering:[self.waterings.waterings objectAtIndex:indexPath.row]];
+    }
+    else if (indexPath.section == SetupSection && indexPath.row == SetupZoneNamesRow)
+    {
+        [self navigateToZoneNames];
     }
 }
 

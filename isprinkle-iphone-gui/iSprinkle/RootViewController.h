@@ -3,6 +3,7 @@
 #import "DataSender.h"
 #import "Status.h"
 #import "EditWateringController.h"
+#import "EditZoneNamesController.h"
 
 @interface RootViewController : UITableViewController <UIActionSheetDelegate>
 {
@@ -12,6 +13,7 @@
     DataSender     *_dataSender;
     UIDatePicker   *_deferralDatePicker;
     EditWateringController *_editWateringController;
+    EditZoneNamesController *_editZoneNamesController;
     UIActionSheet  *_deferralActionSheet;
 }
 
@@ -22,5 +24,6 @@
 @property (retain) UIDatePicker  *deferralDatePicker;
 @property (retain) UIActionSheet *deferralActionSheet;
 @property (retain) EditWateringController *editWateringController;
+@property (retain) EditZoneNamesController *editZoneNamesController;
 
 @end
