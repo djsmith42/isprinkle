@@ -6,6 +6,7 @@
 @synthesize minutes;
 @synthesize zoneDurationIndex;
 @synthesize tableView;
+@synthesize status;
 
 static const NSInteger RowCount    = 2;
 static const NSInteger ZoneRow     = 0;
@@ -64,7 +65,7 @@ static const NSInteger DurationRow = 1;
     if(indexPath.row == ZoneRow)
     {
         cell.textLabel.text = @"Zone";
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", self.zone];
+        cell.detailTextLabel.text = [self.status prettyZoneName:self.zone];
     }
     else if(indexPath.row == DurationRow)
     {
@@ -95,7 +96,8 @@ static const NSInteger DurationRow = 1;
         NSMutableArray *choices = [[NSMutableArray alloc] init];
         for(int i=0; i<16; i++) // TODO Get the zone count from the device
         {
-            [choices addObject:[NSString stringWithFormat:@"Zone %d", i+1]];
+            NSString *zoneName = [self.status prettyZoneName:(NSInteger)i+1];
+            [choices addObject:zoneName];
         }
 
         [ActionSheetPicker displayActionPickerWithView:[[UIApplication sharedApplication] keyWindow]

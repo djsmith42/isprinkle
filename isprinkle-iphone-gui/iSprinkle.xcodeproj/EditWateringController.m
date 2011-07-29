@@ -82,6 +82,7 @@ static const NSInteger PeriodRow    = 1;
         self.editZoneDurationViewController = [[[EditZoneDurationViewController alloc] initWithNibName:@"EditZoneDurationViewController" bundle:[NSBundle mainBundle]] autorelease];
     }
 
+    self.editZoneDurationViewController.status  = self.status;
     self.editZoneDurationViewController.zone    = zoneDuration.zone;
     self.editZoneDurationViewController.minutes = zoneDuration.minutes;
     self.editingZoneDuration = YES; // so we know when the user comes back to this screen (and we can send the changes to the device)
@@ -247,13 +248,7 @@ static const NSInteger PeriodRow    = 1;
             else
                 zoneDuration = [self.watering.zoneDurations objectAtIndex:indexPath.row];
 
-            NSString *zoneName = [self.status.zoneNames objectForKey:[NSNumber numberWithInteger:zoneDuration.zone]];
-
-            if (zoneName != nil && [zoneName length] > 0)
-                cell.textLabel.text = zoneName;
-            else
-                cell.textLabel.text = [NSString stringWithFormat:@"Zone %d",    zoneDuration.zone];
-
+            cell.textLabel.text = [self.status prettyZoneName:zoneDuration.zone];
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d minutes", zoneDuration.minutes];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }

@@ -16,6 +16,7 @@
 - (NSString*) statusSummary;
 - (NSString*) prettyDateString;
 - (NSString*) prettyDeferralDateString;
+- (NSString*) prettyZoneName:(NSInteger)zoneNumber;
 
 @property (retain) NSString* currentAction;
 @property          BOOL      inDeferralPeriod;

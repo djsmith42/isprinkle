@@ -71,6 +71,16 @@
     return ret;
 }
 
+- (NSString*) prettyZoneName:(NSInteger)zoneNumber
+{
+    NSString *zoneName = [self.zoneNames objectForKey:[NSNumber numberWithInt:zoneNumber]];
+    
+    if (zoneName == nil || [zoneName length] == 0)
+        zoneName = [NSString stringWithFormat:@"Zone %d", zoneNumber];
+    
+    return zoneName;
+}
+
 - (void) dealloc
 {
     self.currentAction = nil;

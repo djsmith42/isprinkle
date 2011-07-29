@@ -124,6 +124,9 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
     [self.parentView setFrame:viewFrame];
     
     [UIView commitAnimations];
+    
+    [userZoneNames setObject:textField.text forKey:[NSNumber numberWithInteger:textField.tag]];
+    [self.dataSender sendZoneNames:userZoneNames];
 }
 
 - (void) textFieldDidBeginEditing:(UITextField*) textField
