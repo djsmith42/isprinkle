@@ -94,7 +94,7 @@ static const NSInteger DurationRow = 1;
     if(indexPath.row == ZoneRow)
     {
         NSMutableArray *choices = [[NSMutableArray alloc] init];
-        for(int i=0; i<16; i++) // TODO Get the zone count from the device
+        for(int i=0; i<self.status.zoneCount; i++)
         {
             NSString *zoneName = [self.status prettyZoneName:(NSInteger)i+1];
             [choices addObject:zoneName];

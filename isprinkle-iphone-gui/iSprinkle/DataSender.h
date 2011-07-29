@@ -12,5 +12,6 @@
 - (void) deleteWatering:(Watering*)watering;
 - (void) updateWatering:(Watering*)watering;
 - (void) sendZoneNames:(NSDictionary*)names;
+- (void) runZoneNow:(NSInteger)zone forMinutes:(NSInteger)minutes;
 
 @end

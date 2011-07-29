@@ -152,4 +152,9 @@ static const NSInteger Port     = 8080;
     [self doHttpPost:@"update-zone-info" withData:yamlString];
 }
 
+- (void) runZoneNow:(NSInteger)zone forMinutes:(NSInteger)minutes
+{
+    [self doHttpPost:@"run-zone-now" withData:[NSString stringWithFormat:@"%d %d", zone, minutes]];
+}
+
 @end

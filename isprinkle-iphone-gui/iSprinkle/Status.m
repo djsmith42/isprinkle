@@ -10,6 +10,7 @@
 @synthesize deferralDate     = _deferralDate;
 @synthesize activeWatering   = _activeWatering;
 @synthesize zoneNames        = _zoneNames;
+@synthesize zoneCount        = _zoneCount;
 
 - (id) init
 {
@@ -18,6 +19,7 @@
         self.currentAction = @"Loading...";
         self.inDeferralPeriod = false;
         self.zoneNames = [[NSMutableDictionary alloc] init];
+        self.zoneCount = 16; // TODO Get this from the device
     }
     return self;
 }

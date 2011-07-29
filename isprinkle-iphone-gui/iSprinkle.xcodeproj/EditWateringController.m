@@ -700,7 +700,7 @@ static const NSInteger PeriodRow    = 1;
     }
     else if (self.zonePicker == pickerView)
     {
-        return 16; // TODO Get the zone count fro the device (not yet implmented)
+        return self.status.zoneCount;
     }
     else if (self.minutesPicker == pickerView)
     {

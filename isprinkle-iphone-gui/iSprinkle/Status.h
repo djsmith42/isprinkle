@@ -11,6 +11,7 @@
     NSDate   *_deferralDate;
     Watering *_activeWatering;
     NSMutableDictionary *_zoneNames;
+    NSInteger  _zoneCount;
 }
 
 - (NSString*) statusSummary;
@@ -25,5 +26,6 @@
 @property (retain) NSDate*   deferralDate;
 @property (retain) Watering* activeWatering;
 @property (retain) NSMutableDictionary *zoneNames;
+@property          NSInteger zoneCount;
 
 @end

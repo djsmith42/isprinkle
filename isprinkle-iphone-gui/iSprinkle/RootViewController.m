@@ -1,4 +1,5 @@
 #import "RootViewController.h"
+#import "ActionSheetPicker.h"
 #import "Waterings.h"
 
 @implementation RootViewController
@@ -24,9 +25,10 @@ static const NSInteger StatusRow         = 0;
 static const NSInteger TimeRow           = 1;
 
 // Rows in the setup section:
-static const NSInteger SetupSectionRows  = 2;
+static const NSInteger SetupSectionRows  = 3;
 static const NSInteger SetupDeferralRow  = 0;
 static const NSInteger SetupZoneNamesRow = 1;
+static const NSInteger QuickRunRow       = 2;
 
 - (void)viewDidLoad
 {
@@ -157,8 +159,17 @@ static const NSInteger SetupZoneNamesRow = 1;
             cell = [tableView dequeueReusableCellWithIdentifier:ZoneNamesCellIdentifier];
             if (cell == nil)
                 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ZoneNamesCellIdentifier] autorelease];
-            cell.textLabel.text = @"Zone names";
+            cell.textLabel.text = @"Zone Names";
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
+        else if (indexPath.row == QuickRunRow)
+        {
+            static NSString *CellIdentifier = @"QuickRunCell";
+            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            if (cell == nil)
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+            cell.textLabel.text = @"Quick Run";
+            cell.accessoryType = UITableViewCellAccessoryNone;
         }
     }
 
@@ -254,6 +265,53 @@ static const NSInteger SetupZoneNamesRow = 1;
     [self.navigationController pushViewController:self.editZoneNamesController animated:YES];
 }
 
+- (void)quickRunTimeWasSelected:(NSNumber*)minutes
+{
+    NSLog(@"Doing quick run on %@ for %d minutes", [self.status prettyZoneName:_quickRunZoneNumber], [minutes integerValue]+1);
+    [self.dataSender runZoneNow:_quickRunZoneNumber forMinutes:[minutes integerValue]+1];
+}
+
+- (void)quickRunZoneWasSelected:(NSNumber*)zone
+{
+    _quickRunZoneNumber = [zone integerValue]+1;
+
+    NSMutableArray *choices = [[NSMutableArray alloc] init];
+    for(int i=0; i<60; i++)
+    {
+        NSString *minutes = i > 0 ?
+        [NSString stringWithFormat:@"%d minutes", i+1] :
+        @"1 minute";
+        
+        [choices addObject:minutes];
+    }
+
+    [ActionSheetPicker displayActionPickerWithView:[[UIApplication sharedApplication] keyWindow]
+                                              data:choices
+                                     selectedIndex:((NSInteger)0)
+                                            target:self
+                                            action:@selector(quickRunTimeWasSelected:)
+                                             title:@"How long to water it?"];
+    [choices release];
+}
+
+- (void)showQuickRun
+{
+    NSMutableArray *choices = [[NSMutableArray alloc] init];
+    for(int i=0; i<self.status.zoneCount; i++)
+    {
+        NSString *zoneName = [self.status prettyZoneName:(NSInteger)i+1];
+        [choices addObject:zoneName];
+    }
+    
+    [ActionSheetPicker displayActionPickerWithView:[[UIApplication sharedApplication] keyWindow]
+                                              data:choices
+                                     selectedIndex:((NSInteger)0)
+                                            target:self
+                                            action:@selector(quickRunZoneWasSelected:)
+                                             title:@"Which zone to water?"];
+    [choices release];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == SetupSection && indexPath.row == SetupDeferralRow)
@@ -267,6 +325,10 @@ static const NSInteger SetupZoneNamesRow = 1;
     else if (indexPath.section == SetupSection && indexPath.row == SetupZoneNamesRow)
     {
         [self navigateToZoneNames];
+    }
+    else if (indexPath.section == SetupSection && indexPath.row == QuickRunRow)
+    {
+        [self showQuickRun];
     }
 }
 

@@ -15,6 +15,7 @@
     EditWateringController *_editWateringController;
     EditZoneNamesController *_editZoneNamesController;
     UIActionSheet  *_deferralActionSheet;
+    NSInteger       _quickRunZoneNumber;
 }
 
 @property (retain) Waterings     *waterings;

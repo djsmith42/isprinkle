@@ -264,10 +264,10 @@
 			children = (
 				962F654613C40C5F00A3BAE7 /* RootViewController.h */,
 				962F654713C40C5F00A3BAE7 /* RootViewController.m */,
+				962F654913C40C6000A3BAE7 /* RootViewController.xib */,
 				965D487F13E26ACD00C74202 /* EditZoneNamesController.h */,
 				965D488013E26ACD00C74202 /* EditZoneNamesController.m */,
 				965D488113E26ACD00C74202 /* EditZoneNamesController.xib */,
-				962F654913C40C6000A3BAE7 /* RootViewController.xib */,
 				96B16D9C13CC065A000D75DF /* EditWateringController.h */,
 				96B16D9D13CC065A000D75DF /* EditWateringController.m */,
 				96B16D9E13CC065A000D75DF /* EditWateringController.xib */,
