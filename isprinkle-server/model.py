@@ -107,6 +107,7 @@ class iSprinkleModel:
     def __init__(self):
         self.status = iSprinkleStatus()
         self.waterings = []
+        self.zone_info = {}
         self.deferral_datetime = None
 
     def __str__(self):
@@ -127,6 +128,9 @@ class iSprinkleModel:
                 break
         else:
             raise ValueError('No watering with UUID "%s"' % (watering.get_uuid())) 
+
+    def set_zone_info(self, zone_info):
+        self.zone_info = zone_info
 
     def find_watering(self, uuid_str):
         for watering in self.waterings:
@@ -151,3 +155,6 @@ class iSprinkleModel:
 
     def set_deferral_datetime(self, deferral_datetime):
         self.deferral_datetime = deferral_datetime
+
+    def get_zone_info(self):
+        return self.zone_info

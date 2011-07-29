@@ -61,6 +61,11 @@ def handle_update_watering(model, post_data):
     model.update_watering(watering)
     iSprinklePersister().save(model)
 
+def handle_update_zone_info(model, post_data):
+    zone_info = yaml.load(post_data)
+    model.set_zone_info(zone_info)
+    iSprinklePersister().save(model)
+
 def handle_delete_watering(model, post_data):
     uuid_str = post_data.strip()
     model.delete_watering(uuid_str)
@@ -190,6 +195,9 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
 
             response_content = yaml.dump(yaml_waterings)
 
+        elif self.path == '/zone-info':
+	    response_content = yaml.dump(self.server.model.get_zone_info())
+
         else:
             response_code = 404
             response_content = 'Oops'
@@ -243,6 +251,9 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
                 elif self.path == '/enable-watering':
                     print 'Request to enable a watering'
                     handle_enable_watering(self.server.model, post_data)
+                elif self.path == '/update-zone-info':
+                    print 'Request to update zone i nfo'
+                    handle_update_zone_info(self.server.model, post_data)
                 else:
                     response_code    = 404
                     response_content = 'No such path'
