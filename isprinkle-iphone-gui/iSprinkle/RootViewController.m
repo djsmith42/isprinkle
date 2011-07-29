@@ -122,7 +122,7 @@ static const NSInteger QuickRunRow       = 2;
             
             cell.accessoryType = UITableViewCellAccessoryNone;           
             cell.detailTextLabel.text = [self.status statusSummary];
-            cell.textLabel.text = @"Current action";
+            cell.textLabel.text = @"Currently";
         }
         else if (indexPath.row == TimeRow)
         {
