@@ -10,6 +10,7 @@
     NSDate   *_currentDate;
     NSDate   *_deferralDate;
     Watering *_activeWatering;
+    NSMutableDictionary *_zoneNames;
 }
 
 - (NSString*) statusSummary;
@@ -22,5 +23,6 @@
 @property (retain) NSDate*   currentDate;
 @property (retain) NSDate*   deferralDate;
 @property (retain) Watering* activeWatering;
+@property (retain) NSMutableDictionary *zoneNames;
 
 @end

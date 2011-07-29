@@ -17,8 +17,7 @@ static const NSInteger Port     = 8080;
         _waterings = waterings;
         
         _receivedData = [[NSMutableData alloc] init];
-        _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(startFetching) userInfo:nil repeats:YES];
-        
+       
         _firstTime = YES;
     }
     return self;
@@ -36,6 +35,9 @@ static const NSInteger Port     = 8080;
             break;
         case FetchingWaterings:
             pathToFetch = @"waterings";
+            break;
+        case FetchingZoneInfo:
+            pathToFetch = @"zone-info";
             break;
     }
     
@@ -277,7 +279,30 @@ static NSString *DeferralDateTimeString = @"deferral datetime";
     @catch (NSException *exception)
     {
         // FIXME Inform the user about the breakage
-        NSLog(@"Could not read YAML from server: %@", [exception reason]);
+        NSLog(@"Could not read status YAML from server: %@", [exception reason]);
+    }
+}
+
+-(void)_handleZoneInfoResponse:(NSData*)data
+{
+    @try
+    {
+        NSArray *array = [YAMLSerialization YAMLWithData:data options:kYAMLReadOptionStringScalars error:nil];
+        if (array.count > 0)
+        {
+            NSDictionary *zoneInfo = [array objectAtIndex:0];
+            for (NSString *zoneNumberString in [zoneInfo allKeys])
+            {
+                NSNumber *zoneNumber = [NSNumber numberWithInteger:[zoneNumberString integerValue]];
+                NSString *zoneName   = [zoneInfo valueForKey:zoneNumberString];
+                [_status.zoneNames setObject:zoneName forKey:zoneNumber];
+            }
+        }
+    }
+    @catch (NSException *exception)
+    {
+        // FIXME Inform the user about the breakage
+        NSLog(@"Could not read zone info YAML from server: %@", [exception reason]);
     }
 }
 
@@ -294,15 +319,23 @@ static NSString *DeferralDateTimeString = @"deferral datetime";
             break;
         case FetchingWaterings:
             [self _handleWateringsResponse:_receivedData];
+            self.state = FetchingZoneInfo;
+            break;
+        case FetchingZoneInfo:
+            [self _handleZoneInfoResponse:_receivedData];
             self.state = FetchingStatus;
+            _firstTime = NO;
             break;
     }
     
     if (_firstTime)
     {
-        // Immediately fetch watering info so we don't have to wait for the timer
-        _firstTime = NO;
+        // Fetch all the info the first time
         [self startFetching];
+    }
+    else
+    {
+        [self performSelector:@selector(startFetching) withObject:self afterDelay:1.0];
     }
 }
 

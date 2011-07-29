@@ -9,7 +9,7 @@
 @synthesize currentDate      = _currentDate;
 @synthesize deferralDate     = _deferralDate;
 @synthesize activeWatering   = _activeWatering;
-
+@synthesize zoneNames        = _zoneNames;
 
 - (id) init
 {
@@ -17,6 +17,7 @@
     {
         self.currentAction = @"Loading...";
         self.inDeferralPeriod = false;
+        self.zoneNames = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -73,6 +74,7 @@
 - (void) dealloc
 {
     self.currentAction = nil;
+    self.zoneNames     = nil;
     [super dealloc];
 }
 

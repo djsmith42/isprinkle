@@ -6,8 +6,7 @@
     Status        *_status;
     Waterings     *_waterings;
     NSMutableData *_receivedData;
-    NSTimer       *_timer;
-    enum State { FetchingStatus, FetchingWaterings } _state;
+    enum State { FetchingStatus, FetchingWaterings, FetchingZoneInfo } _state;
     BOOL           _firstTime;
     NSURLConnection *_connection;
 }
