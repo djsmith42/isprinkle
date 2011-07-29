@@ -25,6 +25,7 @@
 @synthesize clickedZoneDurationNumber;
 @synthesize editZoneDurationViewController;
 @synthesize editingZoneDuration;
+@synthesize status;
 
 static const NSInteger EnabledSection = 0;
 static const NSInteger ScheduleTypeSection = 1;
@@ -245,8 +246,14 @@ static const NSInteger PeriodRow    = 1;
                 zoneDuration = [self.tempEditingZones objectAtIndex:indexPath.row];
             else
                 zoneDuration = [self.watering.zoneDurations objectAtIndex:indexPath.row];
-            
-            cell.textLabel.text       = [NSString stringWithFormat:@"Zone %d",    zoneDuration.zone];
+
+            NSString *zoneName = [self.status.zoneNames objectForKey:[NSNumber numberWithInteger:zoneDuration.zone]];
+
+            if (zoneName != nil && [zoneName length] > 0)
+                cell.textLabel.text = zoneName;
+            else
+                cell.textLabel.text = [NSString stringWithFormat:@"Zone %d",    zoneDuration.zone];
+
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d minutes", zoneDuration.minutes];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }

@@ -2,10 +2,12 @@
 #import "Waterings.h"
 #import "DataSender.h"
 #import "EditZoneDurationViewController.h"
+#import "Status.h"
 
 @interface EditWateringController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UINavigationControllerDelegate>
 {
     UITableView   *tableView;
+    Status        *status;
     Watering      *watering;
     DataSender    *dataSender;
     UIDatePicker  *startDatePicker;
@@ -33,6 +35,7 @@
 @property (retain) IBOutlet UIToolbar   *toolBar;
 
 @property (retain) Watering      *watering;
+@property (retain) Status        *status;
 @property (retain) UIDatePicker  *startDatePicker;
 @property (retain) UIActionSheet *startDateActionSheet;
 @property (retain) UIDatePicker  *startTimePicker;

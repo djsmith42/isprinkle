@@ -238,6 +238,7 @@ static const NSInteger SetupZoneNamesRow = 1;
 
     self.editWateringController.watering = watering;
     self.editWateringController.dataSender = self.dataSender;
+    self.editWateringController.status = self.status;
     [self.navigationController pushViewController:self.editWateringController animated:YES];
 }
 
