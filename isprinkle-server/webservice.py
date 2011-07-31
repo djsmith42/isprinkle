@@ -196,7 +196,10 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
             response_content = yaml.dump(yaml_waterings)
 
         elif self.path == '/zone-info':
-	    response_content = yaml.dump(self.server.model.get_zone_info())
+            response_content = yaml.dump(self.server.model.get_zone_info())
+
+        elif self.path == '/isprinkle-identify':
+            response_content = 'OK'
 
         else:
             response_code = 404
