@@ -1,9 +1,6 @@
 #import "YAMLSerialization.h"
 #import "DataFetcher.h"
-
-// FIXME The host and port need to come from user input, not hard-coded:
-static const NSString *HostName = @"10.42.42.11";
-static const NSInteger Port     = 8080;
+#import "Settings.h"
 
 @implementation DataFetcher
 
@@ -41,19 +38,14 @@ static const NSInteger Port     = 8080;
             break;
     }
     
-    NSString *urlString = [NSString stringWithFormat:@"http://%@:%d/%@", HostName, Port, pathToFetch];
-
+    NSString *urlString = [NSString stringWithFormat:@"http://%@:%d/%@", [Settings hostName], [Settings portNumber], pathToFetch];
+    
     NSURLRequest *urlRequest=[NSURLRequest
                               requestWithURL:[NSURL URLWithString:urlString]
-                                 cachePolicy:NSURLRequestUseProtocolCachePolicy
-                             timeoutInterval:60.0];
-
-    _connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
-    if (_connection == nil)
-    {
-        // FIXME Inform the user that the connection failed.
-        NSLog(@"Fail!");
-    }
+                              cachePolicy:NSURLRequestUseProtocolCachePolicy
+                              timeoutInterval:60.0];
+    
+    [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
@@ -79,6 +71,9 @@ static NSString *DeferralDateTimeString = @"deferral datetime";
     NSLog(@"Error fetching data: %@", [error localizedDescription]);
     [_connection release];
     _connection = nil;
+
+    // Retry laster:
+    [self performSelector:@selector(startFetching) withObject:self afterDelay:1.0];
 }
 
 -(NSDateFormatter*) createDateFormatter:(NSString*)format

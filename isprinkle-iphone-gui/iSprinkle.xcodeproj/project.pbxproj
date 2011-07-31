@@ -45,6 +45,10 @@
 		96B16D9F13CC065A000D75DF /* EditWateringController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B16D9D13CC065A000D75DF /* EditWateringController.m */; };
 		96B16DA013CC065A000D75DF /* EditWateringController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 96B16D9E13CC065A000D75DF /* EditWateringController.xib */; };
 		96B971A813C8FD14008235D9 /* DataSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B971A713C8FD14008235D9 /* DataSender.m */; };
+		96E0A5A413E4BA2400B9AC4E /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E0A5A213E4BA2400B9AC4E /* SettingsViewController.m */; };
+		96E0A5A513E4BA2400B9AC4E /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 96E0A5A313E4BA2400B9AC4E /* SettingsViewController.xib */; };
+		96E0A5A813E4BE3200B9AC4E /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 96E0A5A713E4BE3200B9AC4E /* Settings.png */; };
+		96E0A5AB13E4D4AA00B9AC4E /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E0A5AA13E4D4AA00B9AC4E /* Settings.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +118,12 @@
 		96B16D9E13CC065A000D75DF /* EditWateringController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditWateringController.xib; path = iSprinkle.xcodeproj/EditWateringController.xib; sourceTree = SOURCE_ROOT; };
 		96B971A613C8FD14008235D9 /* DataSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSender.h; sourceTree = "<group>"; };
 		96B971A713C8FD14008235D9 /* DataSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataSender.m; sourceTree = "<group>"; };
+		96E0A5A113E4BA2400B9AC4E /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		96E0A5A213E4BA2400B9AC4E /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		96E0A5A313E4BA2400B9AC4E /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
+		96E0A5A713E4BE3200B9AC4E /* Settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Settings.png; sourceTree = "<group>"; };
+		96E0A5A913E4D4AA00B9AC4E /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
+		96E0A5AA13E4D4AA00B9AC4E /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +165,8 @@
 			children = (
 				961EBDCE13C82B4700A3B746 /* DataFetcher.h */,
 				961EBDCF13C82B4700A3B746 /* DataFetcher.m */,
+				96E0A5A913E4D4AA00B9AC4E /* Settings.h */,
+				96E0A5AA13E4D4AA00B9AC4E /* Settings.m */,
 				96B971A613C8FD14008235D9 /* DataSender.h */,
 				96B971A713C8FD14008235D9 /* DataSender.m */,
 				96A6DF1C13D91E4D00D5727E /* ActionSheetPicker.h */,
@@ -254,6 +266,7 @@
 		962F657113C4140400A3BAE7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				96E0A5A713E4BE3200B9AC4E /* Settings.png */,
 				962F657213C4141900A3BAE7 /* waterdrop.png */,
 			);
 			name = Resources;
@@ -265,6 +278,9 @@
 				962F654613C40C5F00A3BAE7 /* RootViewController.h */,
 				962F654713C40C5F00A3BAE7 /* RootViewController.m */,
 				962F654913C40C6000A3BAE7 /* RootViewController.xib */,
+				96E0A5A113E4BA2400B9AC4E /* SettingsViewController.h */,
+				96E0A5A213E4BA2400B9AC4E /* SettingsViewController.m */,
+				96E0A5A313E4BA2400B9AC4E /* SettingsViewController.xib */,
 				965D487F13E26ACD00C74202 /* EditZoneNamesController.h */,
 				965D488013E26ACD00C74202 /* EditZoneNamesController.m */,
 				965D488113E26ACD00C74202 /* EditZoneNamesController.xib */,
@@ -382,6 +398,8 @@
 				96A6DF1A13D9128A00D5727E /* TestView.xib in Resources */,
 				96120C2F13DCB2F400A0D666 /* EditZoneDurationViewController.xib in Resources */,
 				965D488313E26ACD00C74202 /* EditZoneNamesController.xib in Resources */,
+				96E0A5A513E4BA2400B9AC4E /* SettingsViewController.xib in Resources */,
+				96E0A5A813E4BE3200B9AC4E /* Settings.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,6 +456,8 @@
 				96120C2E13DCB2F400A0D666 /* EditZoneDurationViewController.m in Sources */,
 				965D488213E26ACD00C74202 /* EditZoneNamesController.m in Sources */,
 				965D489613E274F300C74202 /* EditableDetailCell.m in Sources */,
+				96E0A5A413E4BA2400B9AC4E /* SettingsViewController.m in Sources */,
+				96E0A5AB13E4D4AA00B9AC4E /* Settings.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

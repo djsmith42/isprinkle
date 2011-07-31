@@ -1,10 +1,7 @@
 #import "DataSender.h"
+#import "Settings.h"
 
 @implementation DataSender
-
-// FIXME The host and port need to come from user input, not hard-coded:
-static const NSString *HostName = @"10.42.42.11";
-static const NSInteger Port     = 8080;
 
 - (void) _alert:(NSString*)message
 {
@@ -24,7 +21,7 @@ static const NSInteger Port     = 8080;
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
     
     NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
-    [request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@:%d/%@", HostName, Port, postPath]]];
+    [request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@:%d/%@", [Settings hostName], [Settings portNumber], postPath]]];
     [request setHTTPMethod:@"POST"];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];

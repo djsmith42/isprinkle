@@ -1,5 +1,6 @@
 #import "iSprinkleAppDelegate.h"
 #import "RootViewController.h"
+#import "Settings.h"
 
 @implementation iSprinkleAppDelegate
 
@@ -10,6 +11,13 @@
 {
     self.window.rootViewController = self.navigationController;
     [self.window makeKeyAndVisible];
+
+    settingsViewController = nil;
+    
+    if ([[Settings hostName] length] == 0)
+    {
+        [self settingsButtonClicked];
+    }
     
     return YES;
 }
@@ -18,7 +26,20 @@
 {
     [_window               release];
     [_navigationController release];
+    [settingsViewController release];
     [super dealloc];
+}
+
+- (IBAction) settingsButtonClicked
+{
+    if (settingsViewController == nil)
+    {
+        settingsViewController = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController" bundle:[NSBundle mainBundle]];
+        settingsViewController.navigationController = self.navigationController;
+    }
+
+    [self.navigationController presentModalViewController:settingsViewController animated:YES];
+    [settingsViewController populateDisplay];
 }
 
 // - (void)applicationWillResignActive:(UIApplication *)application    {}
