@@ -43,9 +43,9 @@
     NSURLRequest *urlRequest=[NSURLRequest
                               requestWithURL:[NSURL URLWithString:urlString]
                               cachePolicy:NSURLRequestUseProtocolCachePolicy
-                              timeoutInterval:60.0];
+                              timeoutInterval:5.0];
     
-    [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
+    _connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response

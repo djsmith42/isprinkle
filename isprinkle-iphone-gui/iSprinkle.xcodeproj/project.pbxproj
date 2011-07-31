@@ -49,6 +49,8 @@
 		96E0A5A513E4BA2400B9AC4E /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 96E0A5A313E4BA2400B9AC4E /* SettingsViewController.xib */; };
 		96E0A5A813E4BE3200B9AC4E /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 96E0A5A713E4BE3200B9AC4E /* Settings.png */; };
 		96E0A5AB13E4D4AA00B9AC4E /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E0A5AA13E4D4AA00B9AC4E /* Settings.m */; };
+		96FB88DD13E5A02D001BD869 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = 96FB88DC13E5A02D001BD869 /* check.png */; };
+		96FB88E913E5E660001BD869 /* ConnectionTester.m in Sources */ = {isa = PBXBuildFile; fileRef = 96FB88E813E5E660001BD869 /* ConnectionTester.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,6 +126,9 @@
 		96E0A5A713E4BE3200B9AC4E /* Settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Settings.png; sourceTree = "<group>"; };
 		96E0A5A913E4D4AA00B9AC4E /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
 		96E0A5AA13E4D4AA00B9AC4E /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
+		96FB88DC13E5A02D001BD869 /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
+		96FB88E713E5E660001BD869 /* ConnectionTester.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionTester.h; sourceTree = "<group>"; };
+		96FB88E813E5E660001BD869 /* ConnectionTester.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionTester.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +168,8 @@
 		961EBDD113C82B5000A3B746 /* Misc */ = {
 			isa = PBXGroup;
 			children = (
+				96FB88E713E5E660001BD869 /* ConnectionTester.h */,
+				96FB88E813E5E660001BD869 /* ConnectionTester.m */,
 				961EBDCE13C82B4700A3B746 /* DataFetcher.h */,
 				961EBDCF13C82B4700A3B746 /* DataFetcher.m */,
 				96E0A5A913E4D4AA00B9AC4E /* Settings.h */,
@@ -266,6 +273,7 @@
 		962F657113C4140400A3BAE7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				96FB88DC13E5A02D001BD869 /* check.png */,
 				96E0A5A713E4BE3200B9AC4E /* Settings.png */,
 				962F657213C4141900A3BAE7 /* waterdrop.png */,
 			);
@@ -400,6 +408,7 @@
 				965D488313E26ACD00C74202 /* EditZoneNamesController.xib in Resources */,
 				96E0A5A513E4BA2400B9AC4E /* SettingsViewController.xib in Resources */,
 				96E0A5A813E4BE3200B9AC4E /* Settings.png in Resources */,
+				96FB88DD13E5A02D001BD869 /* check.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,6 +467,7 @@
 				965D489613E274F300C74202 /* EditableDetailCell.m in Sources */,
 				96E0A5A413E4BA2400B9AC4E /* SettingsViewController.m in Sources */,
 				96E0A5AB13E4D4AA00B9AC4E /* Settings.m in Sources */,
+				96FB88E913E5E660001BD869 /* ConnectionTester.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

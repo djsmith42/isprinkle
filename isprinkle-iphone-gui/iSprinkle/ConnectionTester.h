@@ -1,16 +1,13 @@
-//
-//  ConnectionTester.h
-//  iSprinkle
-//
-//  Created by Grown-ups on 7/31/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 
-
-@interface ConnectionTester : NSObject {
-    
+@interface ConnectionTester : NSObject
+{
+    NSURLConnection *_connection;
+    id _target;
+	SEL _goodAction;
+    SEL _badAction;
 }
+
+-(void) testConnection:(NSString*)hostName target:(id)target goodAction:(SEL)goodAction badAction:(SEL)badAction;
 
 @end
