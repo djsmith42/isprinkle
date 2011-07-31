@@ -8,6 +8,7 @@
 @synthesize connectionTestLabel;
 @synthesize hostNameTextField;
 @synthesize activityIndicator;
+@synthesize doneButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -46,6 +47,7 @@
 {
     self.activityIndicator.hidden   = YES;
     self.connectionTestLabel.hidden = YES;
+    self.doneButton.enabled = YES;
     
     closeOnSuccesfulTest = NO;
 }
@@ -59,6 +61,7 @@
 {
     self.connectionTestLabel.hidden = YES;
     self.activityIndicator.hidden = NO;
+    self.doneButton.enabled = NO;
     [self.activityIndicator startAnimating];
 
     [[[ConnectionTester alloc] init] testConnection:self.hostNameTextField.text
@@ -73,16 +76,16 @@
     [self _startConnectionTest];
 }
 
--(IBAction) hostNameTextFieldChanged
+-(IBAction) cancelButtonClicked
 {
-    NSLog(@"%s text: '%@'", __FUNCTION__, self.hostNameTextField.text);
+    [self.navigationController dismissModalViewControllerAnimated:YES];
 }
 
 -(void)_connectionTestedGood
 {
-    NSLog(@"%s", __FUNCTION__);
     [self.activityIndicator stopAnimating];
     self.activityIndicator.hidden = YES;
+    self.doneButton.enabled = YES;
     self.connectionTestLabel.hidden = YES;
     
     if (closeOnSuccesfulTest)
@@ -94,9 +97,9 @@
 
 -(void)_connectionTestedBad:(NSError*)error
 {
-    NSLog(@"%s %@", __FUNCTION__, error);
     [self.activityIndicator stopAnimating];
     self.activityIndicator.hidden = YES;
+    self.doneButton.enabled = YES;
     self.connectionTestLabel.hidden = NO;
     self.connectionTestLabel.text = [NSString stringWithFormat:@"Woops: %@", [error localizedDescription]];
 }

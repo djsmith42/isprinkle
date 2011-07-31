@@ -6,16 +6,17 @@
     UITextField *hostNameTextField;
     UIActivityIndicatorView *activityIndicator;
     UILabel *connectionTestLabel;
+    UIBarButtonItem *doneButton;
     BOOL closeOnSuccesfulTest;
 }
 
 -(IBAction) doneButtonClicked;
--(IBAction) hostNameTextFieldChanged;
 -(void) populateDisplay;
 
 @property (retain) UINavigationController *navigationController;
 @property (retain) IBOutlet UITextField *hostNameTextField;
 @property (retain) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (retain) IBOutlet UILabel *connectionTestLabel;
+@property (retain) IBOutlet UIBarButtonItem *doneButton;
 
 @end
