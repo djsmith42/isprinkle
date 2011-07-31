@@ -8,11 +8,7 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+    return [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 }
 
 - (void)dealloc
@@ -30,8 +26,6 @@
 - (void)populateDisplay
 {
     NSLog(@"Populating host name text field with '%@'", [Settings hostName]);
-    if(self.hostNameTextField == nil)
-        NSLog(@"It's nil dude!!!!");
     self.hostNameTextField.text = [Settings hostName];
 }
 
