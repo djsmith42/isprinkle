@@ -22,7 +22,7 @@ def turn_off_all_zones():
     if process.returncode is not 0:
         print 'Watering Service: Failed to turn off all zones (they might already be off anyway) due to error:', output[1]
 
-def get_active_zone(watering, now):
+def get_active_index(watering, now):
 
     start_time = watering.get_start_time()
 
@@ -33,10 +33,12 @@ def get_active_zone(watering, now):
         # Hack the start_time to look like today:
         start_time = datetime.datetime(now.year, now.month, now.day, start_time.hour, start_time.minute, start_time.second)
         if now >= start_time and (now - datetime.datetime(1970,1,1)).days % watering.get_period_days() == 0:
+            index = 0
             for (zone_number, minutes) in watering.get_zone_durations():
                 if delta_to_total_minutes(now - start_time) < minutes:
-                    return zone_number
+                    return index
                 start_time += datetime.timedelta(minutes=minutes)
+                index += 1
             return None
         else:
             return None
@@ -56,10 +58,12 @@ def get_active_zone(watering, now):
                 watering.get_start_time().second)
 
         if now >= start_time:
+            index = 0
             for (zone_number, minutes) in watering.get_zone_durations():
                 if delta_to_total_minutes(now - start_time) < minutes:
-                    return zone_number
+                    return index
                 start_time += datetime.timedelta(minutes=minutes)
+                index += 1
         return None
 
 class iSprinkleWateringService(Thread):
@@ -76,37 +80,37 @@ class iSprinkleWateringService(Thread):
 
             now = datetime.datetime.now()
             print 'Watering Service: Current Time', now
-            active_zone_number = None
+            active_index        = None
             active_watering    = None
             in_deferral_period = False
 
             if self.model.get_deferral_datetime() is not None and now < self.model.get_deferral_datetime():
                 print 'Watering Service: In deferral time. Not watering.'
-                active_zone_number = None
+                active_index       = None
                 in_deferral_period = True
             else:
                 for watering in self.model.get_waterings():
-                    active_zone_number = get_active_zone(watering, now)
-                    if active_zone_number is not None:
+                    active_index = get_active_index(watering, now)
+                    if active_index is not None:
                         active_watering = watering
                         break
 
             self.model.status.in_deferral_period = in_deferral_period
 
-            if active_zone_number is not None:
+            if active_index is not None:
                 print 'Watering Service: Active watering:', active_watering
-                turn_on_zone(active_zone_number)
+                turn_on_zone(watering.get_zone_durations()[active_index][0])
 
                 self.model.status.active_watering = active_watering
-                if self.model.status.active_zone_number != active_zone_number:
-                    self.model.status.active_zone_number = active_zone_number
+                if self.model.status.active_index != active_index:
+                    self.model.status.active_index = active_index
                     self.model.status.zone_start_time    = datetime.datetime.now()
             else:
                 turn_off_all_zones()
 
-                self.model.status.active_watering    = None
-                self.model.status.active_zone_number = None
-                self.model.status.zone_start_time    = None
+                self.model.status.active_watering = None
+                self.model.status.active_index    = None
+                self.model.status.zone_start_time = None
 
         print 'Watering service stopped'
 

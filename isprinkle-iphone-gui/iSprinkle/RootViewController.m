@@ -43,7 +43,7 @@ static const NSInteger QuickRunRow       = 2;
     [self.status    addObserver:self forKeyPath:@"currentAction"    options:0 context:nil];
     [self.status    addObserver:self forKeyPath:@"currentDate"      options:0 context:nil];
     [self.status    addObserver:self forKeyPath:@"inDeferralPeriod" options:0 context:nil];
-    [self.status    addObserver:self forKeyPath:@"activeZone"       options:0 context:nil];
+    [self.status    addObserver:self forKeyPath:@"activeIndex"      options:0 context:nil];
     [self.status    addObserver:self forKeyPath:@"deferralDate"     options:0 context:nil];
     [self.status    addObserver:self forKeyPath:@"activeWatering"   options:0 context:nil];
     [self.waterings addObserver:self forKeyPath:@"watcherKey"       options:0 context:nil];

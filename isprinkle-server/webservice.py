@@ -156,8 +156,8 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
         response_content = ''
 
         if self.path == '/status':
-            active_zone        = self.server.model.status.active_zone_number
             active_watering    = self.server.model.status.active_watering
+            active_index       = self.server.model.status.active_index
             in_deferral_period = self.server.model.status.in_deferral_period
 
             yaml_status = {}
@@ -167,8 +167,8 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
 
             if active_watering:
                 yaml_status['current action' ] = 'watering'
-                yaml_status['active zone'    ] = active_zone
                 yaml_status['active watering'] = str(active_watering.get_uuid())
+                yaml_status['active index'   ] = active_index
             else:
                 yaml_status['current action' ] = 'idle'
 

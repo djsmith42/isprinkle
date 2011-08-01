@@ -4,15 +4,16 @@ class iSprinkleStatus:
 
     def __init__(self):
         self.active_watering    = None
-        self.active_zone_number = None
+        self.active_index       = None
         self.zone_start_time    = None
         self.in_deferral_period = False
 
     def __str__(self):
         s = 'iSprinkle Status:\n'
-        if self.active_zone_number is not None:
-            s += '  Active Zone: %d\n' % (self.active_zone_number)
-            s += '  Start Time:  %s\n' % (str(self.zone_start_time))
+        if self.active_watering is not None:
+            s += '  Active Watering: %s' % (self.active_watering.get_uuid())
+            s += '  Active Index:    %d\n' % (self.active_index)
+            s += '  Start Time:      %s\n' % (str(self.zone_start_time))
         else:
             s += '  No active zone\n'
         return s

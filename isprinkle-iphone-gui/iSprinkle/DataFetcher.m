@@ -56,7 +56,7 @@
 // Status keys:
 static NSString *CurrentActionString    = @"current action";
 static NSString *InDeferralPeriodString = @"in deferral period";
-static NSString *ActiveZoneString       = @"active zone";
+static NSString *ActiveIndexString      = @"active index";
 static NSString *CurrentDateTimeString  = @"current time";
 static NSString *DeferralDateTimeString = @"deferral datetime";
 
@@ -123,9 +123,9 @@ static NSString *DeferralDateTimeString = @"deferral datetime";
                 {
                     [_status setInDeferralPeriod:([value isEqualToString:@"true"]) ? YES : NO];
                 }
-                else if ([key isEqualToString:ActiveZoneString])
+                else if ([key isEqualToString:ActiveIndexString])
                 {
-                    [_status setActiveZone:([value intValue])];
+                    _status.activeIndex = [value integerValue];
                 }
                 else if ([key isEqualToString:CurrentDateTimeString])
                 {

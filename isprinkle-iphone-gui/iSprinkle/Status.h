@@ -6,7 +6,7 @@
 {
     NSString *_currentAction;
     BOOL      _inDeferralPeriod;
-    int       _activeZone;
+    int       _activeIndex;
     NSDate   *_currentDate;
     NSDate   *_deferralDate;
     Watering *_activeWatering;
@@ -21,7 +21,7 @@
 
 @property (retain) NSString* currentAction;
 @property          BOOL      inDeferralPeriod;
-@property          NSInteger activeZone;
+@property          NSInteger activeIndex;
 @property (retain) NSDate*   currentDate;
 @property (retain) NSDate*   deferralDate;
 @property (retain) Watering* activeWatering;

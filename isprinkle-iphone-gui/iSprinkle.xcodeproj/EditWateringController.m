@@ -571,11 +571,13 @@ static const NSInteger PeriodRow    = 1;
         if (zoneDuration != nil)
             [self navigateToZoneDuration:zoneDuration];
 
-        /*
-         self.clickedZoneDurationNumber = indexPath.row;
-         ZoneDuration *clickedZoneDuration = [self.watering.zoneDurations objectAtIndex:self.clickedZoneDurationNumber];
-         [self _showMinutesPicker:clickedZoneDuration.minutes];
-         */
+    }
+    else if (indexPath.section == ScheduleTypeSection)
+    {
+        NSLog(@"This does not work -- need to fix it");
+        //self.watering.scheduleType = indexPath.row;
+        //[self.dataSender updateWatering:self.watering];
+        //[self.tableView reloadData];
     }
 }
 

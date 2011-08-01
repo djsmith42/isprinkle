@@ -5,7 +5,7 @@
 
 @synthesize currentAction    = _currentAction;
 @synthesize inDeferralPeriod = _inDeferralPeriod;
-@synthesize activeZone       = _activeZone;
+@synthesize activeIndex      = _activeIndex;
 @synthesize currentDate      = _currentDate;
 @synthesize deferralDate     = _deferralDate;
 @synthesize activeWatering   = _activeWatering;
@@ -20,6 +20,7 @@
         self.inDeferralPeriod = false;
         self.zoneNames = [[NSMutableDictionary alloc] init];
         self.zoneCount = 16; // TODO Get this from the device
+        self.activeIndex = -1;
     }
     return self;
 }
@@ -34,10 +35,14 @@
         // Title case the current action for prettier display:
         ret = [[[self.currentAction substringToIndex:1] uppercaseString]
                stringByAppendingString:[self.currentAction substringFromIndex:1]];
-        
-        if ([[self.currentAction lowercaseString] isEqualToString:@"watering"] && self.activeZone > 0)
+
+        if ([[self.currentAction lowercaseString] isEqualToString:@"watering"] &&
+            self.activeIndex >= 0 &&
+            self.activeIndex < self.activeWatering.zoneDurations.count)
         {
-            ret = [ret stringByAppendingString:[NSString stringWithFormat:@" %@", [self prettyZoneName:self.activeZone]]];
+            ZoneDuration *zoneDuration = [self.activeWatering.zoneDurations objectAtIndex:self.activeIndex];
+            NSInteger activeZone = zoneDuration.zone;
+            ret = [ret stringByAppendingString:[NSString stringWithFormat:@" %@", [self prettyZoneName:activeZone]]];
         }
     }
 
