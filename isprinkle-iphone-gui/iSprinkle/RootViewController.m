@@ -359,6 +359,9 @@ static const NSInteger QuickRunRow       = 2;
 
     // Refresh the entire table view:
     [self.tableView reloadData];
+    
+    if (self.editWateringController != nil)
+        [self.editWateringController updateWateringDisplay];
 }
 
 @end

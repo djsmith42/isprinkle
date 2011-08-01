@@ -28,6 +28,8 @@
     BOOL editingZoneDuration;
 }
 
+- (void) updateWateringDisplay;
+
 - (IBAction) runNowButtonPressed:(id)sender;
 - (IBAction) deleteButtonPressed:(id)sender;
 

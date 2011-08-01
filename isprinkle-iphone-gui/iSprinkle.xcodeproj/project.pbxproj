@@ -40,6 +40,8 @@
 		965D488213E26ACD00C74202 /* EditZoneNamesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 965D488013E26ACD00C74202 /* EditZoneNamesController.m */; };
 		965D488313E26ACD00C74202 /* EditZoneNamesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 965D488113E26ACD00C74202 /* EditZoneNamesController.xib */; };
 		965D489613E274F300C74202 /* EditableDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 965D489513E274F200C74202 /* EditableDetailCell.m */; };
+		968F8DDD13E6ED7E00CE6951 /* GrayLight.png in Resources */ = {isa = PBXBuildFile; fileRef = 968F8DDB13E6ED7E00CE6951 /* GrayLight.png */; };
+		968F8DDE13E6ED7E00CE6951 /* GreenLight.png in Resources */ = {isa = PBXBuildFile; fileRef = 968F8DDC13E6ED7E00CE6951 /* GreenLight.png */; };
 		96A6DF1A13D9128A00D5727E /* TestView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 96A6DF1913D9128A00D5727E /* TestView.xib */; };
 		96A6DF1E13D91E4D00D5727E /* ActionSheetPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 96A6DF1D13D91E4D00D5727E /* ActionSheetPicker.m */; };
 		96B16D9F13CC065A000D75DF /* EditWateringController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B16D9D13CC065A000D75DF /* EditWateringController.m */; };
@@ -112,6 +114,8 @@
 		965D488113E26ACD00C74202 /* EditZoneNamesController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditZoneNamesController.xib; sourceTree = "<group>"; };
 		965D489513E274F200C74202 /* EditableDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditableDetailCell.m; sourceTree = "<group>"; };
 		965D489713E274F900C74202 /* EditableDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditableDetailCell.h; sourceTree = "<group>"; };
+		968F8DDB13E6ED7E00CE6951 /* GrayLight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GrayLight.png; sourceTree = "<group>"; };
+		968F8DDC13E6ED7E00CE6951 /* GreenLight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GreenLight.png; sourceTree = "<group>"; };
 		96A6DF1913D9128A00D5727E /* TestView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestView.xib; sourceTree = "<group>"; };
 		96A6DF1C13D91E4D00D5727E /* ActionSheetPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionSheetPicker.h; sourceTree = "<group>"; };
 		96A6DF1D13D91E4D00D5727E /* ActionSheetPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetPicker.m; sourceTree = "<group>"; };
@@ -273,6 +277,8 @@
 		962F657113C4140400A3BAE7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				968F8DDB13E6ED7E00CE6951 /* GrayLight.png */,
+				968F8DDC13E6ED7E00CE6951 /* GreenLight.png */,
 				96FB88DC13E5A02D001BD869 /* check.png */,
 				96E0A5A713E4BE3200B9AC4E /* Settings.png */,
 				962F657213C4141900A3BAE7 /* waterdrop.png */,
@@ -409,6 +415,8 @@
 				96E0A5A513E4BA2400B9AC4E /* SettingsViewController.xib in Resources */,
 				96E0A5A813E4BE3200B9AC4E /* Settings.png in Resources */,
 				96FB88DD13E5A02D001BD869 /* check.png in Resources */,
+				968F8DDD13E6ED7E00CE6951 /* GrayLight.png in Resources */,
+				968F8DDE13E6ED7E00CE6951 /* GreenLight.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

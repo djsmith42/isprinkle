@@ -174,6 +174,18 @@ static const NSInteger PeriodRow    = 1;
     [self.tableView endUpdates];
 }
 
+- (void) updateCellImage:(UITableViewCell*)cell
+{
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    if (indexPath.section == ZoneDurationsSection)
+    {
+        if([self.status.activeWatering.uuid isEqualToString:self.watering.uuid] && self.status.activeIndex == indexPath.row)
+            cell.imageView.image = [UIImage imageNamed:@"GreenLight.png"];
+        else
+            cell.imageView.image = [UIImage imageNamed:@"GrayLight.png"];
+    }
+}
+
 -(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
@@ -250,6 +262,7 @@ static const NSInteger PeriodRow    = 1;
 
             cell.textLabel.text = [self.status prettyZoneName:zoneDuration.zone];
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d minutes", zoneDuration.minutes];
+            [self updateCellImage:cell];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
@@ -827,6 +840,16 @@ static const NSInteger PeriodRow    = 1;
         }
         
         [self.tableView reloadData];
+    }
+}
+
+- (void) updateWateringDisplay
+{
+    for (UITableViewCell *cell in [self.tableView visibleCells])
+    {
+        NSLog(@"Updating cell %@", cell.textLabel.text);
+        [self updateCellImage:cell];
+        [cell setNeedsLayout];
     }
 }
 
