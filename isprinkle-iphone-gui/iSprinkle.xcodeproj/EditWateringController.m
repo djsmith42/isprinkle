@@ -183,23 +183,30 @@ static const NSInteger PeriodRow    = 1;
     return scaledImage;
 }
 
-- (void) updateCellImage:(UITableViewCell*)cell
+- (void) updateCellImage:(UITableViewCell*)cell withIndexPath:(NSIndexPath*)indexPath
 {
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    if(indexPath == nil)
+        indexPath = [self.tableView indexPathForCell:cell];
+
     if (indexPath.section == ZoneDurationsSection)
     {
         UIImage *image = [UIImage imageNamed:@"GrayLight.png"];
         if([self.status.activeWatering.uuid isEqualToString:self.watering.uuid] && self.status.activeIndex == indexPath.row)
             image = [UIImage imageNamed:@"GreenLight.png"];
-
+        
         CGSize imageSize = [self.tableView rectForRowAtIndexPath:indexPath].size;
         imageSize.height *= 0.66;
         imageSize.width = imageSize.height;
-
+        
         image = [self scale:image toSize:imageSize];
-
+        
         cell.imageView.image = image;
-    }
+    } 
+}
+
+- (void) updateCellImage:(UITableViewCell*)cell
+{
+    [self updateCellImage:cell withIndexPath:nil];
 }
 
 -(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -278,7 +285,7 @@ static const NSInteger PeriodRow    = 1;
 
             cell.textLabel.text = [self.status prettyZoneName:zoneDuration.zone];
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d minutes", zoneDuration.minutes];
-            [self updateCellImage:cell];
+            [self updateCellImage:cell withIndexPath:indexPath];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
