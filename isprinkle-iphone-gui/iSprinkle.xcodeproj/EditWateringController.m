@@ -174,15 +174,31 @@ static const NSInteger PeriodRow    = 1;
     [self.tableView endUpdates];
 }
 
+- (UIImage *)scale:(UIImage *)image toSize:(CGSize)size
+{
+    UIGraphicsBeginImageContext(size);
+    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return scaledImage;
+}
+
 - (void) updateCellImage:(UITableViewCell*)cell
 {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     if (indexPath.section == ZoneDurationsSection)
     {
+        UIImage *image = [UIImage imageNamed:@"GrayLight.png"];
         if([self.status.activeWatering.uuid isEqualToString:self.watering.uuid] && self.status.activeIndex == indexPath.row)
-            cell.imageView.image = [UIImage imageNamed:@"GreenLight.png"];
-        else
-            cell.imageView.image = [UIImage imageNamed:@"GrayLight.png"];
+            image = [UIImage imageNamed:@"GreenLight.png"];
+
+        CGSize imageSize = [self.tableView rectForRowAtIndexPath:indexPath].size;
+        imageSize.height *= 0.66;
+        imageSize.width = imageSize.height;
+
+        image = [self scale:image toSize:imageSize];
+
+        cell.imageView.image = image;
     }
 }
 
@@ -763,7 +779,6 @@ static const NSInteger PeriodRow    = 1;
 - (void)viewWillAppear:(BOOL)animated
 {
     [self.tableView reloadData];
-    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
     
     if (self.tableView.editing)
         [self editZonesClicked:self];
@@ -847,7 +862,6 @@ static const NSInteger PeriodRow    = 1;
 {
     for (UITableViewCell *cell in [self.tableView visibleCells])
     {
-        NSLog(@"Updating cell %@", cell.textLabel.text);
         [self updateCellImage:cell];
         [cell setNeedsLayout];
     }
