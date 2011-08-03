@@ -4,6 +4,7 @@
 #import "Status.h"
 #import "EditWateringController.h"
 #import "EditZoneNamesController.h"
+#import "ConnectingViewController.h"
 
 @interface RootViewController : UITableViewController <UIActionSheetDelegate>
 {
@@ -16,6 +17,7 @@
     EditZoneNamesController *_editZoneNamesController;
     UIActionSheet  *_deferralActionSheet;
     NSInteger       _quickRunZoneNumber;
+    ConnectingViewController *_connectingViewController;
 }
 
 @property (retain) Waterings     *waterings;
@@ -26,5 +28,5 @@
 @property (retain) UIActionSheet *deferralActionSheet;
 @property (retain) EditWateringController *editWateringController;
 @property (retain) EditZoneNamesController *editZoneNamesController;
-
+@property (retain) ConnectingViewController *connetingViewController;
 @end

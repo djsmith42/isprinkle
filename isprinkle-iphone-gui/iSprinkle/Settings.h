@@ -4,6 +4,7 @@
 {
 }
 
++(void)addObserver:(id)target withAction:(SEL)action;
 +(NSString*) hostName;
 +(NSInteger) portNumber;
 

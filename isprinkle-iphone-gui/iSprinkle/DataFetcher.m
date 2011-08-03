@@ -12,12 +12,28 @@
     {
         _status    = status;
         _waterings = waterings;
-        
+        _status.connected = NO;
+
         _receivedData = [[NSMutableData alloc] init];
-       
         _firstTime = YES;
+        _lastConnectedHost = nil;
+        _connectingHost = nil;
+        
+        [Settings addObserver:self withAction:@selector(settingsChanged)];
     }
     return self;
+}
+
+- (void) settingsChanged
+{
+    NSLog(@"Settings have changed. Fetching new data.");
+
+    [_connection cancel];
+
+    _firstTime = YES;
+    _lastConnectedHost = nil;
+
+    [self startFetching];
 }
 
 - (void) startFetching
@@ -37,7 +53,15 @@
             pathToFetch = @"zone-info";
             break;
     }
+
+    if (_lastConnectedHost == nil || ![_lastConnectedHost isEqualToString:[Settings hostName]])
+    {
+        _status.connected = NO;
+        _firstTime = YES;
+    }
     
+    _connectingHost = [Settings hostName];
+
     NSString *urlString = [NSString stringWithFormat:@"http://%@:%d/%@", [Settings hostName], [Settings portNumber], pathToFetch];
     
     NSURLRequest *urlRequest=[NSURLRequest
@@ -71,6 +95,8 @@ static NSString *DeferralDateTimeString = @"deferral datetime";
     NSLog(@"Error fetching data: %@", [error localizedDescription]);
     [_connection release];
     _connection = nil;
+    
+    _status.connected = NO;
 
     // Retry laster:
     [self performSelector:@selector(startFetching) withObject:self afterDelay:1.0];
@@ -106,7 +132,7 @@ static NSString *DeferralDateTimeString = @"deferral datetime";
         {
             if(![[array objectAtIndex:0] isKindOfClass:[NSDictionary class]])
             {
-                NSLog(@"Got bogus YAML results. Ignoring.");
+                NSLog(@"Got bogus YAML status results. Ignoring.");
                 return;
             }
 
@@ -285,6 +311,12 @@ static NSString *DeferralDateTimeString = @"deferral datetime";
         NSArray *array = [YAMLSerialization YAMLWithData:data options:kYAMLReadOptionStringScalars error:nil];
         if (array.count > 0)
         {
+            if(![[array objectAtIndex:0] isKindOfClass:[NSDictionary class]])
+            {
+                NSLog(@"Got bogus YAML zone info. Ignoring.");
+                return;
+            }
+
             NSDictionary *zoneInfo = [array objectAtIndex:0];
             for (NSString *zoneNumberString in [zoneInfo allKeys])
             {
@@ -305,7 +337,7 @@ static NSString *DeferralDateTimeString = @"deferral datetime";
 {
     [_connection release];
     _connection = nil;
-
+    
     switch (self.state)
     {
         case FetchingStatus:
@@ -330,6 +362,8 @@ static NSString *DeferralDateTimeString = @"deferral datetime";
     }
     else
     {
+        _status.connected = YES;
+        _lastConnectedHost = _connectingHost;
         [self performSelector:@selector(startFetching) withObject:self afterDelay:1.0];
     }
 }

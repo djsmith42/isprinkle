@@ -9,6 +9,8 @@
     enum State { FetchingStatus, FetchingWaterings, FetchingZoneInfo } _state;
     BOOL           _firstTime;
     NSURLConnection *_connection;
+    NSString *_lastConnectedHost;
+    NSString *_connectingHost;
 }
 
 @property enum State state;

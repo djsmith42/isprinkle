@@ -12,6 +12,7 @@
     Watering *_activeWatering;
     NSMutableDictionary *_zoneNames;
     NSInteger  _zoneCount;
+    BOOL      _connected;
 }
 
 - (NSString*) statusSummary;
@@ -27,5 +28,6 @@
 @property (retain) Watering* activeWatering;
 @property (retain) NSMutableDictionary *zoneNames;
 @property          NSInteger zoneCount;
+@property          BOOL connected;
 
 @end

@@ -11,6 +11,7 @@
 @synthesize activeWatering   = _activeWatering;
 @synthesize zoneNames        = _zoneNames;
 @synthesize zoneCount        = _zoneCount;
+@synthesize connected        = _connected;
 
 - (id) init
 {
@@ -21,6 +22,7 @@
         self.zoneNames = [[NSMutableDictionary alloc] init];
         self.zoneCount = 16; // TODO Get this from the device
         self.activeIndex = -1;
+        self.connected = NO;
     }
     return self;
 }

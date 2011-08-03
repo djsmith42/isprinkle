@@ -12,6 +12,7 @@
 @synthesize editWateringController     = _editWateringController;
 @synthesize editZoneNamesController    = _editZoneNamesController;
 @synthesize deferralActionSheet        = _deferralActionSheet;
+@synthesize connetingViewController    = _connectingViewController;
 
 // Sections in the root table view:
 static const NSInteger SectionCount    = 3;
@@ -46,24 +47,61 @@ static const NSInteger QuickRunRow       = 2;
     [self.status    addObserver:self forKeyPath:@"activeIndex"      options:0 context:nil];
     [self.status    addObserver:self forKeyPath:@"deferralDate"     options:0 context:nil];
     [self.status    addObserver:self forKeyPath:@"activeWatering"   options:0 context:nil];
+    [self.status    addObserver:self forKeyPath:@"connected"        options:0 context:nil];
     [self.waterings addObserver:self forKeyPath:@"watcherKey"       options:0 context:nil];
 
     [self.dataFetcher startFetching];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+-(void)updateConnectingOverlay
+{
+    if(self.tableView == nil || self.tableView.superview == nil)
+    {
+        return;
+    }
+
+    if(self.connetingViewController == nil)
+    {
+        self.connetingViewController = [[ConnectingViewController alloc] initWithNibName:@"ConnectingViewController" bundle:[NSBundle mainBundle]];
+        [self.tableView.superview addSubview:self.connetingViewController.view];
+    }
+    
+    if(self.tableView.superview.isHidden)
+        return;
+
+    if (self.status.connected)
+    {
+        [self.tableView.superview sendSubviewToBack:self.connetingViewController.view];
+    }
+    else
+    {
+        [self.tableView.superview bringSubviewToFront:self.connetingViewController.view];
+    }
 }
-- (void)viewDidAppear:(BOOL)animated {
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self updateConnectingOverlay];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
     [super viewDidAppear:animated];
 }
-- (void)viewWillDisappear:(BOOL)animated {
+
+- (void)viewWillDisappear:(BOOL)animated
+{
 	[super viewWillDisappear:animated];
 }
-- (void)viewDidDisappear:(BOOL)animated {
+
+- (void)viewDidDisappear:(BOOL)animated
+{
 	[super viewDidDisappear:animated];
 }
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
     return YES;
 }
 
@@ -362,6 +400,8 @@ static const NSInteger QuickRunRow       = 2;
     
     if (self.editWateringController != nil)
         [self.editWateringController updateWateringDisplay];
+
+    [self updateConnectingOverlay];
 }
 
 @end

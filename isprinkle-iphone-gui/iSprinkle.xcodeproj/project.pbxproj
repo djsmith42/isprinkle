@@ -37,6 +37,8 @@
 		962F656113C40C6000A3BAE7 /* iSprinkleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 962F656013C40C6000A3BAE7 /* iSprinkleTests.m */; };
 		962F657013C40F6F00A3BAE7 /* Waterings.m in Sources */ = {isa = PBXBuildFile; fileRef = 962F656F13C40F6F00A3BAE7 /* Waterings.m */; };
 		962F657313C4141900A3BAE7 /* waterdrop.png in Resources */ = {isa = PBXBuildFile; fileRef = 962F657213C4141900A3BAE7 /* waterdrop.png */; };
+		96418A1F13E8EEBD00E6853E /* ConnectingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96418A1D13E8EEBD00E6853E /* ConnectingViewController.m */; };
+		96418A2013E8EEBD00E6853E /* ConnectingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 96418A1E13E8EEBD00E6853E /* ConnectingViewController.xib */; };
 		965D488213E26ACD00C74202 /* EditZoneNamesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 965D488013E26ACD00C74202 /* EditZoneNamesController.m */; };
 		965D488313E26ACD00C74202 /* EditZoneNamesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 965D488113E26ACD00C74202 /* EditZoneNamesController.xib */; };
 		965D489613E274F300C74202 /* EditableDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 965D489513E274F200C74202 /* EditableDetailCell.m */; };
@@ -109,6 +111,9 @@
 		962F656E13C40F6F00A3BAE7 /* Waterings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Waterings.h; sourceTree = "<group>"; };
 		962F656F13C40F6F00A3BAE7 /* Waterings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Waterings.m; sourceTree = "<group>"; };
 		962F657213C4141900A3BAE7 /* waterdrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = waterdrop.png; sourceTree = "<group>"; };
+		96418A1C13E8EEBD00E6853E /* ConnectingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConnectingViewController.h; path = iSprinkle.xcodeproj/ConnectingViewController.h; sourceTree = SOURCE_ROOT; };
+		96418A1D13E8EEBD00E6853E /* ConnectingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConnectingViewController.m; path = iSprinkle.xcodeproj/ConnectingViewController.m; sourceTree = SOURCE_ROOT; };
+		96418A1E13E8EEBD00E6853E /* ConnectingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ConnectingViewController.xib; path = iSprinkle.xcodeproj/ConnectingViewController.xib; sourceTree = SOURCE_ROOT; };
 		965D487F13E26ACD00C74202 /* EditZoneNamesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditZoneNamesController.h; sourceTree = "<group>"; };
 		965D488013E26ACD00C74202 /* EditZoneNamesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditZoneNamesController.m; sourceTree = "<group>"; };
 		965D488113E26ACD00C74202 /* EditZoneNamesController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditZoneNamesController.xib; sourceTree = "<group>"; };
@@ -289,6 +294,9 @@
 		962F658413C41CEB00A3BAE7 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				96418A1C13E8EEBD00E6853E /* ConnectingViewController.h */,
+				96418A1D13E8EEBD00E6853E /* ConnectingViewController.m */,
+				96418A1E13E8EEBD00E6853E /* ConnectingViewController.xib */,
 				962F654613C40C5F00A3BAE7 /* RootViewController.h */,
 				962F654713C40C5F00A3BAE7 /* RootViewController.m */,
 				962F654913C40C6000A3BAE7 /* RootViewController.xib */,
@@ -417,6 +425,7 @@
 				96FB88DD13E5A02D001BD869 /* check.png in Resources */,
 				968F8DDD13E6ED7E00CE6951 /* GrayLight.png in Resources */,
 				968F8DDE13E6ED7E00CE6951 /* GreenLight.png in Resources */,
+				96418A2013E8EEBD00E6853E /* ConnectingViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -476,6 +485,7 @@
 				96E0A5A413E4BA2400B9AC4E /* SettingsViewController.m in Sources */,
 				96E0A5AB13E4D4AA00B9AC4E /* Settings.m in Sources */,
 				96FB88E913E5E660001BD869 /* ConnectionTester.m in Sources */,
+				96418A1F13E8EEBD00E6853E /* ConnectingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
