@@ -53,6 +53,12 @@ static const NSInteger QuickRunRow       = 2;
     [self.dataFetcher startFetching];
 }
 
+-(void)doneHidingConnectionOverlay
+{
+    [self.tableView.superview sendSubviewToBack:self.connetingViewController.view];
+}
+
+BOOL overlayIsShowing = NO;
 -(void)updateConnectingOverlay
 {
     if(self.tableView == nil || self.tableView.superview == nil)
@@ -67,15 +73,39 @@ static const NSInteger QuickRunRow       = 2;
     }
     
     if(self.tableView.superview.isHidden)
+    {
         return;
+    }
 
     if (self.status.connected)
     {
-        [self.tableView.superview sendSubviewToBack:self.connetingViewController.view];
+        if (overlayIsShowing)
+        {
+            overlayIsShowing = NO;
+            NSLog(@"Starting overlay fade out");
+
+            [UIView beginAnimations:nil context:nil];
+            [UIView setAnimationDuration:0.5];
+            [UIView setAnimationDelegate:self];
+            [UIView setAnimationDidStopSelector:@selector(doneHidingConnectionOverlay)];
+            [self.connetingViewController.view setAlpha:0.0];
+            [UIView commitAnimations];
+        }
     }
     else
     {
-        [self.tableView.superview bringSubviewToFront:self.connetingViewController.view];
+        if (!overlayIsShowing)
+        {
+            overlayIsShowing = YES;
+            NSLog(@"Starting overlay fade in");
+
+            [self.tableView.superview bringSubviewToFront:self.connetingViewController.view];
+
+            [UIView beginAnimations:nil context:nil];
+            [UIView setAnimationDuration:0.5];
+            [self.connetingViewController.view setAlpha:0.85];
+            [UIView commitAnimations];
+        }
     }
 }
 
