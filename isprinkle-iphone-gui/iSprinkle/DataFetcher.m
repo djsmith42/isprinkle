@@ -29,6 +29,7 @@
     NSLog(@"Settings have changed. Fetching new data.");
 
     [_connection cancel];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
 
     _firstTime = YES;
     _lastConnectedHost = nil;
@@ -199,10 +200,17 @@ static NSString *DeferralDateTimeString = @"deferral datetime";
         if ([array count] > 0)
         {
             array = [array objectAtIndex:0];
+            
 
             NSMutableArray *uuidsReceived = [[NSMutableArray alloc] init];
             for(NSDictionary *wateringDictionary in array)
             {
+                if(![wateringDictionary isKindOfClass:[NSDictionary class]])
+                {
+                    NSLog(@"Got bogus YAML watering info. Ignoring.");
+                    return;
+                }
+
                 Watering *tempWatering = [[Watering alloc] init];
                 NSArray * keys = [wateringDictionary allKeys];
                 for (NSString *key in keys)
