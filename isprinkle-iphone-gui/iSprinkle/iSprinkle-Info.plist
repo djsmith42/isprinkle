@@ -10,6 +10,11 @@
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
 	<string></string>
+	<key>CFBundleIconFiles</key>
+	<array>
+		<string>waterdrop-57x57.png</string>
+		<string>waterdrop-114x114.png</string>
+	</array>
 	<key>CFBundleIdentifier</key>
 	<string>DaveWare.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>

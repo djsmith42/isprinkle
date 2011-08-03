@@ -39,6 +39,10 @@
 		962F657313C4141900A3BAE7 /* waterdrop.png in Resources */ = {isa = PBXBuildFile; fileRef = 962F657213C4141900A3BAE7 /* waterdrop.png */; };
 		96418A1F13E8EEBD00E6853E /* ConnectingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96418A1D13E8EEBD00E6853E /* ConnectingViewController.m */; };
 		96418A2013E8EEBD00E6853E /* ConnectingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 96418A1E13E8EEBD00E6853E /* ConnectingViewController.xib */; };
+		96418A2B13E9040000E6853E /* waterdrop-57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 96418A2913E9040000E6853E /* waterdrop-57x57.png */; };
+		96418A2C13E9040000E6853E /* waterdrop-114x114.png in Resources */ = {isa = PBXBuildFile; fileRef = 96418A2A13E9040000E6853E /* waterdrop-114x114.png */; };
+		96418A2F13E9040D00E6853E /* waterdrop-57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 96418A2E13E9040D00E6853E /* waterdrop-57x57.png */; };
+		96418A3113E9041200E6853E /* waterdrop-114x114.png in Resources */ = {isa = PBXBuildFile; fileRef = 96418A3013E9041200E6853E /* waterdrop-114x114.png */; };
 		965D488213E26ACD00C74202 /* EditZoneNamesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 965D488013E26ACD00C74202 /* EditZoneNamesController.m */; };
 		965D488313E26ACD00C74202 /* EditZoneNamesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 965D488113E26ACD00C74202 /* EditZoneNamesController.xib */; };
 		965D489613E274F300C74202 /* EditableDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 965D489513E274F200C74202 /* EditableDetailCell.m */; };
@@ -114,6 +118,10 @@
 		96418A1C13E8EEBD00E6853E /* ConnectingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConnectingViewController.h; path = iSprinkle.xcodeproj/ConnectingViewController.h; sourceTree = SOURCE_ROOT; };
 		96418A1D13E8EEBD00E6853E /* ConnectingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConnectingViewController.m; path = iSprinkle.xcodeproj/ConnectingViewController.m; sourceTree = SOURCE_ROOT; };
 		96418A1E13E8EEBD00E6853E /* ConnectingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ConnectingViewController.xib; path = iSprinkle.xcodeproj/ConnectingViewController.xib; sourceTree = SOURCE_ROOT; };
+		96418A2913E9040000E6853E /* waterdrop-57x57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "waterdrop-57x57.png"; sourceTree = "<group>"; };
+		96418A2A13E9040000E6853E /* waterdrop-114x114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "waterdrop-114x114.png"; sourceTree = "<group>"; };
+		96418A2E13E9040D00E6853E /* waterdrop-57x57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "waterdrop-57x57.png"; sourceTree = "<group>"; };
+		96418A3013E9041200E6853E /* waterdrop-114x114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "waterdrop-114x114.png"; sourceTree = "<group>"; };
 		965D487F13E26ACD00C74202 /* EditZoneNamesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditZoneNamesController.h; sourceTree = "<group>"; };
 		965D488013E26ACD00C74202 /* EditZoneNamesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditZoneNamesController.m; sourceTree = "<group>"; };
 		965D488113E26ACD00C74202 /* EditZoneNamesController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditZoneNamesController.xib; sourceTree = "<group>"; };
@@ -197,6 +205,8 @@
 		962F652213C40C5E00A3BAE7 = {
 			isa = PBXGroup;
 			children = (
+				96418A3013E9041200E6853E /* waterdrop-114x114.png */,
+				96418A2E13E9040D00E6853E /* waterdrop-57x57.png */,
 				962F653713C40C5F00A3BAE7 /* iSprinkle */,
 				962F655713C40C6000A3BAE7 /* iSprinkleTests */,
 				962F653013C40C5F00A3BAE7 /* Frameworks */,
@@ -287,6 +297,8 @@
 				96FB88DC13E5A02D001BD869 /* check.png */,
 				96E0A5A713E4BE3200B9AC4E /* Settings.png */,
 				962F657213C4141900A3BAE7 /* waterdrop.png */,
+				96418A2913E9040000E6853E /* waterdrop-57x57.png */,
+				96418A2A13E9040000E6853E /* waterdrop-114x114.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -426,6 +438,10 @@
 				968F8DDD13E6ED7E00CE6951 /* GrayLight.png in Resources */,
 				968F8DDE13E6ED7E00CE6951 /* GreenLight.png in Resources */,
 				96418A2013E8EEBD00E6853E /* ConnectingViewController.xib in Resources */,
+				96418A2B13E9040000E6853E /* waterdrop-57x57.png in Resources */,
+				96418A2C13E9040000E6853E /* waterdrop-114x114.png in Resources */,
+				96418A2F13E9040D00E6853E /* waterdrop-57x57.png in Resources */,
+				96418A3113E9041200E6853E /* waterdrop-114x114.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
