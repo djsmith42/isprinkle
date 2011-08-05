@@ -442,7 +442,7 @@ BOOL overlayIsShowing = NO;
     // Refresh the entire table view:
     [self.tableView reloadData];
     
-    if (self.editWateringController != nil)
+    if (self.editWateringController != nil && self.navigationController.visibleViewController == self.editWateringController)
         [self.editWateringController updateWateringDisplay];
 
     [self updateConnectingOverlay];

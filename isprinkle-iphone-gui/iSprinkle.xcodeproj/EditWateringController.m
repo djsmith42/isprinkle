@@ -260,7 +260,7 @@ static const NSInteger PeriodRow    = 1;
                 zoneDuration = [self.watering.zoneDurations objectAtIndex:indexPath.row];
 
             cell.textLabel.text = [self.status prettyZoneName:zoneDuration.zone];
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"%d minutes", zoneDuration.minutes];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%d minute%@", zoneDuration.minutes, zoneDuration.minutes == 1 ? @"" : @"s"];
             [self updateCellImage:cell withIndexPath:indexPath];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
