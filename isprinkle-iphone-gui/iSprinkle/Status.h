@@ -15,6 +15,7 @@
     BOOL      _connected;
 }
 
+- (BOOL)      isIdle;
 - (NSString*) statusSummary;
 - (NSString*) prettyDateString;
 - (NSString*) prettyDeferralDateString;

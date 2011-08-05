@@ -190,10 +190,12 @@ BOOL overlayIsShowing = NO;
             if (cell == nil) {
                 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:StatusCellIdentifier] autorelease];
             }
-            
+
             cell.accessoryType = UITableViewCellAccessoryNone;           
             cell.detailTextLabel.text = [self.status statusSummary];
             cell.textLabel.text = @"Currently";
+            cell.imageView.image = [Utils scale:[UIImage imageNamed:([self.status isIdle] ? @"GrayLight.png" : @"GreenLight.png")]
+                                       toHeight:0.55 * [self.tableView rectForRowAtIndexPath:indexPath].size.height];
         }
         else if (indexPath.row == TimeRow)
         {
@@ -206,7 +208,7 @@ BOOL overlayIsShowing = NO;
             cell.detailTextLabel.text = [self.status prettyDateString];
             cell.accessoryType = UITableViewCellAccessoryNone;
             cell.imageView.image = [Utils scale:[UIImage imageNamed:@"Clock.png"]
-                                       toHeight:0.66 * [self.tableView rectForRowAtIndexPath:indexPath].size.height];
+                                       toHeight:0.55 * [self.tableView rectForRowAtIndexPath:indexPath].size.height];
         }
              
         // Don't the user tap rows in the header section -- they are display only        
@@ -224,9 +226,9 @@ BOOL overlayIsShowing = NO;
             cell.textLabel.text = @"Defer until:";
             cell.detailTextLabel.text = [_status prettyDeferralDateString];
             cell.accessoryType = UITableViewCellAccessoryNone;
-            cell.detailTextLabel.textColor = self.status.inDeferralPeriod ? [UIColor redColor] : [UIColor blackColor];
+            cell.detailTextLabel.textColor = self.status.inDeferralPeriod ? [UIColor redColor] : [UIColor grayColor];
             cell.imageView.image = [Utils scale:[UIImage imageNamed:@"Defer.png"]
-                                       toHeight:0.66 * [self.tableView rectForRowAtIndexPath:indexPath].size.height];
+                                       toHeight:0.55 * [self.tableView rectForRowAtIndexPath:indexPath].size.height];
         }
         else if (indexPath.row == SetupZoneNamesRow)
         {
@@ -247,7 +249,7 @@ BOOL overlayIsShowing = NO;
             if (cell == nil)
                 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
             cell.textLabel.text = @"Quick Run";
-            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.imageView.image = [Utils scale:[UIImage imageNamed:@"Play.png"]
                                        toHeight:0.66 * [self.tableView rectForRowAtIndexPath:indexPath].size.height];
         }

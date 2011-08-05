@@ -27,6 +27,11 @@
     return self;
 }
 
+-(BOOL) isIdle
+{
+    return (self.activeWatering == nil);
+}
+
 - (NSString*) statusSummary
 {
     NSString *ret;
@@ -72,9 +77,6 @@
     if (self.deferralDate != nil)
     {
         ret = [self _prettyStringFromDate:self.deferralDate];
-        
-        if (self.inDeferralPeriod == NO)
-            ret = [ret stringByAppendingString:@" (past)"];
     }
     
     return ret;
