@@ -1,5 +1,6 @@
 #import "EditWateringController.h"
 #import "ActionSheetPicker.h"
+#import "Utils.h"
 
 @implementation EditWateringController
 
@@ -174,15 +175,6 @@ static const NSInteger PeriodRow    = 1;
     [self.tableView endUpdates];
 }
 
-- (UIImage *)scale:(UIImage *)image toSize:(CGSize)size
-{
-    UIGraphicsBeginImageContext(size);
-    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
-    UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return scaledImage;
-}
-
 - (void) updateCellImage:(UITableViewCell*)cell withIndexPath:(NSIndexPath*)indexPath
 {
     if(indexPath == nil)
@@ -198,7 +190,7 @@ static const NSInteger PeriodRow    = 1;
         imageSize.height *= 0.66;
         imageSize.width = imageSize.height;
         
-        image = [self scale:image toSize:imageSize];
+        image = [Utils scale:image toSize:imageSize];
         
         cell.imageView.image = image;
     } 

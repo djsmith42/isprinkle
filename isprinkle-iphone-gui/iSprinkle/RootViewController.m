@@ -1,6 +1,7 @@
 #import "RootViewController.h"
 #import "ActionSheetPicker.h"
 #import "Waterings.h"
+#import "Utils.h"
 
 @implementation RootViewController
 
@@ -167,7 +168,6 @@ BOOL overlayIsShowing = NO;
             Watering *watering = [self.waterings wateringAtIndex:indexPath.row];
             cell.textLabel.text = [watering prettyDescription];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.imageView.image = [UIImage imageNamed:@"waterdrop.png"];
             cell.textLabel.textColor = (self.status.activeWatering == watering ?
                                         [UIColor blueColor] : [UIColor blackColor]);
         }
@@ -177,6 +177,9 @@ BOOL overlayIsShowing = NO;
             cell.accessoryType = UITableViewCellAccessoryNone;
             cell.textLabel.textColor = [UIColor redColor];
         }
+
+        cell.imageView.image = [Utils scale:[UIImage imageNamed:@"waterdrop.png"]
+                                   toHeight:0.66 * [self.tableView rectForRowAtIndexPath:indexPath].size.height];
     }
     else if (indexPath.section == HeaderSection)
     {
@@ -202,6 +205,8 @@ BOOL overlayIsShowing = NO;
             cell.textLabel.text = @"Current time";
             cell.detailTextLabel.text = [self.status prettyDateString];
             cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.imageView.image = [Utils scale:[UIImage imageNamed:@"Clock.png"]
+                                       toHeight:0.66 * [self.tableView rectForRowAtIndexPath:indexPath].size.height];
         }
              
         // Don't the user tap rows in the header section -- they are display only        
@@ -220,6 +225,8 @@ BOOL overlayIsShowing = NO;
             cell.detailTextLabel.text = [_status prettyDeferralDateString];
             cell.accessoryType = UITableViewCellAccessoryNone;
             cell.detailTextLabel.textColor = self.status.inDeferralPeriod ? [UIColor redColor] : [UIColor blackColor];
+            cell.imageView.image = [Utils scale:[UIImage imageNamed:@"Defer.png"]
+                                       toHeight:0.66 * [self.tableView rectForRowAtIndexPath:indexPath].size.height];
         }
         else if (indexPath.row == SetupZoneNamesRow)
         {
@@ -229,6 +236,9 @@ BOOL overlayIsShowing = NO;
                 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ZoneNamesCellIdentifier] autorelease];
             cell.textLabel.text = @"Zone Names";
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.imageView.image = [Utils scale:[UIImage imageNamed:@"Settings.png"]
+                                       toHeight:0.66 * [self.tableView rectForRowAtIndexPath:indexPath].size.height];
+
         }
         else if (indexPath.row == QuickRunRow)
         {
@@ -238,6 +248,8 @@ BOOL overlayIsShowing = NO;
                 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
             cell.textLabel.text = @"Quick Run";
             cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.imageView.image = [Utils scale:[UIImage imageNamed:@"Play.png"]
+                                       toHeight:0.66 * [self.tableView rectForRowAtIndexPath:indexPath].size.height];
         }
     }
 

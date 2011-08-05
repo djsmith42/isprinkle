@@ -39,8 +39,6 @@
 		962F657313C4141900A3BAE7 /* waterdrop.png in Resources */ = {isa = PBXBuildFile; fileRef = 962F657213C4141900A3BAE7 /* waterdrop.png */; };
 		96418A1F13E8EEBD00E6853E /* ConnectingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96418A1D13E8EEBD00E6853E /* ConnectingViewController.m */; };
 		96418A2013E8EEBD00E6853E /* ConnectingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 96418A1E13E8EEBD00E6853E /* ConnectingViewController.xib */; };
-		96418A2B13E9040000E6853E /* waterdrop-57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 96418A2913E9040000E6853E /* waterdrop-57x57.png */; };
-		96418A2C13E9040000E6853E /* waterdrop-114x114.png in Resources */ = {isa = PBXBuildFile; fileRef = 96418A2A13E9040000E6853E /* waterdrop-114x114.png */; };
 		96418A2F13E9040D00E6853E /* waterdrop-57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 96418A2E13E9040D00E6853E /* waterdrop-57x57.png */; };
 		96418A3113E9041200E6853E /* waterdrop-114x114.png in Resources */ = {isa = PBXBuildFile; fileRef = 96418A3013E9041200E6853E /* waterdrop-114x114.png */; };
 		965D488213E26ACD00C74202 /* EditZoneNamesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 965D488013E26ACD00C74202 /* EditZoneNamesController.m */; };
@@ -50,6 +48,10 @@
 		968F8DDE13E6ED7E00CE6951 /* GreenLight.png in Resources */ = {isa = PBXBuildFile; fileRef = 968F8DDC13E6ED7E00CE6951 /* GreenLight.png */; };
 		96A6DF1A13D9128A00D5727E /* TestView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 96A6DF1913D9128A00D5727E /* TestView.xib */; };
 		96A6DF1E13D91E4D00D5727E /* ActionSheetPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 96A6DF1D13D91E4D00D5727E /* ActionSheetPicker.m */; };
+		96AC023C13EBAAE600E98105 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AC023B13EBAAE600E98105 /* Utils.m */; };
+		96AC024113EBAF0100E98105 /* Play.png in Resources */ = {isa = PBXBuildFile; fileRef = 96AC024013EBAF0100E98105 /* Play.png */; };
+		96AC024313EBAF8900E98105 /* Defer.png in Resources */ = {isa = PBXBuildFile; fileRef = 96AC024213EBAF8900E98105 /* Defer.png */; };
+		96AC024513EBAFE300E98105 /* Clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 96AC024413EBAFE200E98105 /* Clock.png */; };
 		96B16D9F13CC065A000D75DF /* EditWateringController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B16D9D13CC065A000D75DF /* EditWateringController.m */; };
 		96B16DA013CC065A000D75DF /* EditWateringController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 96B16D9E13CC065A000D75DF /* EditWateringController.xib */; };
 		96B971A813C8FD14008235D9 /* DataSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B971A713C8FD14008235D9 /* DataSender.m */; };
@@ -118,8 +120,6 @@
 		96418A1C13E8EEBD00E6853E /* ConnectingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConnectingViewController.h; path = iSprinkle.xcodeproj/ConnectingViewController.h; sourceTree = SOURCE_ROOT; };
 		96418A1D13E8EEBD00E6853E /* ConnectingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConnectingViewController.m; path = iSprinkle.xcodeproj/ConnectingViewController.m; sourceTree = SOURCE_ROOT; };
 		96418A1E13E8EEBD00E6853E /* ConnectingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ConnectingViewController.xib; path = iSprinkle.xcodeproj/ConnectingViewController.xib; sourceTree = SOURCE_ROOT; };
-		96418A2913E9040000E6853E /* waterdrop-57x57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "waterdrop-57x57.png"; sourceTree = "<group>"; };
-		96418A2A13E9040000E6853E /* waterdrop-114x114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "waterdrop-114x114.png"; sourceTree = "<group>"; };
 		96418A2E13E9040D00E6853E /* waterdrop-57x57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "waterdrop-57x57.png"; sourceTree = "<group>"; };
 		96418A3013E9041200E6853E /* waterdrop-114x114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "waterdrop-114x114.png"; sourceTree = "<group>"; };
 		965D487F13E26ACD00C74202 /* EditZoneNamesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditZoneNamesController.h; sourceTree = "<group>"; };
@@ -132,6 +132,11 @@
 		96A6DF1913D9128A00D5727E /* TestView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestView.xib; sourceTree = "<group>"; };
 		96A6DF1C13D91E4D00D5727E /* ActionSheetPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionSheetPicker.h; sourceTree = "<group>"; };
 		96A6DF1D13D91E4D00D5727E /* ActionSheetPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetPicker.m; sourceTree = "<group>"; };
+		96AC023A13EBAAE600E98105 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		96AC023B13EBAAE600E98105 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
+		96AC024013EBAF0100E98105 /* Play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Play.png; path = ../Play.png; sourceTree = "<group>"; };
+		96AC024213EBAF8900E98105 /* Defer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Defer.png; path = ../Defer.png; sourceTree = "<group>"; };
+		96AC024413EBAFE200E98105 /* Clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Clock.png; sourceTree = "<group>"; };
 		96B16D9C13CC065A000D75DF /* EditWateringController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditWateringController.h; path = iSprinkle.xcodeproj/EditWateringController.h; sourceTree = SOURCE_ROOT; };
 		96B16D9D13CC065A000D75DF /* EditWateringController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EditWateringController.m; path = iSprinkle.xcodeproj/EditWateringController.m; sourceTree = SOURCE_ROOT; };
 		96B16D9E13CC065A000D75DF /* EditWateringController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditWateringController.xib; path = iSprinkle.xcodeproj/EditWateringController.xib; sourceTree = SOURCE_ROOT; };
@@ -292,13 +297,14 @@
 		962F657113C4140400A3BAE7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				96AC024413EBAFE200E98105 /* Clock.png */,
+				96AC024013EBAF0100E98105 /* Play.png */,
+				96AC024213EBAF8900E98105 /* Defer.png */,
 				968F8DDB13E6ED7E00CE6951 /* GrayLight.png */,
 				968F8DDC13E6ED7E00CE6951 /* GreenLight.png */,
 				96FB88DC13E5A02D001BD869 /* check.png */,
 				96E0A5A713E4BE3200B9AC4E /* Settings.png */,
 				962F657213C4141900A3BAE7 /* waterdrop.png */,
-				96418A2913E9040000E6853E /* waterdrop-57x57.png */,
-				96418A2A13E9040000E6853E /* waterdrop-114x114.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -320,6 +326,8 @@
 				965D488113E26ACD00C74202 /* EditZoneNamesController.xib */,
 				96B16D9C13CC065A000D75DF /* EditWateringController.h */,
 				96B16D9D13CC065A000D75DF /* EditWateringController.m */,
+				96AC023A13EBAAE600E98105 /* Utils.h */,
+				96AC023B13EBAAE600E98105 /* Utils.m */,
 				96B16D9E13CC065A000D75DF /* EditWateringController.xib */,
 				96A6DF1913D9128A00D5727E /* TestView.xib */,
 				96120C2B13DCB2F400A0D666 /* EditZoneDurationViewController.h */,
@@ -438,10 +446,11 @@
 				968F8DDD13E6ED7E00CE6951 /* GrayLight.png in Resources */,
 				968F8DDE13E6ED7E00CE6951 /* GreenLight.png in Resources */,
 				96418A2013E8EEBD00E6853E /* ConnectingViewController.xib in Resources */,
-				96418A2B13E9040000E6853E /* waterdrop-57x57.png in Resources */,
-				96418A2C13E9040000E6853E /* waterdrop-114x114.png in Resources */,
 				96418A2F13E9040D00E6853E /* waterdrop-57x57.png in Resources */,
 				96418A3113E9041200E6853E /* waterdrop-114x114.png in Resources */,
+				96AC024113EBAF0100E98105 /* Play.png in Resources */,
+				96AC024313EBAF8900E98105 /* Defer.png in Resources */,
+				96AC024513EBAFE300E98105 /* Clock.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -502,6 +511,7 @@
 				96E0A5AB13E4D4AA00B9AC4E /* Settings.m in Sources */,
 				96FB88E913E5E660001BD869 /* ConnectionTester.m in Sources */,
 				96418A1F13E8EEBD00E6853E /* ConnectingViewController.m in Sources */,
+				96AC023C13EBAAE600E98105 /* Utils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
