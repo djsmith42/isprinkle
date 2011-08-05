@@ -100,10 +100,7 @@ static const NSInteger PeriodRow    = 1;
 
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (self.watering.enabled)
-        return 4;
-    else
-        return 1;
+    return 4;
 }
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -159,20 +156,7 @@ static const NSInteger PeriodRow    = 1;
 {
     UISwitch *switchView = (UISwitch*)sender;
     self.watering.enabled = switchView.on;
- 
-    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(ScheduleTypeSection, ZoneDurationsSection)];
-
-    [self.tableView beginUpdates];
-    if (switchView.on)
-    {
-        [self.tableView insertSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
-    }
-    else
-    {
-        [self.tableView deleteSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
-    }
-    
-    [self.tableView endUpdates];
+    [self.dataSender updateWatering:self.watering];
 }
 
 - (void) updateCellImage:(UITableViewCell*)cell withIndexPath:(NSIndexPath*)indexPath
