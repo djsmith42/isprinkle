@@ -293,7 +293,6 @@ static NSString *DeferralDateTimeString = @"deferral datetime";
                 {
                     NSLog(@"Removing watering: %@", [watering prettyDescription]);
                     [_waterings removeWatering:watering];
-                    [watering release];
                 }
             }
 
