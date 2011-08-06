@@ -36,6 +36,7 @@
     {
         settingsViewController = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController" bundle:[NSBundle mainBundle]];
         settingsViewController.navigationController = self.navigationController;
+        settingsViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     }
 
     [self.navigationController presentModalViewController:settingsViewController animated:YES];
