@@ -293,7 +293,10 @@ static const NSInteger PeriodRow    = 1;
                 if(indexPath.row == PeriodRow)
                 {
                     cell.textLabel.text = @"How Often";
-                    cell.detailTextLabel.text = [NSString stringWithFormat:@"Every %d days", self.watering.periodDays];
+                    NSString *text = @"Every day";
+                    if (self.watering.periodDays > 1)
+                        text = [NSString stringWithFormat:@"Every %d days", self.watering.periodDays];
+                    cell.detailTextLabel.text = text;
                 }   
             }
         }

@@ -42,11 +42,21 @@
     switch (self.scheduleType)
     {
         case EveryNDays:
-            return [NSString stringWithFormat:@"Every %d days", self.periodDays];
+        {
+            NSString *text = @"Every day";
+            if (self.periodDays > 1)
+                text = [NSString stringWithFormat:@"Every %d days", self.periodDays];
+            text = [text stringByAppendingFormat:@" at %@", [self prettyStartTime]];
+            return text;
+        }
         case FixedDaysOfWeek:
+        {
             return @"Days of week (FIXME)";
+        }
         case SingleShot:
+        {
             return [NSString stringWithFormat:@"Single shot on %@", [self _prettyStringFromDate:self.startDate withFormat:@"MMMM d"]];
+        }
     }
     
     NSAssert(false, @"Unhandled schedule type in switch statement");
