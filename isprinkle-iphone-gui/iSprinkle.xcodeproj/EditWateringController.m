@@ -76,16 +76,17 @@ static const NSInteger PeriodRow    = 1;
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (void)navigateToZoneDuration:(ZoneDuration*)zoneDuration
+- (void)navigateToZoneDuration:(ZoneDuration*)zoneDuration index:(NSInteger)index
 {
     if (self.editZoneDurationViewController == nil)
     {
         self.editZoneDurationViewController = [[[EditZoneDurationViewController alloc] initWithNibName:@"EditZoneDurationViewController" bundle:[NSBundle mainBundle]] autorelease];
     }
 
-    self.editZoneDurationViewController.status  = self.status;
-    self.editZoneDurationViewController.zone    = zoneDuration.zone;
-    self.editZoneDurationViewController.minutes = zoneDuration.minutes;
+    self.editZoneDurationViewController.zoneDurationIndex = index;
+    self.editZoneDurationViewController.status            = self.status;
+    self.editZoneDurationViewController.zone              = zoneDuration.zone;
+    self.editZoneDurationViewController.minutes           = zoneDuration.minutes;
     self.editingZoneDuration = YES; // so we know when the user comes back to this screen (and we can send the changes to the device)
 
     [self.navigationController pushViewController:self.editZoneDurationViewController animated:YES];
@@ -572,19 +573,20 @@ static const NSInteger PeriodRow    = 1;
     else if (indexPath.section == ZoneDurationsSection)
     {
         ZoneDuration *zoneDuration = nil;
+        NSInteger index = indexPath.row;
         if (self.tableView.editing)
         {
             if(indexPath.row < self.tempEditingZones.count)
-                zoneDuration = [self.tempEditingZones objectAtIndex:indexPath.row];
+                zoneDuration = [self.tempEditingZones objectAtIndex:index];
         }
         else
         {
             if(indexPath.row < self.watering.zoneDurations.count)
-                zoneDuration = [self.watering.zoneDurations objectAtIndex:indexPath.row];
+                zoneDuration = [self.watering.zoneDurations objectAtIndex:index];
         }
         
         if (zoneDuration != nil)
-            [self navigateToZoneDuration:zoneDuration];
+            [self navigateToZoneDuration:zoneDuration index:index];
 
     }
     else if (indexPath.section == ScheduleTypeSection)
@@ -814,6 +816,7 @@ static const NSInteger PeriodRow    = 1;
 
         ZoneDuration *zoneDuration = nil;
         NSInteger index = self.editZoneDurationViewController.zoneDurationIndex;
+
         if(self.tableView.editing)
         {
             if (index < self.tempEditingZones.count)
