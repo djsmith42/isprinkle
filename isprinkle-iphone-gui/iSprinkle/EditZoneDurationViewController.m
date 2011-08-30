@@ -40,6 +40,11 @@ static const NSInteger DurationRow = 1;
     [super viewDidUnload];
 }
 
+- (void) viewWillAppear:(BOOL)animated
+{
+    [self.tableView reloadData];
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -115,7 +120,7 @@ static const NSInteger DurationRow = 1;
         {
             [choices addObject:[NSString stringWithFormat:@"%d minute%@", i+1, i+1 == 1 ? @"" : @"s"]];
         }
-        
+
         [ActionSheetPicker displayActionPickerWithView:[[UIApplication sharedApplication] keyWindow]
                                                   data:choices
                                          selectedIndex:(self.minutes-1)

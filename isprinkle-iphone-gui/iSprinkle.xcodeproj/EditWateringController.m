@@ -574,20 +574,12 @@ static const NSInteger PeriodRow    = 1;
     {
         ZoneDuration *zoneDuration = nil;
         NSInteger index = indexPath.row;
-        if (self.tableView.editing)
-        {
-            if(indexPath.row < self.tempEditingZones.count)
-                zoneDuration = [self.tempEditingZones objectAtIndex:index];
-        }
-        else
-        {
-            if(indexPath.row < self.watering.zoneDurations.count)
-                zoneDuration = [self.watering.zoneDurations objectAtIndex:index];
-        }
-        
-        if (zoneDuration != nil)
-            [self navigateToZoneDuration:zoneDuration index:index];
 
+        if(indexPath.row < self.watering.zoneDurations.count)
+        {
+            zoneDuration = [self.watering.zoneDurations objectAtIndex:index];
+            [self navigateToZoneDuration:zoneDuration index:index];
+        }
     }
     else if (indexPath.section == ScheduleTypeSection)
     {
@@ -804,7 +796,10 @@ static const NSInteger PeriodRow    = 1;
     if (sourceIndexPath.row >= self.tempEditingZones.count || destinationIndexPath.row >= self.tempEditingZones.count)
         return;
 
-    [self.tempEditingZones exchangeObjectAtIndex:sourceIndexPath.row withObjectAtIndex:destinationIndexPath.row];
+    NSLog(@"moveRow from %d to %d", sourceIndexPath.row, destinationIndexPath.row);
+    ZoneDuration *movedZoneDuration = [self.tempEditingZones objectAtIndex:sourceIndexPath.row];
+    [self.tempEditingZones removeObjectAtIndex:sourceIndexPath.row];
+    [self.tempEditingZones insertObject:movedZoneDuration atIndex:destinationIndexPath.row];
 }
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
@@ -812,7 +807,6 @@ static const NSInteger PeriodRow    = 1;
     if(viewController == self && self.editingZoneDuration)
     {
         self.editingZoneDuration = NO;
-        NSLog(@"Back from the zone duration screen");
 
         ZoneDuration *zoneDuration = nil;
         NSInteger index = self.editZoneDurationViewController.zoneDurationIndex;
