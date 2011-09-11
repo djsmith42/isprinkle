@@ -55,7 +55,7 @@
         }
         case SingleShot:
         {
-            return [NSString stringWithFormat:@"Single shot on %@", [self _prettyStringFromDate:self.startDate withFormat:@"MMMM d"]];
+            return [NSString stringWithFormat:@"Once: %@ at %@", [self _prettyStringFromDate:self.startDate withFormat:@"MMM d"], [self prettyStartTime]];;
         }
     }
     
