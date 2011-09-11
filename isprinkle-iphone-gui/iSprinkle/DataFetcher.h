@@ -17,5 +17,6 @@
 
 - (id) initWithModels:(Status*)status waterings:(Waterings*)waterings;
 - (void) startFetching;
+- (void) pause;
 
 @end

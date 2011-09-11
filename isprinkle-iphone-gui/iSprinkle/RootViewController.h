@@ -6,7 +6,9 @@
 #import "EditZoneNamesController.h"
 #import "ConnectingViewController.h"
 
-@interface RootViewController : UITableViewController <UIActionSheetDelegate>
+@class EditWateringController;
+
+@interface RootViewController : UITableViewController <UIActionSheetDelegate, UINavigationControllerDelegate>
 {
     Waterings      *_waterings;
     Status         *_status;
@@ -18,6 +20,7 @@
     UIActionSheet  *_deferralActionSheet;
     NSInteger       _quickRunZoneNumber;
     ConnectingViewController *_connectingViewController;
+    BOOL            _editingWatering;
 }
 
 @property (retain) Waterings     *waterings;

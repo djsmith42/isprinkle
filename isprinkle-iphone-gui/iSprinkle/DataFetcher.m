@@ -73,6 +73,14 @@
     _connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
 }
 
+- (void) pause
+{
+    [_connection cancel];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    _state = FetchingStatus;
+    _firstTime = YES; // When we resume, this will fetch all the status right away
+}
+
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
     // Don't care

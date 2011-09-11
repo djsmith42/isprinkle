@@ -50,6 +50,11 @@ static const NSInteger QuickRunRow       = 2;
     [self.status    addObserver:self forKeyPath:@"activeWatering"   options:0 context:nil];
     [self.status    addObserver:self forKeyPath:@"connected"        options:0 context:nil];
     [self.waterings addObserver:self forKeyPath:@"watcherKey"       options:0 context:nil];
+    
+    _editingWatering = NO;
+    
+    // To catch events when the editWateringController is all done
+    self.navigationController.delegate = self;
 
     [self.dataFetcher startFetching];
 }
@@ -133,7 +138,7 @@ BOOL overlayIsShowing = NO;
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return YES;
+    return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -204,7 +209,7 @@ BOOL overlayIsShowing = NO;
             if (cell == nil) {
                 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:TimeCellIdentifier] autorelease];
             }
-            cell.textLabel.text = @"Current time";
+            cell.textLabel.text = @"Time";
             cell.detailTextLabel.text = [self.status prettyDateString];
             cell.accessoryType = UITableViewCellAccessoryNone;
             cell.imageView.image = [Utils scale:[UIImage imageNamed:@"Clock.png"]
@@ -213,7 +218,6 @@ BOOL overlayIsShowing = NO;
              
         // Don't the user tap rows in the header section -- they are display only        
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
     }
     else if (indexPath.section == SetupSection)
     {
@@ -322,16 +326,31 @@ BOOL overlayIsShowing = NO;
     [self.deferralActionSheet setBounds:CGRectMake(0,0,320, 590)];
 }
 
+-(void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if(viewController == self && _editingWatering)
+    {
+        NSLog(@"Back from editing a watering");
+        [self.dataFetcher startFetching];
+        _editingWatering = NO;
+    }
+}
+
 - (void)navigateToWatering:(Watering*)watering
 {
     if (self.editWateringController == nil)
     {
         self.editWateringController = [[[EditWateringController alloc] initWithNibName:@"EditWateringController" bundle:[NSBundle mainBundle]] autorelease];
+        self.editWateringController.rootViewController = self;
     }
 
     self.editWateringController.watering = watering;
     self.editWateringController.dataSender = self.dataSender;
     self.editWateringController.status = self.status;
+    [self.dataFetcher pause];
+    
+    _editingWatering = YES;
+
     [self.navigationController pushViewController:self.editWateringController animated:YES];
 }
 
@@ -439,12 +458,7 @@ BOOL overlayIsShowing = NO;
     // (the keyPath and object parameters tell us what changed, if we care)
     //NSLog(@"Model value changed for key '%@'", keyPath);
 
-    // Refresh the entire table view:
     [self.tableView reloadData];
-    
-    if (self.editWateringController != nil && self.navigationController.visibleViewController == self.editWateringController)
-        [self.editWateringController updateWateringDisplay];
-
     [self updateConnectingOverlay];
 }
 

@@ -27,6 +27,7 @@
 @synthesize editZoneDurationViewController;
 @synthesize editingZoneDuration;
 @synthesize status;
+@synthesize rootViewController;
 
 static const NSInteger EnabledSection = 0;
 static const NSInteger ScheduleTypeSection = 1;
@@ -59,15 +60,17 @@ static const NSInteger PeriodRow    = 1;
 {
     [super viewDidLoad];
     self.title = @"Edit Watering";
-    
-    // To catch navigation events so we can commit changes to zone durations
-    self.navigationController.delegate = self;
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
     self.tableView = nil;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.navigationController.delegate = self;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -584,9 +587,6 @@ static const NSInteger PeriodRow    = 1;
     else if (indexPath.section == ScheduleTypeSection)
     {
         NSLog(@"This does not work -- need to fix it");
-        //self.watering.scheduleType = indexPath.row;
-        //[self.dataSender updateWatering:self.watering];
-        //[self.tableView reloadData];
     }
 }
 
@@ -798,12 +798,23 @@ static const NSInteger PeriodRow    = 1;
 
     NSLog(@"moveRow from %d to %d", sourceIndexPath.row, destinationIndexPath.row);
     ZoneDuration *movedZoneDuration = [self.tempEditingZones objectAtIndex:sourceIndexPath.row];
+    NSLog(@"Removing temp editing zone duration: %@", [self.tempEditingZones objectAtIndex:sourceIndexPath.row]);
     [self.tempEditingZones removeObjectAtIndex:sourceIndexPath.row];
     [self.tempEditingZones insertObject:movedZoneDuration atIndex:destinationIndexPath.row];
 }
 
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if(viewController == rootViewController)
+    {
+        NSLog(@"Restoring RootViewController as the navigationController delegate");
+        self.navigationController.delegate = rootViewController;
+    }
+}
+
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    NSLog(@"%s", __FUNCTION__);
     if(viewController == self && self.editingZoneDuration)
     {
         self.editingZoneDuration = NO;
@@ -838,15 +849,6 @@ static const NSInteger PeriodRow    = 1;
         }
         
         [self.tableView reloadData];
-    }
-}
-
-- (void) updateWateringDisplay
-{
-    for (UITableViewCell *cell in [self.tableView visibleCells])
-    {
-        [self updateCellImage:cell];
-        [cell setNeedsLayout];
     }
 }
 

@@ -3,6 +3,9 @@
 #import "DataSender.h"
 #import "EditZoneDurationViewController.h"
 #import "Status.h"
+#import "RootViewController.h"
+
+@class RootViewController;
 
 @interface EditWateringController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UINavigationControllerDelegate>
 {
@@ -26,9 +29,8 @@
     NSInteger      clickedZoneDurationNumber;
     EditZoneDurationViewController *editZoneDurationViewController;
     BOOL editingZoneDuration;
+    RootViewController *rootViewController;
 }
-
-- (void) updateWateringDisplay;
 
 - (IBAction) runNowButtonPressed:(id)sender;
 - (IBAction) deleteButtonPressed:(id)sender;
@@ -57,4 +59,5 @@
 @property ()       NSInteger     clickedZoneDurationNumber;
 @property (retain) EditZoneDurationViewController *editZoneDurationViewController;
 @property ()       BOOL          editingZoneDuration;
+@property (retain) RootViewController *rootViewController;
 @end
