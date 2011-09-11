@@ -34,6 +34,7 @@
 
 - (IBAction) runNowButtonPressed:(id)sender;
 - (IBAction) deleteButtonPressed:(id)sender;
+- (void) updateZoneIcons;
 
 @property (retain) IBOutlet UITableView *tableView;
 @property (retain) IBOutlet UIToolbar   *toolBar;

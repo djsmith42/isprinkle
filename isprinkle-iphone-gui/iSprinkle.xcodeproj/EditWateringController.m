@@ -852,4 +852,9 @@ static const NSInteger PeriodRow    = 1;
     }
 }
 
+- (void) updateZoneIcons
+{
+    [self.tableView reloadData];
+}
+
 @end

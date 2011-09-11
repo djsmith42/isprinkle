@@ -347,7 +347,10 @@ BOOL overlayIsShowing = NO;
     self.editWateringController.watering = watering;
     self.editWateringController.dataSender = self.dataSender;
     self.editWateringController.status = self.status;
-    [self.dataFetcher pause];
+    
+    // Don't pause here. It may not actually be necessary.
+    // We can probably get away with updating watering info live on the EditWateringViewController
+    //[self.dataFetcher pause];
     
     _editingWatering = YES;
 
@@ -460,6 +463,7 @@ BOOL overlayIsShowing = NO;
 
     [self.tableView reloadData];
     [self updateConnectingOverlay];
+    [self.editWateringController updateZoneIcons];
 }
 
 @end
