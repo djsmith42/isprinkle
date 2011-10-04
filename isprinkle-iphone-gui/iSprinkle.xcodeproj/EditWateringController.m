@@ -796,11 +796,10 @@ static const NSInteger PeriodRow    = 1;
     if (sourceIndexPath.row >= self.tempEditingZones.count || destinationIndexPath.row >= self.tempEditingZones.count)
         return;
 
-    NSLog(@"moveRow from %d to %d", sourceIndexPath.row, destinationIndexPath.row);
-    ZoneDuration *movedZoneDuration = [self.tempEditingZones objectAtIndex:sourceIndexPath.row];
-    NSLog(@"Removing temp editing zone duration: %@", [self.tempEditingZones objectAtIndex:sourceIndexPath.row]);
+    ZoneDuration *movedZoneDuration = [[self.tempEditingZones objectAtIndex:sourceIndexPath.row] retain];
     [self.tempEditingZones removeObjectAtIndex:sourceIndexPath.row];
     [self.tempEditingZones insertObject:movedZoneDuration atIndex:destinationIndexPath.row];
+    [movedZoneDuration release];
 }
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
@@ -854,7 +853,10 @@ static const NSInteger PeriodRow    = 1;
 
 - (void) updateZoneIcons
 {
-    [self.tableView reloadData];
+    if(self.tableView.editing == NO)
+    {
+        [self.tableView reloadData];
+    }
 }
 
 @end
