@@ -1,8 +1,0 @@
-# Add this to httpd.conf (or put a file in /etc/httpd.d)
-Alias /isprinkle /home/isprinkle/isprinkle/php
-<Directory "/home/isprinkle/isprinkle/php>
-    Options All
-    Order allow,deny
-    Allow from all
-</Directory>
-
