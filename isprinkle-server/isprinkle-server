@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 import os, sys, time, signal, datetime, uuid
 
@@ -6,21 +6,19 @@ from webservice      import iSprinkleWebService
 from wateringservice import iSprinkleWateringService
 from persister       import iSprinklePersister
 
-shutdown_requested = 0
+shutdown_requested = False
 
 THREAD_TIMEOUT_SECONDS = 5.0
 
 def handle_sigterm(signal, func=None):
     print 'Received SIGTERM'
     global shutdown_requested
-    shutdown_requested = 1
+    shutdown_requested = True
 
 if __name__ == '__main__':
-
     signal.signal(signal.SIGTERM, handle_sigterm)
 
     model = iSprinklePersister().load()
-
     print 'Loaded %d saved watering%s:' % (
             len(model.get_waterings()),
             '' if len(model.get_waterings()) == 1 else 's')
@@ -28,7 +26,6 @@ if __name__ == '__main__':
         print watering
 
     try:
-
         wateringservice = iSprinkleWateringService(model)
         wateringservice.start()
 
@@ -43,8 +40,8 @@ if __name__ == '__main__':
         raise
 
     try:
-        while shutdown_requested == 0:
-            time.sleep(1.0)
+        while not shutdown_requested:
+            time.sleep(0.5)
     except KeyboardInterrupt:
         pass
 
