@@ -19,9 +19,7 @@ var StatusStore = assign({}, EventEmitter.prototype, {
       this._started = true;
       this._status = null;
       this._fetchLoop();
-      this.emit(this.CHANGE_EVENT);
     }
-    return this;
   },
   _fetchLoop: function() {
     this.fetch().then(() => {

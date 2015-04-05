@@ -18,6 +18,7 @@
     "less": "^1.7.5",
     "less-loader": "^0.7.8",
     "lodash": "^3.6.0",
+    "object-assign": "^2.0.0",
     "react": "^0.13.1",
     "string-format": "^0.5.0",
     "style-loader": "^0.8.2",
