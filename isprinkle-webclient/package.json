@@ -1,0 +1,27 @@
+{
+  "name": "isprinkle-webclient",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "webpack-dev-server --progress --colors --port 8090"
+  },
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {
+    "axios": "^0.5.2",
+    "css-loader": "^0.9.0",
+    "file-loader": "^0.8.1",
+    "font-awesome": "^4.2.0",
+    "font-awesome-webpack": "0.0.2",
+    "js-yaml": "^3.2.7",
+    "jsx-loader": "^0.12.2",
+    "less": "^1.7.5",
+    "less-loader": "^0.7.8",
+    "react": "^0.13.1",
+    "string-format": "^0.5.0",
+    "style-loader": "^0.8.2",
+    "url-loader": "^0.5.5",
+    "webpack": "^1.4.13",
+    "webpack-dev-server": "^1.6.6"
+  }
+}
