@@ -1,12 +1,34 @@
 var StatusStore = require('../stores/StatusStore');
 var React = require('react');
 
-setInterval(function() {
-  StatusStore.fetch();
-}, 1000);
-
 module.exports = React.createClass({
-  render: () => (
-    <h2>Status Component</h2>
-  )
+  componentWillMount: function() {
+    StatusStore.start();
+    StatusStore.on(StatusStore.CHANGE_EVENT, () => {
+      this.setState({
+        status: StatusStore.status()
+      });
+    });
+  },
+  getInitialState: function() {
+    return {
+      status: null
+    }
+  },
+  render: function() {
+    var status = this.state.status;
+    if (status) {
+      return (
+        <div>
+          <div>{status.current_action}</div>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <div>Loading...</div>
+        </div>
+      )
+    }
+  }
 });
