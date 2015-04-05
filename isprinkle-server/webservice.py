@@ -152,10 +152,14 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
     def do_GET(self):
 
         response_code = 200
-        content_type = 'text/plain'
+        content_type = 'application/yaml'
         response_content = ''
 
-        if self.path == '/status':
+        if self.path == '/':
+            content_type = 'text/plain'
+            response_content= 'You are in the wrong place'
+
+        elif self.path == '/status':
             active_watering    = self.server.model.status.active_watering
             active_index       = self.server.model.status.active_index
             in_deferral_period = self.server.model.status.in_deferral_period
@@ -208,6 +212,7 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
         self.send_response(response_code)
         self.send_header('Content-type',   content_type)
         self.send_header('Content-length', len(response_content))
+        self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
         self.wfile.write(response_content)
 
@@ -271,6 +276,7 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
         self.send_response(response_code)
         self.send_header('Content-type', content_type)
         self.send_header('Content-length', len(response_content))
+        self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
         self.wfile.write(response_content)
 

@@ -21,9 +21,9 @@ class iSprinklePersister:
             model = pickle.load(f)
             f.close()
 
-	    # Clean up fields that have changed:
-	    model.status.active_index = None;       # added 2011-08-01
-	    model.status.active_zone_number = None; # removed 2011-08-01
+            # Clean up fields that have changed (poor man's migrations):
+            model.status.active_index = None;       # added 2011-08-01
+            model.status.active_zone_number = None; # removed 2011-08-01
         except:
             pass
         return model
