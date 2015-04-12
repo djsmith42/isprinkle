@@ -2,6 +2,7 @@ var WateringsStore = require('../stores/WateringsStore');
 var ReactAddons = require('react-addons');
 var React = require('react');
 var WateringSummary = require('./WateringSummary');
+var AddWateringForm = require('./AddWateringForm');
 
 require('./WateringList.less');
 
@@ -20,7 +21,19 @@ module.exports = class extends React.Component {
     });
   }
 
-  _classes(watering) {
+  addWateringClicked() {
+    this.setState({
+      showAddWateringForm: true
+    });
+  }
+
+  addWateringFormClosed() {
+    this.setState({
+      showAddWateringForm: false
+    });
+  }
+
+  _wateringClasses(watering) {
     return ReactAddons.classSet({
       'Watering': true,
       'active': watering.is_active
@@ -42,10 +55,11 @@ module.exports = class extends React.Component {
         <div className="WateringList">
           <h4>Watering Schedule:</h4>
           {waterings.map((watering) => (
-            <div className={this._classes(watering)}>
+            <div className={this._wateringClasses(watering)}>
               <WateringSummary watering={watering} />
               {watering.zone_durations.map((zone_duration) => (
                 <div className={this._zoneDurationClasses(zone_duration)}>
+                  <div className="spacer col-md-1 col-sm-0"> </div>
                   <div className="name col-sm-12 col-md-2">
                     {zone_duration.zone_name}
                   </div>
@@ -58,6 +72,13 @@ module.exports = class extends React.Component {
               ))}
             </div>
             ))}
+            {this.state.showAddWateringForm
+              ? <AddWateringForm onClose={this.addWateringFormClosed.bind(this)} />
+              : <div className="add-watering-button">
+                  <button className="btn btn-primary" onClick={this.addWateringClicked.bind(this)}>
+                    Add Watering
+                  </button>
+                </div>}
         </div>
       )
     } else {
