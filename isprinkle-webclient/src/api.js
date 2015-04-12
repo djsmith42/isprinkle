@@ -19,9 +19,6 @@ function _spaceless(obj) {
   return ret;
 }
 
-// Clear out the default Axios response transformer, because it throws an uncaught exception when
-// trying to parse our API's YAML responses:
-axios.defaults.transformResponse.length = 0;
 axios.interceptors.response.use((response) => {
   response.data = _spaceless(yaml.load(response.data));
   return response;

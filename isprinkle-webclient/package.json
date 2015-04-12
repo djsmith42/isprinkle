@@ -8,7 +8,7 @@
   "license": "MIT",
   "devDependencies": {},
   "dependencies": {
-    "axios": "^0.5.2",
+    "axios": "^0.5.4",
     "clone": "^1.0.2",
     "css-loader": "^0.9.0",
     "file-loader": "^0.8.1",
