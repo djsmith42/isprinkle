@@ -42,6 +42,12 @@ isprinkle-webclient
 --------------------
 * React based web front end
 * Work in progress (about 50% complete)
+* To run it:
+  1. Edit config.js to match your iSprinkle device IP/hostname
+  2. cd isprinkle-webclient
+  3. npm install
+  4. npm run dev
+  5. Point web browser at: http://localhost:8090
 
 openwrt
 -------
