@@ -38,6 +38,11 @@ isprinkle-iphone-gui
 * An iOS project that allows one to configure the watering schedules and see current status. 
 * Not my finest work, and it seems to leak memory if left running too long (i.e., many hours).
 
+isprinkle-webclient
+--------------------
+* React based web front end
+* Work in progress (about 50% complete)
+
 openwrt
 -------
 * My OpenWRT configuration (about a year old now).
