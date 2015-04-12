@@ -1,7 +1,7 @@
 var api = require('../api');
 var assign = require('object-assign');
 var EventEmitter = require('events').EventEmitter;
-var ZonesStore = require('./Zones');
+var ZonesStore = require('./ZonesStore');
 var StatusStore = require('./StatusStore');
 var clone = require('clone');
 

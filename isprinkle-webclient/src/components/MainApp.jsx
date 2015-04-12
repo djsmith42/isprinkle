@@ -2,8 +2,8 @@ var React = require('react');
 var Status = require('./Status');
 var WateringList = require('./WateringList');
 
-var ZonesStore = require('../stores/Zones');
-var WateringsStore = require('../stores/Waterings');
+var ZonesStore = require('../stores/ZonesStore');
+var WateringsStore = require('../stores/WateringsStore');
 var StatusStore = require('../stores/StatusStore');
 
 require('bootstrap/less/bootstrap.less');

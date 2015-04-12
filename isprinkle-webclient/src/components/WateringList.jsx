@@ -1,4 +1,4 @@
-var WateringsStore = require('../stores/Waterings');
+var WateringsStore = require('../stores/WateringsStore');
 var ReactAddons = require('react-addons');
 var React = require('react');
 var WateringSummary = require('./WateringSummary');
