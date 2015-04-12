@@ -1,5 +1,4 @@
 var api = require('../api');
-var config = require('../config');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var _ = require('lodash');
@@ -15,15 +14,12 @@ var StatusStore = assign({}, EventEmitter.prototype, {
     });
   },
   start: function() {
-    if (!this._started) {
-      this._started = true;
-      this._status = null;
-      this._fetchLoop();
-    }
+    this._status = null;
+    this._fetchLoop();
   },
   _fetchLoop: function() {
     this.fetch().then(() => {
-      setTimeout(this._fetchLoop.bind(this), 1000);
+      setTimeout(this._fetchLoop.bind(this), 3000);
     })
   },
   status: function() {

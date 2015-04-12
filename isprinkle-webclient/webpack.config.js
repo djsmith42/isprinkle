@@ -6,7 +6,7 @@ module.exports = {
     devtool: "#inline-source-map",
     module: {
         loaders: [
-            {test: /\.jsx?$/,    loader: 'jsx-loader?insertPragma=React.DOM&harmony'},
+            {test: /\.jsx?$/,   loader: 'jsx-loader?insertPragma=React.DOM&harmony'},
             {test: /\.less$/,   loader: 'style-loader!css-loader!less-loader'},
             {test: /\.css/,     loader: 'style-loader!css-loader'},
             {test: /\.woff(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&minetype=application/font-woff"},

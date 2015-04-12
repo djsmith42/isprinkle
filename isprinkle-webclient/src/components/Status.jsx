@@ -37,7 +37,7 @@ module.exports = class extends React.Component {
       )
     } else {
       return (
-        <div>Loading...</div>
+        <div>Loading status...</div>
       )
     }
   }
