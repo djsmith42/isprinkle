@@ -1,5 +1,6 @@
 var WateringsStore = require('../stores/Waterings');
 var React = require('react');
+var WateringSummary = require('./WateringSummary');
 
 module.exports = class extends React.Component {
   constructor(props) {
@@ -27,12 +28,15 @@ module.exports = class extends React.Component {
           <h2>Watering Schedule:</h2>
           {waterings.map((watering) => (
             <div>
-              <div>{watering.uuid}</div>
-              <ul>
+              <WateringSummary watering={watering} />
+              <table>
                 {watering.zone_durations.map((zone_duration) => (
-                  <li>{zone_duration.zone_name} for {zone_duration.minutes} minutes</li>
-                  ))}
-              </ul>
+                  <tr>
+                    <td>{zone_duration.zone_name}</td>
+                    <td>{zone_duration.minutes} minutes</td>
+                  </tr>
+                ))}
+              </table>
             </div>
             ))}
         </div>
