@@ -18,13 +18,11 @@ module.exports = class extends React.Component {
 
   componentDidMount() {
     var self = this;
-    console.log("Loading stores..");
     Promise.all([
       ZonesStore.fetch(),
       StatusStore.start(),
       WateringsStore.start()
     ]).then(function() {
-      console.log("All stores loaded");
       self.setState({
         allStoresLoaded: true
       });
@@ -34,16 +32,20 @@ module.exports = class extends React.Component {
   render() {
     var ready = this.state.allStoresLoaded;
     return (
-      <div>
-        <h1>iSprinkle</h1>
-        {ready
-          ? (<div>
-              <Status />
-              <WateringList />
-            </div>)
-          : (<div>
-              Loading...
-             </div>)}
+      <div className="container">
+        <div className="row">
+          <div className="col-md-12">
+            <h1>iSprinkle</h1>
+            {ready
+              ? (<div>
+                  <Status />
+                  <WateringList />
+                </div>)
+              : (<div>
+                  Loading...
+                 </div>)}
+          </div>
+        </div>
       </div>
     )
   }

@@ -21,10 +21,17 @@ module.exports = class extends React.Component {
   }
 
   _classes(watering) {
-    console.log("watering.is_active:", watering.is_active);
     return ReactAddons.classSet({
       'Watering': true,
       'active': watering.is_active
+    });
+  }
+
+  _zoneDurationClasses(zone_duration) {
+    return ReactAddons.classSet({
+      'row': true,
+      'zone-duration': true,
+      'active': zone_duration.is_active
     });
   }
 
@@ -38,12 +45,14 @@ module.exports = class extends React.Component {
             <div className={this._classes(watering)}>
               <WateringSummary watering={watering} />
               {watering.zone_durations.map((zone_duration) => (
-                <div className="row">
-                  <div className="zone-name col-sm-12 col-md-2">
+                <div className={this._zoneDurationClasses(zone_duration)}>
+                  <div className="name col-sm-12 col-md-2">
                     {zone_duration.zone_name}
                   </div>
-                  <div className="zone-duration col-sm-12 col-md-2">
+                  <div className="minutes col-sm-12 col-md-3">
                     {zone_duration.minutes} minutes
+                    {zone_duration.is_active &&
+                      <span> (watering now)</span>}
                   </div>
                 </div>
               ))}

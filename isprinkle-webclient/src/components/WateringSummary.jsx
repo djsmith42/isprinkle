@@ -19,9 +19,9 @@ module.exports = class extends React.Component {
     switch (watering.schedule_type) {
       case ScheduleTypes.EVERY_N_DAYS:
         if (watering.period_days == 1) {
-          return <div>Every Day at {watering.start_time}</div>
+          return <div>Every day at {watering.start_time}</div>
         } else {
-          return <div>Every {watering.period_days} Days at {watering.start_time}</div>
+          return <div>Every {watering.period_days} days at {watering.start_time}</div>
         }
       case ScheduleTypes.FIXED_DAYS_OF_WEEK:
         return <div>Days of the Week</div>

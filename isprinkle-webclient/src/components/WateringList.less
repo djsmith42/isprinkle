@@ -7,16 +7,24 @@
     border-left-width: 5px;
     padding: 10px;
 
-    .zone-name {
-      margin-left: 5px;
-    }
-    .zone-duration {
-      color: #888;
-    }
-
     &.active {
       border-left-color: #9bc5a5;
       background: #bbe5c5;
+    }
+
+    .zone-duration {
+      &.active {
+        .name, .minutes {
+          font-weight: bold;
+          background: #FAEFCA;
+        }
+      }
+      .name {
+        margin-left: 5px;
+      }
+      .minutes {
+        color: #888;
+      }
     }
   }
 }

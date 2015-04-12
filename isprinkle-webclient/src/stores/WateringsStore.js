@@ -40,13 +40,15 @@ var WateringsStore = assign({}, EventEmitter.prototype, {
     if (status && this._download) {
       var status = StatusStore.status();
       var activeWateringId = (status && status.active_watering);
+      var activeIndex = (status && status.active_index);
       this._waterings = this._download.map((watering) => {
         var watering = clone(watering)
-        watering.is_active = !!(activeWateringId && activeWateringId == watering.uuid);
-        watering.zone_durations = watering.zone_durations.map((zone_duration) => ({
+        watering.is_active = !!(activeWateringId && activeWateringId === watering.uuid);
+        watering.zone_durations = watering.zone_durations.map((zone_duration, index) => ({
           zone_id: zone_duration[0],
           minutes: zone_duration[1],
-          zone_name: ZonesStore.zones()[zone_duration[0]]
+          zone_name: ZonesStore.zones()[zone_duration[0]],
+          is_active: !!(activeWateringId && activeWateringId === watering.uuid && activeIndex === index)
         }));
         return watering;
       });
