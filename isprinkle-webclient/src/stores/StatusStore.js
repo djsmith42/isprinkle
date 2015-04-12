@@ -15,10 +15,10 @@ var StatusStore = assign({}, EventEmitter.prototype, {
   },
   start: function() {
     this._status = null;
-    this._fetchLoop();
+    return this._fetchLoop();
   },
   _fetchLoop: function() {
-    this.fetch().then(() => {
+    return this.fetch().then(() => {
       setTimeout(this._fetchLoop.bind(this), 3000);
     })
   },

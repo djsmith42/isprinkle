@@ -1,11 +1,20 @@
 var React = require('react');
 var ScheduleTypes = require('../constants').ScheduleTypes;
+require('./WateringSummary.less');
 
 module.exports = class extends React.Component {
   constructor(props) {
   }
 
   render() {
+    return (
+      <div className="WateringSummary">
+        {this._summary()}
+      </div>
+    )
+  }
+
+  _summary() {
     var watering = this.props.watering;
     switch (watering.schedule_type) {
       case ScheduleTypes.EVERY_N_DAYS:

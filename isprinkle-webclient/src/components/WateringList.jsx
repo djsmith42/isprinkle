@@ -1,42 +1,52 @@
 var WateringsStore = require('../stores/Waterings');
+var ReactAddons = require('react-addons');
 var React = require('react');
 var WateringSummary = require('./WateringSummary');
+
+require('./WateringList.less');
 
 module.exports = class extends React.Component {
   constructor(props) {
     this.state = {
-      loading: true,
+      waterings: null
     }
   }
 
   componentDidMount() {
-    WateringsStore.start();
     WateringsStore.on(WateringsStore.CHANGE_EVENT, () => {
-      var waterings = WateringsStore.waterings();
       this.setState({
-        loading: waterings === null,
-        waterings: waterings
+        waterings: WateringsStore.waterings()
       });
+    });
+  }
+
+  _classes(watering) {
+    console.log("watering.is_active:", watering.is_active);
+    return ReactAddons.classSet({
+      'Watering': true,
+      'active': watering.is_active
     });
   }
 
   render() {
     var waterings = this.state.waterings;
-    if (!this.state.loading) {
+    if (waterings !== null) {
       return (
-        <div>
-          <h2>Watering Schedule:</h2>
+        <div className="WateringList">
+          <h4>Watering Schedule:</h4>
           {waterings.map((watering) => (
-            <div>
+            <div className={this._classes(watering)}>
               <WateringSummary watering={watering} />
-              <table>
-                {watering.zone_durations.map((zone_duration) => (
-                  <tr>
-                    <td>{zone_duration.zone_name}</td>
-                    <td>{zone_duration.minutes} minutes</td>
-                  </tr>
-                ))}
-              </table>
+              {watering.zone_durations.map((zone_duration) => (
+                <div className="row">
+                  <div className="zone-name col-sm-12 col-md-2">
+                    {zone_duration.zone_name}
+                  </div>
+                  <div className="zone-duration col-sm-12 col-md-2">
+                    {zone_duration.minutes} minutes
+                  </div>
+                </div>
+              ))}
             </div>
             ))}
         </div>
