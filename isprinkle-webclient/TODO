@@ -1,0 +1,6 @@
+ - Quick run
+ - Recover from HTTP errors while polling status and waterings
+ - Disable the *whole* add watering form while saving
+ - UI to set deferral time
+ - Remove zones while adding watering
+ - Edit existing waterings
