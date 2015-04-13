@@ -1,4 +1,5 @@
 var StatusStore = require('../stores/StatusStore');
+var WateringsStore = require('../stores/WateringsStore');
 var React = require('react');
 
 module.exports = class extends React.Component {
@@ -20,15 +21,16 @@ module.exports = class extends React.Component {
 
   render() {
     var status = this.state.status;
+    var activeZoneName = WateringsStore.activeZoneName();
     if (status) {
       return (
         <div>
           <div>
             Current time: {status.current_time}
           </div>
-          <div>
-            <div>Status: {status.current_action}</div>
-          </div>
+          {activeZoneName
+            ? <div>Status: Watering {activeZoneName}</div>
+            : <div>Status: {status.current_action}</div>}
           {status.in_deferral_period && 
             <div>
               In deferral period until {status.deferral_datetime}

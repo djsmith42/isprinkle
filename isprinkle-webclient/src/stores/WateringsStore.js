@@ -8,7 +8,6 @@ var clone = require('clone');
 var WateringsStore = assign({}, EventEmitter.prototype, {
   CHANGE_EVENT: '__change__',
   addWatering: function(watering) {
-    console.log("addWatering:", watering);
     var self = this;
     return new Promise((resolve, reject) => {
       api.post('/add-watering', watering).then(function() {
@@ -18,8 +17,25 @@ var WateringsStore = assign({}, EventEmitter.prototype, {
       });
     });
   },
+  activeZoneName: function(uuid) {
+    var status = StatusStore.status();
+    var active_watering_uuid = status.active_watering;
+    var active_index = status.active_index;
+    if (active_watering_uuid && active_index !== undefined && active_index !== null) {
+      for (var i=0; i<this._waterings.length; i++) {
+        if (this._waterings[i].uuid == active_watering_uuid) {
+          var watering = this._waterings[i];
+          for (var j=0; j<watering.zone_durations.length; j++) {
+            if (j == active_index) {
+              var zone_duration = watering.zone_durations[j];
+              return zone_duration.zone_name;
+            }
+          }
+        }
+      }
+    }
+  },
   deleteWatering: function(watering) {
-    console.log("Deleting watering:", watering.uuid);
     var self = this;
     return new Promise((resolve, reject) => {
       api.post('/delete-watering', watering.uuid).then(function() {

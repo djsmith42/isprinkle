@@ -10,6 +10,7 @@ module.exports = class extends React.Component {
       isSaving: false,
       scheduleType: ScheduleTypes.EVERY_N_DAYS,
       periodDays: 2,
+      startDate: "2015-01-01",
       startTime: "06:00:00",
       zoneDurations: [
         {id: 1, minutes: 10},
@@ -32,6 +33,7 @@ module.exports = class extends React.Component {
       schedule_type: this.state.scheduleType,
       enabled: true,
       period_days: this.state.periodDays,
+      start_date: this.state.startDate,
       start_time: this.state.startTime,
       zone_durations: this.state.zoneDurations.map((zoneDuration) => (
         [zoneDuration.id, zoneDuration.minutes]
@@ -48,9 +50,20 @@ module.exports = class extends React.Component {
   formChanged(event) {
     this.setState({
       scheduleType: parseInt(this.refs.scheduleType.getDOMNode().value, 10),
-      periodDays: parseInt(this.refs.periodDays.getDOMNode().value, 10),
       startTime: this.refs.startTime.getDOMNode().value
     });
+
+    if (this.refs.periodDays) {
+      this.setState({
+        periodDays: parseInt(this.refs.periodDays.getDOMNode().value, 10)
+      });
+    }
+
+    if (this.refs.startDate) {
+      this.setState({
+        startDate: this.refs.startDate.getDOMNode().value
+      });
+    }
   }
 
   _zones() {
@@ -102,8 +115,12 @@ module.exports = class extends React.Component {
           <div className="form-group">
             <label>Period:</label>
             <input type="number" ref="periodDays" defaultValue={this.state.periodDays} onChange={this.formChanged.bind(this)} className="form-control" />
-          </div>
-        }
+          </div>}
+        {this.state.scheduleType == ScheduleTypes.SINGLE_SHOT &&
+          <div className="form-group">
+            <label>Start Date:</label>
+            <input type="text" ref="startDate" defaultValue={this.state.startDate} onChange={this.formChanged.bind(this)} className="form-control" />
+          </div>}
         <div className="form-group">
           <label>Start Time of Day:</label>
           <input type="text" ref="startTime" defaultValue={this.state.startTime} onChange={this.formChanged.bind(this)} className="form-control" />
