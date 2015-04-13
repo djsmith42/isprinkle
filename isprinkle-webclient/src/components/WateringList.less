@@ -7,12 +7,12 @@
     border-left-width: 5px;
     padding: 10px;
 
-    button.delete {
+    button.delete, button.disable, button.enable {
       display: none;
     }
 
     &:hover {
-      button.delete {
+      button.delete, button.disable, button.enable {
         display: inline;
       }
     }
@@ -20,6 +20,11 @@
     &.active {
       border-left-color: #8bb595;
       background: #bbe5b5;
+    }
+
+    &.disabled {
+      background: #eee;
+      border-left-color: #aaa;
     }
 
     .zone-duration {

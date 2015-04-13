@@ -3,4 +3,5 @@
  - Disable the *whole* add watering form while saving
  - UI to set deferral time
  - Remove zones while adding watering
+ - Fix code deuplication on deleteWatering(), enableWatering(), and disableWatering()
  - Edit existing waterings

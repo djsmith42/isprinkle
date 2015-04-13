@@ -45,6 +45,26 @@ var WateringsStore = assign({}, EventEmitter.prototype, {
       });
     });
   },
+  disableWatering: function(watering) {
+    var self = this;
+    return new Promise((resolve, reject) => {
+      api.post('/disable-watering', watering.uuid).then(function() {
+        self.fetch().then(function() {
+          resolve();
+        });
+      });
+    });
+  },
+  enableWatering: function(watering) {
+    var self = this;
+    return new Promise((resolve, reject) => {
+      api.post('/enable-watering', watering.uuid).then(function() {
+        self.fetch().then(function() {
+          resolve();
+        });
+      });
+    });
+  },
   start: function() {
     this._waterings = null;
     var self = this;

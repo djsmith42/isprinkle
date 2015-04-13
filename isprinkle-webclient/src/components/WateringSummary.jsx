@@ -8,8 +8,12 @@ module.exports = class extends React.Component {
 
   render() {
     return (
-      <div className="WateringSummary">
-        {this._summary()}
+      <div>
+        <div className="WateringSummary">
+          {this._summary()}
+        </div>
+        {this.props.watering.enabled ||
+          <div>(disabled)</div>}
       </div>
     )
   }

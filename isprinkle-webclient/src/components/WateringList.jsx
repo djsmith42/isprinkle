@@ -30,10 +30,30 @@ module.exports = class extends React.Component {
   deleteWateringClicked(watering) {
     var self = this;
     if (confirm("Delete this watering?")) {
-      watering.is_pending_delete = true;
-      self.setState({}); // re-render to pick up is_pending_delete
+      watering.is_pending_change = true;
+      self.setState({}); // re-render to pick up is_pending_change
       WateringsStore.deleteWatering(watering);
     }
+  }
+
+  disableWateringClicked(watering) {
+    var self = this;
+    watering.is_pending_change = true;
+    self.setState({}); // re-render to pick up is_pending_change
+    WateringsStore.disableWatering(watering).then(function() {
+      delete watering.is_pending_change;
+      self.setState({}); // re-render to pick up is_pending_change
+    });
+  }
+
+  enableWateringClicked(watering) {
+    var self = this;
+    watering.is_pending_change = true;
+    self.setState({}); // re-render to pick up is_pending_change
+    WateringsStore.enableWatering(watering).then(function() {
+      delete watering.is_pending_change;
+      self.setState({}); // re-render to pick up is_pending_change
+    });
   }
 
   addWateringFormClosed() {
@@ -45,7 +65,8 @@ module.exports = class extends React.Component {
   _wateringClasses(watering) {
     return ReactAddons.classSet({
       'Watering': true,
-      'active': watering.is_active
+      'active': watering.is_active,
+      'disabled': !watering.enabled
     });
   }
 
@@ -67,10 +88,23 @@ module.exports = class extends React.Component {
             <div key={watering.uuid} className={this._wateringClasses(watering)}>
               <button
                 className="btn btn-danger delete pull-right"
-                disabled={watering.is_pending_delete}
+                disabled={watering.is_pending_change}
                 onClick={this.deleteWateringClicked.bind(this, watering)}>
                 Delete
               </button>
+              {watering.enabled
+                ? <button
+                    className="btn btn-warning disable pull-right"
+                    disabled={watering.is_pending_change}
+                    onClick={this.disableWateringClicked.bind(this, watering)}>
+                    Disable
+                  </button>
+                : <button
+                    className="btn btn-info enable pull-right"
+                    disabled={watering.is_pending_change}
+                    onClick={this.enableWateringClicked.bind(this, watering)}>
+                    Enable
+                  </button>}
               <WateringSummary watering={watering} />
               {watering.zone_durations.map((zone_duration, index) => (
                 <div key={index} className={this._zoneDurationClasses(zone_duration)}>
