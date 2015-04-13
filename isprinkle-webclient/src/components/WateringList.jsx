@@ -64,7 +64,7 @@ module.exports = class extends React.Component {
         <div className="WateringList">
           <h4>Watering Schedule:</h4>
           {waterings.map((watering) => (
-            <div className={this._wateringClasses(watering)}>
+            <div key={watering.uuid} className={this._wateringClasses(watering)}>
               <button
                 className="btn btn-danger delete pull-right"
                 disabled={watering.is_pending_delete}
@@ -72,8 +72,8 @@ module.exports = class extends React.Component {
                 Delete
               </button>
               <WateringSummary watering={watering} />
-              {watering.zone_durations.map((zone_duration) => (
-                <div className={this._zoneDurationClasses(zone_duration)}>
+              {watering.zone_durations.map((zone_duration, index) => (
+                <div key={index} className={this._zoneDurationClasses(zone_duration)}>
                   <div className="spacer col-md-1 col-sm-0"> </div>
                   <div className="name col-sm-12 col-md-2">
                     {zone_duration.zone_name}
