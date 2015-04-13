@@ -216,6 +216,14 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(response_content)
 
+   def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header('Content-length', 0)
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+        self.end_headers()
+        self.wfile.write('')
+
     def do_POST(self):
 
         response_code    = 200

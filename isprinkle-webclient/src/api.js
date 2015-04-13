@@ -19,6 +19,22 @@ function _spaceless(obj) {
   return ret;
 }
 
+function _spacify(obj) {
+  var ret;
+  if (Array.isArray(obj)) {
+    ret = obj.map(x => _spacify(x));
+  } else if (typeof obj == "object" && obj !== null) {
+    ret = {};
+    Object.keys(obj).forEach((key) => {
+      var spacefulKey = key.replace(/_/g, ' ');
+      ret[spacefulKey] = _spacify(obj[key]);
+    });
+  } else {
+    ret = obj;
+  }
+  return ret;
+}
+
 axios.interceptors.response.use((response) => {
   response.data = _spaceless(yaml.load(response.data));
   return response;
@@ -29,6 +45,14 @@ module.exports = {
     return new Promise((resolve, reject) => {
       var url = format('http://{}:{}{}', config.host, config.port, path);
       axios.get(url)
+        .then((response) => resolve(response.data))
+        .catch((error) => reject(error));
+    });
+  },
+  post: function(path, payload) {
+    return new Promise((resolve, reject) => {
+      var url = format('http://{}:{}{}', config.host, config.port, path);
+      axios.post(url, _spacify(payload))
         .then((response) => resolve(response.data))
         .catch((error) => reject(error));
     });

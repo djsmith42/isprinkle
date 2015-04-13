@@ -27,6 +27,15 @@ module.exports = class extends React.Component {
     });
   }
 
+  deleteWateringClicked(watering) {
+    var self = this;
+    if (confirm("Delete this watering?")) {
+      watering.is_pending_delete = true;
+      self.setState({}); // re-render to pick up is_pending_delete
+      WateringsStore.deleteWatering(watering);
+    }
+  }
+
   addWateringFormClosed() {
     this.setState({
       showAddWateringForm: false
@@ -56,6 +65,12 @@ module.exports = class extends React.Component {
           <h4>Watering Schedule:</h4>
           {waterings.map((watering) => (
             <div className={this._wateringClasses(watering)}>
+              <button
+                className="btn btn-danger delete pull-right"
+                disabled={watering.is_pending_delete}
+                onClick={this.deleteWateringClicked.bind(this, watering)}>
+                Delete
+              </button>
               <WateringSummary watering={watering} />
               {watering.zone_durations.map((zone_duration) => (
                 <div className={this._zoneDurationClasses(zone_duration)}>

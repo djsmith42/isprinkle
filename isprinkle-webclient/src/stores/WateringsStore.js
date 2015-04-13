@@ -7,6 +7,28 @@ var clone = require('clone');
 
 var WateringsStore = assign({}, EventEmitter.prototype, {
   CHANGE_EVENT: '__change__',
+  addWatering: function(watering) {
+    console.log("addWatering:", watering);
+    var self = this;
+    return new Promise((resolve, reject) => {
+      api.post('/add-watering', watering).then(function() {
+        self.fetch().then(function() {
+          resolve();
+        });
+      });
+    });
+  },
+  deleteWatering: function(watering) {
+    console.log("Deleting watering:", watering.uuid);
+    var self = this;
+    return new Promise((resolve, reject) => {
+      api.post('/delete-watering', watering.uuid).then(function() {
+        self.fetch().then(function() {
+          resolve();
+        });
+      });
+    });
+  },
   start: function() {
     this._waterings = null;
     var self = this;
