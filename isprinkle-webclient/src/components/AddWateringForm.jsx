@@ -109,7 +109,7 @@ module.exports = class extends React.Component {
           <input type="text" ref="startTime" defaultValue={this.state.startTime} onChange={this.formChanged.bind(this)} className="form-control" />
         </div>
         <div className="form-group">
-          <label>Zone Durations:</label>
+          <label>Zones:</label>
           {this.state.zoneDurations.map((zoneDuration, index) => (
             <div key={index} className="zone-duration">
               <select className="form-control" onChange={this.zoneDurationZoneIdChanged.bind(this, zoneDuration)} defaultValue={zoneDuration.id}>
