@@ -30,9 +30,7 @@ var StatusStore = assign({}, EventEmitter.prototype, {
     return this._doPost('/clear-deferral-time');
   },
   setDeferralTime: function(date) {
-    //if (typeof date == "string
     var payload = moment(date).format("YYYY-MM-DD HH:mm:ss");
-    console.log("payload:", payload);
     return this._doPost('/set-deferral-time', payload);
   },
   _doPost: function(url, payload) {
