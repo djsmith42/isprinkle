@@ -35,6 +35,16 @@ var WateringsStore = assign({}, EventEmitter.prototype, {
       }
     }
   },
+  runNow: function(watering) {
+    var self = this;
+    return new Promise((resolve, reject) => {
+      api.post('/run-watering-now', watering.uuid).then(function() {
+        self.fetch().then(function() {
+          resolve();
+        });
+      });
+    });
+  },
   deleteWatering: function(watering) {
     var self = this;
     return new Promise((resolve, reject) => {

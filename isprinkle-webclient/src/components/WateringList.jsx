@@ -46,6 +46,16 @@ module.exports = class extends React.Component {
     });
   }
 
+  runNowClicked(watering) {
+    var self = this;
+    watering.is_pending_change = true;
+    self.setState({}); // re-render to pick up is_pending_change
+    WateringsStore.runNow(watering).then(function() {
+      delete watering.is_pending_change;
+      self.setState({}); // re-render to pick up is_pending_change
+    });
+  }
+
   enableWateringClicked(watering) {
     var self = this;
     watering.is_pending_change = true;
@@ -105,6 +115,12 @@ module.exports = class extends React.Component {
                     onClick={this.enableWateringClicked.bind(this, watering)}>
                     Enable
                   </button>}
+              <button
+                className="btn btn-default run-now pull-right"
+                disabled={watering.is_pending_change}
+                onClick={this.runNowClicked.bind(this, watering)}>
+                Run Now
+              </button>
               <WateringSummary watering={watering} />
               {watering.zone_durations.map((zone_duration, index) => (
                 <div key={index} className={this._zoneDurationClasses(zone_duration)}>
