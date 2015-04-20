@@ -8,14 +8,7 @@ var clone = require('clone');
 var WateringsStore = assign({}, EventEmitter.prototype, {
   CHANGE_EVENT: '__change__',
   addWatering: function(watering) {
-    var self = this;
-    return new Promise((resolve, reject) => {
-      api.post('/add-watering', watering).then(function() {
-        self.fetch().then(function() {
-          resolve();
-        });
-      });
-    });
+    return this._doPost('/add-watering', watering);
   },
   activeZoneName: function(uuid) {
     var status = StatusStore.status();
@@ -36,44 +29,16 @@ var WateringsStore = assign({}, EventEmitter.prototype, {
     }
   },
   runNow: function(watering) {
-    var self = this;
-    return new Promise((resolve, reject) => {
-      api.post('/run-watering-now', watering.uuid).then(function() {
-        self.fetch().then(function() {
-          resolve();
-        });
-      });
-    });
+    return this._doPost('/run-watering-now', watering.uuid);
   },
   deleteWatering: function(watering) {
-    var self = this;
-    return new Promise((resolve, reject) => {
-      api.post('/delete-watering', watering.uuid).then(function() {
-        self.fetch().then(function() {
-          resolve();
-        });
-      });
-    });
+    return this._doPost('/delete-watering', watering.uuid);
   },
   disableWatering: function(watering) {
-    var self = this;
-    return new Promise((resolve, reject) => {
-      api.post('/disable-watering', watering.uuid).then(function() {
-        self.fetch().then(function() {
-          resolve();
-        });
-      });
-    });
+    return this._doPost('/disable-watering', watering.uuid);
   },
   enableWatering: function(watering) {
-    var self = this;
-    return new Promise((resolve, reject) => {
-      api.post('/enable-watering', watering.uuid).then(function() {
-        self.fetch().then(function() {
-          resolve();
-        });
-      });
-    });
+    return this._doPost('/enable-watering', watering.uuid);
   },
   start: function() {
     this._waterings = null;
@@ -123,6 +88,16 @@ var WateringsStore = assign({}, EventEmitter.prototype, {
     } else {
       this._waterings = null;
     }
+  },
+  _doPost: function(url, payload) {
+    var self = this;
+    return new Promise((resolve, reject) => {
+      api.post(url, payload).then(function() {
+        self.fetch().then(function() {
+          resolve();
+        });
+      });
+    });
   }
 });
 

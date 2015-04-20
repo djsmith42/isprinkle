@@ -1,16 +1,17 @@
 var api = require('../api');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
-var _ = require('lodash');
+var moment = require('moment');
 
 var StatusStore = assign({}, EventEmitter.prototype, {
   CHANGE_EVENT: '__change__',
   fetch: function() {
     return api.get('/status').then((status) => {
-      if (!_.isEqual(status, this._status)) {
-        this._status = status;
-        this.emit(this.CHANGE_EVENT);
+      if (status.deferral_datetime === 'None') {
+        status.deferral_datetime = null;
       }
+      this._status = status;
+      this.emit(this.CHANGE_EVENT);
     });
   },
   start: function() {
@@ -24,6 +25,27 @@ var StatusStore = assign({}, EventEmitter.prototype, {
   },
   status: function() {
     return this._status;
+  },
+  clearDeferralTime: function() {
+    return this._doPost('/clear-deferral-time');
+  },
+  setDeferralTime: function(date) {
+    //if (typeof date == "string
+    var payload = moment(date).format("YYYY-MM-DD HH:mm:ss");
+    console.log("payload:", payload);
+    return this._doPost('/set-deferral-time', payload);
+  },
+  _doPost: function(url, payload) {
+    var self = this;
+    return new Promise((resolve, reject) => {
+      api.post(url, payload).then(function() {
+        setTimeout(function() {
+          self.fetch().then(function() {
+            resolve();
+          });
+        }, 1500);
+      });
+    });
   }
 });
 
