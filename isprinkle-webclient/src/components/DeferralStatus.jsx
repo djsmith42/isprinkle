@@ -55,6 +55,21 @@ module.exports = class extends React.Component {
     });
   }
 
+  _defaultDeferralTime() {
+    var deferral = StatusStore.status().deferral_datetime;
+    if (deferral) {
+      return moment(deferral).format("HH:mm:ss");
+    } else {
+      return "06:00:00";
+    }
+  }
+
+  _defaultDeferralDate() {
+    var deferral = StatusStore.status().deferral_datetime;
+    var date = deferral ? deferral : _twoDaysFromNow();
+    return moment(date).format("YYYY-MM-DD");
+  }
+
   render() {
     var status = StatusStore.status();
     if (this.state.saving) {
@@ -68,7 +83,7 @@ module.exports = class extends React.Component {
         <div className="DeferralStatus">
           {status.in_deferral_period && 
             <div className="in-deferral">
-              <span>In deferral period until {status.deferral_datetime}</span>
+              <span>In deferral period until {_prettyDateTime(status.deferral_datetime)}</span>
               <button className="btn btn-link" onClick={this.clearClicked.bind(this)}>clear</button>
             </div>}
           <div>
@@ -77,8 +92,8 @@ module.exports = class extends React.Component {
           {this.state.editing
             ? (<div className="editor">
                  <div>
-                   <input ref="deferralDate" type="date" defaultValue={_twoDaysFromNowString()} />
-                   <input ref="deferralTime" type="time" defaultValue="06:00:00" />
+                   <input ref="deferralDate" type="date" defaultValue={this._defaultDeferralDate()} />
+                   <input ref="deferralTime" type="time" defaultValue={this._defaultDeferralTime()} />
                    <button className="btn btn-primary" onClick={this.editSaveClicked.bind(this)}>Save</button>
                    <button className="btn btn-default" onClick={this.editCancelClicked.bind(this)}>Cancel</button>
                  </div>
@@ -98,7 +113,6 @@ function _twoDaysFromNow() {
   return ret;
 }
 
-function _twoDaysFromNowString() {
-  var date = _twoDaysFromNow();
-  return moment(date).format("YYYY-MM-DD");
+function _prettyDateTime(date) {
+  return moment(date).format("dddd, MMMM Do YYYY, h:mm a");
 }
