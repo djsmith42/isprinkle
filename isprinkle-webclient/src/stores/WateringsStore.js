@@ -5,7 +5,7 @@ var ZonesStore = require('./ZonesStore');
 var StatusStore = require('./StatusStore');
 var clone = require('clone');
 
-var WateringsStore = assign({}, EventEmitter.prototype, {
+module.exports = assign({}, EventEmitter.prototype, {
   CHANGE_EVENT: '__change__',
   addWatering: function(watering) {
     return this._doPost('/add-watering', watering);
@@ -100,5 +100,3 @@ var WateringsStore = assign({}, EventEmitter.prototype, {
     });
   }
 });
-
-module.exports = WateringsStore;

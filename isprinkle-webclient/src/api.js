@@ -2,6 +2,7 @@ var axios = require('axios');
 var config = require('./config');
 var format = require('string-format');
 var yaml = require('js-yaml');
+var ErrorStore = require('./stores/ErrorStore');
 
 function _spaceless(obj) {
   var ret;
@@ -38,6 +39,8 @@ function _spacify(obj) {
 axios.interceptors.response.use((response) => {
   response.data = _spaceless(yaml.load(response.data));
   return response;
+}, function(error, foo, bar) {
+  ErrorStore.setError(error);
 });
 
 module.exports = {

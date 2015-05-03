@@ -3,7 +3,7 @@ var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var moment = require('moment');
 
-var StatusStore = assign({}, EventEmitter.prototype, {
+module.exports =  assign({}, EventEmitter.prototype, {
   CHANGE_EVENT: '__change__',
   fetch: function() {
     return api.get('/status').then((status) => {
@@ -46,5 +46,3 @@ var StatusStore = assign({}, EventEmitter.prototype, {
     });
   }
 });
-
-module.exports = StatusStore;
