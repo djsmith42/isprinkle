@@ -42,7 +42,6 @@ module.exports = class MainPage extends React.Component {
   render() {
     var error = ErrorStore.error();
     var ready = this.state.allStoresLoaded;
-    console.log("MainApp.render(): error:", error, "ready:", ready);
     return (
       <div className="container">
         <div className="row">

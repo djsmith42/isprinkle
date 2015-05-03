@@ -8,7 +8,6 @@ require('./WateringForm.less');
 
 class WateringForm extends React.Component {
   constructor(props) {
-    console.log("WateringForm: onClose", props);
     this.props = props;
     switch (this.props.mode) {
       case "add":

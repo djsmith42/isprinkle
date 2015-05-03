@@ -21,7 +21,6 @@ module.exports = class DeferralStatus extends React.Component {
   }
 
   editClicked() {
-    console.log("this:", this);
     this.setState({editing: true});
   }
 
