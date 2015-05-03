@@ -3,6 +3,7 @@ var ReactAddons = require('react-addons');
 var React = require('react');
 var WateringSummary = require('./WateringSummary');
 var AddWateringForm = require('./AddWateringForm');
+var EditWateringForm = require('./EditWateringForm');
 
 require('./WateringList.less');
 
@@ -72,6 +73,18 @@ module.exports = class WateringList extends React.Component {
     });
   }
 
+  editClicked(watering) {
+    this.setState({
+      wateringToEdit: watering
+    });
+  }
+
+  editFormClosed() {
+    this.setState({
+      wateringToEdit: undefined
+    });
+  }
+
   _wateringClasses(watering) {
     return ReactAddons.classSet({
       'Watering': true,
@@ -90,53 +103,64 @@ module.exports = class WateringList extends React.Component {
 
   render() {
     var waterings = this.state.waterings;
+    var wateringToEdit = this.state.wateringToEdit;
     if (waterings !== null) {
       return (
         <div className="WateringList">
           <h4>Watering Schedule:</h4>
           {waterings.map((watering) => (
             <div key={watering.uuid} className={this._wateringClasses(watering)}>
-              <button
-                className="btn btn-danger delete pull-right"
-                disabled={watering.is_pending_change}
-                onClick={this.deleteWateringClicked.bind(this, watering)}>
-                Delete
-              </button>
-              {watering.enabled
-                ? <button
-                    className="btn btn-warning disable pull-right"
-                    disabled={watering.is_pending_change}
-                    onClick={this.disableWateringClicked.bind(this, watering)}>
-                    Disable
-                  </button>
-                : <button
-                    className="btn btn-info enable pull-right"
-                    disabled={watering.is_pending_change}
-                    onClick={this.enableWateringClicked.bind(this, watering)}>
-                    Enable
-                  </button>}
-              <button
-                className="btn btn-default run-now pull-right"
-                disabled={watering.is_pending_change}
-                onClick={this.runNowClicked.bind(this, watering)}>
-                Run Now
-              </button>
-              <WateringSummary watering={watering} />
-              {watering.zone_durations.map((zone_duration, index) => (
-                <div key={index} className={this._zoneDurationClasses(zone_duration)}>
-                  <div className="spacer col-md-1 col-sm-0"> </div>
-                  <div className="name col-sm-12 col-md-2">
-                    {zone_duration.zone_name}
-                  </div>
-                  <div className="minutes col-sm-12 col-md-3">
-                    {zone_duration.minutes} minutes
-                    {zone_duration.is_active &&
-                      <span> (watering now)</span>}
-                  </div>
-                </div>
-              ))}
-            </div>
-            ))}
+              {wateringToEdit && wateringToEdit.uuid === watering.uuid
+                ? <EditWateringForm
+                     wateringToEdit={watering}
+                     onClose={this.editFormClosed.bind(this)}
+                   />
+                : <div>
+                    <button
+                      className="btn btn-danger delete pull-right"
+                      disabled={watering.is_pending_change}
+                      onClick={this.deleteWateringClicked.bind(this, watering)}>
+                      Delete
+                    </button>
+                    {watering.enabled
+                      ? <button
+                          className="btn btn-warning disable pull-right"
+                          disabled={watering.is_pending_change}
+                          onClick={this.disableWateringClicked.bind(this, watering)}>
+                          Disable
+                        </button>
+                      : <button
+                          className="btn btn-info enable pull-right"
+                          disabled={watering.is_pending_change}
+                          onClick={this.enableWateringClicked.bind(this, watering)}>
+                          Enable
+                        </button>}
+                    <button
+                      className="btn btn-default run-now pull-right"
+                      disabled={watering.is_pending_change}
+                      onClick={this.runNowClicked.bind(this, watering)}>
+                      Run Now
+                    </button>
+                    <button
+                      className="btn btn-info edit pull-right"
+                      onClick={this.editClicked.bind(this, watering)}>
+                      Edit
+                    </button>
+                    <WateringSummary watering={watering} />
+                    {watering.zone_durations.map((zone_duration, index) => (
+                      <div key={index} className={this._zoneDurationClasses(zone_duration)}>
+                        <div className="spacer col-md-1 col-sm-0"> </div>
+                        <div className="name col-sm-12 col-md-2">
+                          {zone_duration.zone_name}
+                        </div>
+                        <div className="minutes col-sm-12 col-md-3">
+                          {zone_duration.minutes} minutes
+                          {zone_duration.is_active &&
+                            <span> (watering now)</span>}
+                        </div>
+                      </div>))}
+                  </div>}
+                </div>))}
             {this.state.showAddWateringForm
               ? <AddWateringForm onClose={this.addWateringFormClosed.bind(this)} />
               : <div className="add-watering-button">

@@ -19,7 +19,6 @@
     "jsx-loader": "^0.12.2",
     "less": "^1.7.5",
     "less-loader": "^0.7.8",
-    "lodash": "^3.6.0",
     "moment": "^2.10.2",
     "object-assign": "^2.0.0",
     "react": "^0.13.1",

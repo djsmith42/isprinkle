@@ -2,7 +2,6 @@ var React = require('react');
 var ScheduleTypes = require('../constants').ScheduleTypes;
 var WateringsStore = require('../stores/WateringsStore');
 var ZonesStore = require('../stores/ZonesStore');
-var _ = require('lodash');
 
 require('./WateringForm.less');
 
@@ -12,18 +11,27 @@ class WateringForm extends React.Component {
     switch (this.props.mode) {
       case "add":
         this.state = {
-          scheduleType: ScheduleTypes.EVERY_N_DAYS,
-          periodDays: 2,
-          startDate: "2015-01-01",
-          startTime: "06:00:00",
-          zoneDurations: [
+          scheduleType  : ScheduleTypes.EVERY_N_DAYS,
+          periodDays    : 2,
+          startDate     : "2015-01-01",
+          startTime     : "06:00:00",
+          zoneDurations : [
             {id: 1, minutes: 10},
             {id: 2, minutes: 20}
           ]
         }
         break;
       case "edit":
-        this.state = _.cloneDeep(this.props.wateringToEdit);
+        this.state = {
+          scheduleType  : this.props.wateringToEdit.schedule_type,
+          periodDays    : this.props.wateringToEdit.period_days,
+          startDate     : this.props.wateringToEdit.start_date,
+          startTime     : this.props.wateringToEdit.start_time,
+          zoneDurations : this.props.wateringToEdit.zone_durations.map((zone_duration) => ({
+            id      : zone_duration.zone_id,
+            minutes : zone_duration.minutes
+          }))
+        }
         break;
       default:
         throw new Error("Invalid mode: " + this.props.mode);
@@ -120,7 +128,8 @@ class WateringForm extends React.Component {
     var isSaving = this.state.isSavig;
     return (
       <form className="WateringForm">
-        <h4>New Watering:</h4>
+        {this.props.mode === "edit" && <h4>Edit Watering:</h4>}
+        {this.props.mode === "add"  && <h4>New Watering: </h4>}
         <div className="form-group">
           <label>Schedule Type:</label>
           <select disabled={isSaving} ref="scheduleType" defaultValue={this.state.scheduleType} onChange={this.formChanged.bind(this)} className="form-control">
