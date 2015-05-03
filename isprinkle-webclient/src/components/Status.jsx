@@ -3,7 +3,7 @@ var WateringsStore = require('../stores/WateringsStore');
 var DeferralStatus = require('./DeferralStatus');
 var React = require('react');
 
-module.exports = class extends React.Component {
+module.exports = class Status extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

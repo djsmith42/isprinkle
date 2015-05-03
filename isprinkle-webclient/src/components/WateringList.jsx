@@ -6,7 +6,7 @@ var AddWateringForm = require('./AddWateringForm');
 
 require('./WateringList.less');
 
-module.exports = class extends React.Component {
+module.exports = class WateringList extends React.Component {
   constructor(props) {
     this.state = {
       waterings: null

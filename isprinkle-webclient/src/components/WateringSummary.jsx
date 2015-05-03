@@ -2,7 +2,7 @@ var React = require('react');
 var ScheduleTypes = require('../constants').ScheduleTypes;
 require('./WateringSummary.less');
 
-module.exports = class extends React.Component {
+module.exports = class WateringSummary extends React.Component {
   constructor(props) {
   }
 

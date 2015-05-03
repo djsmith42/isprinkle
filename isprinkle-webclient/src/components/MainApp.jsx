@@ -11,7 +11,7 @@ var ErrorStore = require('../stores/ErrorStore');
 require('bootstrap/less/bootstrap.less');
 require('./MainApp.less');
 
-module.exports = class extends React.Component {
+module.exports = class MainPage extends React.Component {
   constructor() {
     this.state = {
       allStoresLoaded: false

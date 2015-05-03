@@ -5,7 +5,7 @@ var moment = require('moment');
 
 require('./DeferralStatus.less');
 
-module.exports = class extends React.Component {
+module.exports = class DeferralStatus extends React.Component {
   constructor() {
     this.state = {
       editing: false,
