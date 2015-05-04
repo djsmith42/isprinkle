@@ -22,12 +22,14 @@ class WateringForm extends React.Component {
         }
         break;
       case "edit":
+        var wateringToEdit = this.props.wateringToEdit;
         this.state = {
-          scheduleType  : this.props.wateringToEdit.schedule_type,
-          periodDays    : this.props.wateringToEdit.period_days,
-          startDate     : this.props.wateringToEdit.start_date,
-          startTime     : this.props.wateringToEdit.start_time,
-          zoneDurations : this.props.wateringToEdit.zone_durations.map((zone_duration) => ({
+          uuid          : wateringToEdit.uuid,
+          scheduleType  : wateringToEdit.schedule_type,
+          periodDays    : wateringToEdit.period_days,
+          startDate     : wateringToEdit.start_date,
+          startTime     : wateringToEdit.start_time,
+          zoneDurations : wateringToEdit.zone_durations.map((zone_duration) => ({
             id      : zone_duration.zone_id,
             minutes : zone_duration.minutes
           }))
@@ -81,7 +83,11 @@ class WateringForm extends React.Component {
         });
         break;
       case "edit":
-        throw new Error("Not implemented yet");
+        watering.uuid = this.state.uuid;
+        WateringsStore.updateWatering(watering).then(function() {
+          self.props.onClose();
+        });
+        break;
     }
     this.setState({
       isSaving: true
@@ -124,10 +130,21 @@ class WateringForm extends React.Component {
     });
   }
 
+  removeZoneDurationClicked(index) {
+    this.state.zoneDurations.splice(index, 1);
+    this.setState({
+      zoneDurations: this.state.zoneDurations
+    })
+  }
+
+  preventSubmit(e) {
+    e.preventDefault()
+  }
+
   render() {
     var isSaving = this.state.isSavig;
     return (
-      <form className="WateringForm">
+      <form className="WateringForm" onSubmit={this.preventSubmit}>
         {this.props.mode === "edit" && <h4>Edit Watering:</h4>}
         {this.props.mode === "add"  && <h4>New Watering: </h4>}
         <div className="form-group">
@@ -153,15 +170,22 @@ class WateringForm extends React.Component {
           <input type="text" ref="startTime" defaultValue={this.state.startTime} onChange={this.formChanged.bind(this)} className="form-control" />
         </div>
         <div className="form-group">
-          <label>Zones:</label>
+          <label>Scheduled Zones:</label>
           {this.state.zoneDurations.map((zoneDuration, index) => (
-            <div key={index} className="zone-duration">
-              <select className="form-control" onChange={this.zoneDurationZoneIdChanged.bind(this, zoneDuration)} defaultValue={zoneDuration.id}>
+            <div key={index + "-" + zoneDuration.id + "-" + zoneDuration.minutes} className="zone-duration">
+              <button onClick={this.removeZoneDurationClicked.bind(this, index)} className="remove-zone">x</button>
+              <select className="form-control zone-select" onChange={this.zoneDurationZoneIdChanged.bind(this, zoneDuration)} defaultValue={zoneDuration.id}>
                 {this._zones().map((zone) => (
                   <option key={zone.id} value={zone.id}>{zone.name}</option>
                 ))}
               </select>
-              <input type="number" className="form-control" onChange={this.zoneDurationMinutesChanged.bind(this, zoneDuration)} defaultValue={zoneDuration.minutes} />
+              <input
+                type="number"
+                className="form-control zone-minutes"
+                onChange={this.zoneDurationMinutesChanged.bind(this, zoneDuration)}
+                defaultValue={zoneDuration.minutes} />
+              <div className="minutes">Minutes</div>
+              <div className="clearfix"></div>
             </div>
           ))}
         </div>

@@ -10,6 +10,9 @@ module.exports = assign({}, EventEmitter.prototype, {
   addWatering: function(watering) {
     return this._doPost('/add-watering', watering);
   },
+  updateWatering: function(watering) {
+    return this._doPost('/update-watering', watering);
+  },
   activeZoneName: function(uuid) {
     var status = StatusStore.status();
     var active_watering_uuid = status.active_watering;
