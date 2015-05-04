@@ -1,7 +1,5 @@
  - Quick run
- - Recover from HTTP errors while polling status and waterings
  - Disable the *whole* add watering form while saving
- - UI to set deferral time
- - Remove zones while adding watering
- - Fix code deuplication on deleteWatering(), enableWatering(), and disableWatering()
- - Edit existing waterings
+ - Edit existing single-shot waterings (currentely, "start_date" is being parsed as an object by JS-YAML)
+ - Better summary display for single shot waterings
+ - Don't re-enable disabled waterings on edit
