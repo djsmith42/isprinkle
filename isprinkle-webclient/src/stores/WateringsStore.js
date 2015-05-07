@@ -1,5 +1,6 @@
 var api = require('../api');
 var assign = require('object-assign');
+var format = require('string-format');
 var EventEmitter = require('events').EventEmitter;
 var ZonesStore = require('./ZonesStore');
 var StatusStore = require('./StatusStore');
@@ -36,6 +37,9 @@ module.exports = assign({}, EventEmitter.prototype, {
   },
   deleteWatering: function(watering) {
     return this._doPost('/delete-watering', watering.uuid);
+  },
+  quickRun: function(zoneId, minutes) {
+    return this._doPost('/run-zone-now', format("{} {}", zoneId, minutes));
   },
   disableWatering: function(watering) {
     return this._doPost('/disable-watering', watering.uuid);

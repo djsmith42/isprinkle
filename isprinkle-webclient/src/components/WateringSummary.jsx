@@ -28,9 +28,9 @@ module.exports = class WateringSummary extends React.Component {
           return <div>Every {watering.period_days} days at {watering.start_time}</div>
         }
       case ScheduleTypes.FIXED_DAYS_OF_WEEK:
-        return <div>Days of the Week</div>
+        return <div>Days of the Week (this doesn't work yet)</div>
       case ScheduleTypes.SINGLE_SHOT:
-        return <div>Single Shot</div>
+        return <div>Single Shot at {watering.start_time} on {watering.start_date}</div>
       default:
         return <div>Unknown Watering Type: {watering.schedule_type}</div>
     }

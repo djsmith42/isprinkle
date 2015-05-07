@@ -1,7 +1,9 @@
 var React = require('react');
+var format = require('string-format');
+
 var Status = require('./Status');
 var WateringList = require('./WateringList');
-var format = require('string-format');
+var QuickRun = require('./QuickRun');
 
 var ZonesStore = require('../stores/ZonesStore');
 var WateringsStore = require('../stores/WateringsStore');
@@ -61,8 +63,9 @@ module.exports = class MainPage extends React.Component {
                  </div>)
               : ready
                   ? (<div>
-                      <Status />
-                      <WateringList />
+                      <QuickRun/>
+                      <Status/>
+                      <WateringList/>
                     </div>)
                   : (<div>
                       Loading...

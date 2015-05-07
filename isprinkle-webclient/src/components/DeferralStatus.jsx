@@ -94,7 +94,7 @@ module.exports = class DeferralStatus extends React.Component {
                    <input ref="deferralDate" type="date" defaultValue={this._defaultDeferralDate()} />
                    <input ref="deferralTime" type="time" defaultValue={this._defaultDeferralTime()} />
                    <button className="btn btn-primary" onClick={this.editSaveClicked.bind(this)}>Save</button>
-                   <button className="btn btn-default" onClick={this.editCancelClicked.bind(this)}>Cancel</button>
+                   <button className="btn btn-primary" onClick={this.editCancelClicked.bind(this)}>Cancel</button>
                  </div>
                </div>)
             : (<div>

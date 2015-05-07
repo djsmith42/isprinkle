@@ -99,17 +99,7 @@ class WateringForm extends React.Component {
   }
 
   _zones() {
-    var i = 1;
-    var zoneInfo = ZonesStore.zones();
-    var ret = [];
-    while (i in zoneInfo) {
-      ret.push({
-        id: i,
-        name: zoneInfo[i]
-      });
-      i++;
-    }
-    return ret;
+    return ZonesStore.zoneList();
   }
 
   zoneDurationZoneIdChanged(zoneDuration, event) {

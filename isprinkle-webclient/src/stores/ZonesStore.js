@@ -13,4 +13,18 @@ module.exports = assign({}, EventEmitter.prototype, {
   zones: function() {
     return this._zones;
   },
+  zoneList: function() {
+    var zoneInfo = this.zones();
+    var ret = [];
+    var i = 1;
+    while (i in zoneInfo) {
+      ret.push({
+        id: i,
+        name: zoneInfo[i]
+      });
+      i++;
+    }
+    ret.sort((a, b) => (a.name < b.name ? -1 : 1))
+    return ret;
+  }
 });

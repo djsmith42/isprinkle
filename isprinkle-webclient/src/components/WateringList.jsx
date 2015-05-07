@@ -136,7 +136,7 @@ module.exports = class WateringList extends React.Component {
                           Enable
                         </button>}
                     <button
-                      className="btn btn-default run-now pull-right"
+                      className="btn btn-primary run-now pull-right"
                       disabled={watering.is_pending_change}
                       onClick={this.runNowClicked.bind(this, watering)}>
                       Run Now
