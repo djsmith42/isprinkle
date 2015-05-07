@@ -191,7 +191,7 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
                 if watering.get_schedule_type() == iSprinkleWatering.EVERY_N_DAYS:
                     yaml_watering['period days'] = watering.get_period_days()
                 if watering.get_schedule_type() == iSprinkleWatering.SINGLE_SHOT:
-                    yaml_watering['start date'] = watering.get_start_date()
+                    yaml_watering['start date'] = str(watering.get_start_date())
                 if watering.get_schedule_type() == iSprinkleWatering.FIXED_DAYS_OF_WEEK:
                     yaml_watering['days of week'] = 'TODO'
 
