@@ -1,6 +1,8 @@
 var WateringsStore = require('../stores/WateringsStore');
 var ReactAddons = require('react-addons');
 var React = require('react');
+var Spinner = require('react-spinkit');
+
 var WateringSummary = require('./WateringSummary');
 var AddWateringForm = require('./AddWateringForm');
 var EditWateringForm = require('./EditWateringForm');
@@ -171,7 +173,11 @@ module.exports = class WateringList extends React.Component {
         </div>
       )
     } else {
-      return <div>Loading waterings...</div>
+      return (
+        <div className="WateringListLoading">
+          <Spinner spinnerName='three-bounce' noFadeIn />
+        </div>
+      )
     }
   }
 }

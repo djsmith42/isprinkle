@@ -8,12 +8,10 @@ module.exports = class WateringSummary extends React.Component {
 
   render() {
     return (
-      <div>
-        <div className="WateringSummary">
-          {this._summary()}
-          {this.props.watering.enabled ||
-            <span>(disabled)</span>}
-        </div>
+      <div className="WateringSummary">
+        {this._summary()}
+        {this.props.watering.enabled ||
+          <span className="disabled"> (disabled)</span>}
       </div>
     )
   }
@@ -23,16 +21,16 @@ module.exports = class WateringSummary extends React.Component {
     switch (watering.schedule_type) {
       case ScheduleTypes.EVERY_N_DAYS:
         if (watering.period_days == 1) {
-          return <div>Every day at {watering.start_time}</div>
+          return <span>Every day at {watering.start_time}</span>
         } else {
-          return <div>Every {watering.period_days} days at {watering.start_time}</div>
+          return <span>Every {watering.period_days} days at {watering.start_time}</span>
         }
       case ScheduleTypes.FIXED_DAYS_OF_WEEK:
-        return <div>Days of the Week (this doesn't work yet)</div>
+        return <span>Days of the Week (this doesn't work yet)</span>
       case ScheduleTypes.SINGLE_SHOT:
-        return <div>Single Shot at {watering.start_time} on {watering.start_date}</div>
+        return <span>Single Shot at {watering.start_time} on {watering.start_date}</span>
       default:
-        return <div>Unknown Watering Type: {watering.schedule_type}</div>
+        return <span>Unknown Watering Type: {watering.schedule_type}</span>
     }
   }
 }
