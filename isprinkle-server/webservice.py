@@ -150,14 +150,19 @@ class iSprinkleHandler(BaseHTTPRequestHandler):
         return ''
 
     def do_GET(self):
-
         response_code = 200
         content_type = 'application/yaml'
         response_content = ''
 
         if self.path == '/':
-            content_type = 'text/plain'
-            response_content= 'You are in the wrong place'
+            with open("webclient/index.html") as f:
+                content_type = 'text/html'
+                response_content= f.read()
+
+        elif self.path == "/main.bundle.js":
+            with open("webclient/main.bundle.js") as f:
+                content_type = 'text/javascript'
+                response_content= f.read()
 
         elif self.path == '/status':
             active_watering    = self.server.model.status.active_watering

@@ -1,2 +1,3 @@
  - Don't re-enable disabled waterings on edit
  - Figure out why the bundle is so huge (6MB)
+ - Prod build: how to handle config.js settings?
