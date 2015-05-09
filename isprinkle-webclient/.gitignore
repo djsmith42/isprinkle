@@ -2,3 +2,10 @@ node_modules
 .*.sw*
 npm-debug.log
 .DS_Store
+main.bundle.js
+build
+*.svg
+*.woff2
+*.woff
+*.ttf
+*.eot

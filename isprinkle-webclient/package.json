@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "webpack-dev-server --progress --colors --port 8090"
+    "dev": "DEV=true webpack-dev-server --progress --colors --port 8090",
+    "build": "webpack -p --progress --colors && cp -v index-prod.html build/."
   },
   "license": "MIT",
   "devDependencies": {},

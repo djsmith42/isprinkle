@@ -1,9 +1,8 @@
-module.exports = {
+var config = {
     entry: './src/index.jsx',
     output: {
-        publicPath: 'http://localhost:8090/assets'
+      // Filled in below based on process.env.DEV
     },
-    devtool: "#inline-source-map",
     module: {
         loaders: [
             {test: /\.jsx?$/,   loader: 'jsx-loader?insertPragma=React.DOM&harmony'},
@@ -18,3 +17,18 @@ module.exports = {
         extensions: ['', '.js', '.jsx']
     }
 }
+
+if (process.env.DEV) {
+  console.log("Building in dev mode");
+
+  // Enable source maps, but adds 4MB to the output JS bundle:
+  config.devtool = "#inline-source-map";
+
+  // URL to serve the dev bundle:
+  config.output.publicPath = 'http://localhost:8090/assets';
+} else {
+  console.log("Building production bundle...");
+  config.output.filename = 'build/main.bundle.js';
+}
+
+module.exports = config
