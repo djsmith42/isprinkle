@@ -1,5 +1,1 @@
- - Quick run
- - Disable the *whole* add watering form while saving
- - Edit existing single-shot waterings (currentely, "start_date" is being parsed as an object by JS-YAML)
- - Better summary display for single shot waterings
  - Don't re-enable disabled waterings on edit
