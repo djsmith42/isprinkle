@@ -11,9 +11,9 @@ module.exports = class WateringSummary extends React.Component {
       <div>
         <div className="WateringSummary">
           {this._summary()}
+          {this.props.watering.enabled ||
+            <span>(disabled)</span>}
         </div>
-        {this.props.watering.enabled ||
-          <div>(disabled)</div>}
       </div>
     )
   }

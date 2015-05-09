@@ -130,7 +130,7 @@ module.exports = class WateringList extends React.Component {
                           Disable
                         </button>
                       : <button
-                          className="btn btn-info enable pull-right"
+                          className="btn btn-warning enable pull-right"
                           disabled={watering.is_pending_change}
                           onClick={this.enableWateringClicked.bind(this, watering)}>
                           Enable
