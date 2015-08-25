@@ -22,19 +22,19 @@ module.exports = class MainPage extends React.Component {
 
   componentDidMount() {
     var self = this;
-    ErrorStore.on(ErrorStore.CHANGE_EVENT, function() {
+    ErrorStore.on(ErrorStore.CHANGE_EVENT, () => {
       self.setState({});
     });
-    var self = this;
-    Promise.all([
-      ZonesStore.fetch(),
-      StatusStore.start(),
-      WateringsStore.start()
-    ]).then(function() {
-      self.setState({
-        allStoresLoaded: true
-      });
-    });;
+    ZonesStore.fetch().then(() => {
+      Promise.all([
+        StatusStore.start(),
+        WateringsStore.start()
+      ]).then(() => {
+        self.setState({
+          allStoresLoaded: true
+        });
+      });;
+    });
   }
 
   retryClicked() {
