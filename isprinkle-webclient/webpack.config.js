@@ -19,7 +19,7 @@ var config = {
     },
     plugins: [
       new webpack.DefinePlugin({
-        'process.env.DEV': process.env.DEV ? true : false
+        '__DEV__': process.env.DEV ? true : false
       })
     ]
 }

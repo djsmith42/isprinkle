@@ -44,7 +44,7 @@ axios.interceptors.response.use((response) => {
 });
 
 function _url(path) {
-  if (process.env.DEV) {
+  if (__DEV__) {
       return format('http://{}:{}{}', config.host, config.port, path);
   } else {
       return path;
