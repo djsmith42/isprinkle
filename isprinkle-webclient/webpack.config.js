@@ -1,3 +1,4 @@
+var webpack = require('webpack');
 var config = {
     entry: './src/index.jsx',
     output: {
@@ -15,7 +16,12 @@ var config = {
     },
     resolve: {
         extensions: ['', '.js', '.jsx']
-    }
+    },
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env.DEV': process.env.DEV ? true : false
+      })
+    ]
 }
 
 if (process.env.DEV) {

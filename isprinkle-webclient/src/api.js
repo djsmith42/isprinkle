@@ -43,19 +43,25 @@ axios.interceptors.response.use((response) => {
   ErrorStore.setError(error);
 });
 
+function _url(path) {
+  if (process.env.DEV) {
+      return format('http://{}:{}{}', config.host, config.port, path);
+  } else {
+      return path;
+  }
+}
+
 module.exports = {
   get: function(path) {
     return new Promise((resolve, reject) => {
-      var url = format('http://{}:{}{}', config.host, config.port, path);
-      axios.get(url)
+      axios.get(_url(path))
         .then((response) => resolve(response.data))
         .catch((error) => reject(error));
     });
   },
   post: function(path, payload) {
     return new Promise((resolve, reject) => {
-      var url = format('http://{}:{}{}', config.host, config.port, path);
-      axios.post(url, _spacify(payload))
+      axios.post(_url(path), _spacify(payload))
         .then((response) => resolve(response.data))
         .catch((error) => reject(error));
     });
